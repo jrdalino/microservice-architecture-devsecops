@@ -23,14 +23,20 @@ $ flask/bin/pip install flask
 
 ## Module 1: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
-- Square root, cube root, power and factorial
-- Calculator triggered by end users via a web api
-- References: https://blog.miguelgrinberg.com/post/designing-a-restful-api-with-python-and-flask
+- Advanced calculations (square root, cube root, power, factorial)
+- Calculator triggered by developers via a web api
 
 ```
-HTTP METHOD | URI                                   | Action
------------   --------------------------------------  ----------------
-ADD         | http://[hostname]/add | Adds two numbers
+HTTP METHOD | URI                                                         | Action
+-----------   -----------------------------------------------------------   ----------------
+POST        | http://[hostname]/add {"argument1":1, "argument2":2 }       | Adds two numbers
+POST        | http://[hostname]/subtract {"argument1":1, "argument2":2 }  | Subracts two numbers
+POST        | http://[hostname]/multiply {"argument1":1, "argument2":2 }  | Multiplies two numbers
+POST        | http://[hostname]/divide {"argument1":1, "argument2":2 }    | Divides two numbers
+POST        | http://[hostname]/squareroot {"argument1":1 }               | Gets the square root of a number
+POST        | http://[hostname]/cuberoot {"argument1":1 }                 | Gets the cube root of a number
+POST        | http://[hostname]/exp {"argument1":1, "argument2":2 }       | Gets the the exponent of number1 raised to number2
+POST        | http://[hostname]/factorial {"argument1":1 }                | Get the factorial of a number
 ```
 
 ### Module 1.1 Add calculator.py
@@ -46,7 +52,8 @@ app = Flask(__name__)
 
 @app.route('/')
 def index_page():
-    return render_template('index.html')
+    return "This is a RESTful Calculator App built with Python Flask!"
+#    return render_template('index.html')
 
 @app.route('/add', methods=['POST'])
 def add_args():
@@ -74,10 +81,22 @@ flask
 
 ### Module 1.3 Run Locally
 ```
-$ chmod a+x app.py
+$ chmod a+x calculator.py
 $ ./calculator.py
 $ curl http://localhost:5000
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"1":"2"}' http://localhost:5000/todo/api/v1.0/tasks
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":1, "argument2":2 }' http://localhost:5000/add
+```
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":1, "argument2":2 }' http://localhost:5000/add
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 18
+Server: Werkzeug/0.15.2 Python/2.7.10
+Date: Wed, 24 Apr 2019 01:08:53 GMT
+
+{
+  "answer": 3
+}
 ```
 
 ### Module 1.4 Create the Dockerfile
