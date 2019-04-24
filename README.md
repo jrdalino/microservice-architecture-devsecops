@@ -229,6 +229,7 @@ TODO: Front End Unit Tests
 ### Module 5.1
 
 ## Module 6: Create Amazon EKS Cluster VPC using Cloudformation
+- TODO: Use Terraform https://dzone.com/articles/amazon-aws-eks-and-rds-postgresql-with-terraform-i
 ```
 https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-sample.yaml
 ```
@@ -323,12 +324,16 @@ $ kubectl get nodes
 
 ## Module 13: Implement Health Checks
 - The API being a crucial part of the application it needs to be highly available
+- References: https://eksworkshop.com/healthchecks/
 
 ## Module 14: Implementing Auto Scaling
+- References: https://eksworkshop.com/scaling/
 
 ## Module 15: Log Amazon EKS API Calls with CloudTrail
+- References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
 
 ## Module 16: Log REST operations performed to S3
+-
 
 ## Module 17: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
