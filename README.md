@@ -21,13 +21,6 @@ AWS CLI
 ```
 $ aws --version
 ```
-Create and Navigate to Directory
-```
-$ mkdir python-calculator-rest-api-docker-kubernetes
-$ cd python-calculator-rest-api-docker-kubernetes
-$ virtualenv flask
-$ flask/bin/pip install flask
-```
 
 ## Module 1: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
@@ -51,7 +44,15 @@ POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
-### Module 1.1 Add calculator.py
+### Modile 1.1 Create and Navigate to Directory
+```
+$ mkdir calculator-rest-api
+$ cd calculator-rest-api
+$ virtualenv flask
+$ flask/bin/pip install flask
+```
+
+### Module 1.2 Add calculator.py
 ```
 $ vi calculator.py
 ```
@@ -138,7 +139,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-### Module 1.2 Create the requirements.txt file
+### Module 1.3 Create the requirements.txt file
 ```
 $ vi requirements.txt
 ```
@@ -146,55 +147,14 @@ $ vi requirements.txt
 flask
 ```
 
-### Module 1.3 Run Locally and Test
+### Module 1.4 Run Locally and Test
 ```
 $ chmod a+x calculator.py
 $ ./calculator.py
 $ curl http://localhost:5000
 ```
 
-Test Add
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
-{
-  "answer": 3
-}
-```
-Test Subtract
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":4, "argument2":3 }' http://localhost:5000/subtract
-{
-  "answer": 1
-}
-```
-Test Mulitply
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/multiply
-{
-  "answer": 6
-}
-```
-Test Divide
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":12, "argument2":4 }' http://localhost:5000/divide
-{
-  "answer": 3
-}
-```
-Test Square Root
-Test Cube Root
-
-Test Power
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/exp
-{
-  "answer": 8
-}
-```
-
-Test Factorial
-
-### Module 1.4 Create the Dockerfile
+### Module 1.5 Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -208,21 +168,75 @@ ENTRYPOINT ["python"]
 CMD ["calculator.py"]
 ```
 
-### Module 1.5 Build and Run Locally
+### Module 1.6 Build and Run Locally
 ```
-$ docker build -t python-calculator-rest-api-docker-kubernetes:latest .
-$ docker run -d -p 5000:5000 python-calculator-rest-api-docker-kubernetes:latest
+$ docker build -t calculator-rest-api:latest .
+$ docker run -d -p 5000:5000 calculator-rest-api:latest
 ```
-Test again
 
-## Module 2: Backend Unit Tests
+### Module 1.7 Test Math Operations
+- Test Add
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
+{
+  "answer": 3
+}
+```
+
+- Test Subtract
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":4, "argument2":3 }' http://localhost:5000/subtract
+{
+  "answer": 1
+}
+```
+
+- Test Mulitply
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/multiply
+{
+  "answer": 6
+}
+```
+
+- Test Divide
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":12, "argument2":4 }' http://localhost:5000/divide
+{
+  "answer": 3
+}
+```
+
+- TODO: Test Square Root
+- TODO: Test Cube Root
+
+- Test Power
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/exp
+{
+  "answer": 8
+}
+```
+
+-TODO: Test Factorial
+
+## Module 2: TODO - Backend Unit Tests
 - References:
 http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 ## Module 3: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
 
-### Module 3.1 Create ~/templates/index.html file
+### Modile 3.1 Create and Navigate to Directory
+```
+$ mkdir calculator-rest-api
+$ cd calculator-rest-api
+$ vi index.html
+$ vi ~/css/base.css
+$ vi ~/js/querycalc.js
+```
+
+### Module 3.2 Create ~/templates/index.html file
 ```
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -407,7 +421,7 @@ itsdangerous==0.24
 wsgiref==0.1.2
 ```
 
-## Module 4: Frontend Unit Tests
+## Module 4: TODO - Frontend Unit Tests
 TODO: Front End Unit Tests
 
 ## Module 5: Push Backend and Frontend to ECR
