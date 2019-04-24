@@ -312,9 +312,11 @@ $ kubectl get nodes
 
 ## Module 10: Setup CI/CD for Front End
 - proper CI/CD processes to put in place
+- Reference: https://eksworkshop.com/codepipeline/
 
 ## Module 11: Setup CI/CD for Back End
 - proper CI/CD processes to put in place
+- Reference: https://eksworkshop.com/codepipeline/
 
 ## Module 12: Setup Monitoring using Prometheus and Grafana
 - Basic monitoring
