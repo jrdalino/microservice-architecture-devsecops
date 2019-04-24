@@ -138,23 +138,46 @@ $ vi requirements.txt
 flask
 ```
 
-### Module 1.3 Run Locally
+### Module 1.3 Run Locally and Test
 ```
 $ chmod a+x calculator.py
 $ ./calculator.py
 $ curl http://localhost:5000
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":1, "argument2":2 }' http://localhost:5000/add
 ```
-```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":1, "argument2":2 }' http://localhost:5000/add
-HTTP/1.0 200 OK
-Content-Type: application/json
-Content-Length: 18
-Server: Werkzeug/0.15.2 Python/2.7.10
-Date: Wed, 24 Apr 2019 01:08:53 GMT
 
+Test Add
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
 {
   "answer": 3
+}
+```
+Test Subtract
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":4, "argument2":3 }' http://localhost:5000/subtract
+{
+  "answer": 1
+}
+```
+Test Mulitply
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/multiply
+{
+  "answer": 6
+}
+```
+Test Divide
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":12, "argument2":4 }' http://localhost:5000/divide
+{
+  "answer": 3
+}
+```
+Test Power
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/divide
+{
+  "answer": 8
 }
 ```
 
@@ -176,14 +199,12 @@ CMD ["calculator.py"]
 ```
 $ docker build -t python-calculator-rest-api-docker-kubernetes:latest .
 $ docker run -d -p 5000:5000 python-calculator-rest-api-docker-kubernetes:latest
-$ curl http://127.0.0.1:5000/add/1
-{
-    "2"
-}
 ```
 
 
 ## Module 2: Backend Unit Tests
+- References:
+http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 ## Module 3: Frontend HTML, CSS and JS for Calculator Local
 - Calculator triggered by end users through a web page
