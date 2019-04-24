@@ -13,6 +13,14 @@ Docker
 ```
 $ docker -v
 ```
+Git
+```
+$ git --version
+```
+AWS CLI
+```
+$ aws --version
+```
 Create and Navigate to Directory
 ```
 $ mkdir python-calculator-rest-api-docker-kubernetes
@@ -173,13 +181,18 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":12, "argu
   "answer": 3
 }
 ```
+Test Square Root
+Test Cube Root
+
 Test Power
 ```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/divide
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/exp
 {
   "answer": 8
 }
 ```
+
+Test Factorial
 
 ### Module 1.4 Create the Dockerfile
 ```
@@ -200,7 +213,7 @@ CMD ["calculator.py"]
 $ docker build -t python-calculator-rest-api-docker-kubernetes:latest .
 $ docker run -d -p 5000:5000 python-calculator-rest-api-docker-kubernetes:latest
 ```
-
+Test again
 
 ## Module 2: Backend Unit Tests
 - References:
@@ -209,35 +222,114 @@ http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 ## Module 3: Frontend HTML, CSS and JS for Calculator Local
 - Calculator triggered by end users through a web page
 
-## Module 4: Front End Unit Tests
+## Module 4: Frontend Unit Tests
+TODO: Front End Unit Tests
 
-## Module 5: Push to ECR
+## Module 5: Push Backend and Frontend to ECR
+### Module 5.1
 
-## Module 6: Cloudformation Stack
+## Module 6: Create Amazon EKS Cluster VPC using Cloudformation
+```
+https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-sample.yaml
+```
 
-## Module 7: Launch EKS using EKCTL
+## Module 7: Configure Prerequisites for EKS
 
-## Module 8: Deploy MicroServices to EKS
+### Module 7.1: Create the default ~/.kube directory for storing kubectl configuration
+```
+$ mkdir -p ~/.kube
+```
+
+### Module 7.2: Install kubectl
+```
+sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl"
+```
+```
+$ sudo chmod +x /usr/local/bin/kubectl
+```
+
+### Module 7.3: Install IAM Authenticator
+```
+$ go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
+```
+```
+$ sudo mv ~/go/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+```
+
+### Module 7.4 Install JQ and envsubst
+```
+$ sudo yum -y install jq gettext
+```
+
+### Module 7.5 Verify the binaries are in the path and executable
+```
+$ for command in kubectl aws-iam-authenticator jq envsubst
+  do
+    which $command &>/dev/null && echo "$command in path" || echo "$command NOT FOUND"
+  done
+```
+
+### Module 7.6 Clone the Frontend and Backend Sevice Repos
+```
+$ cd ~/environment
+$ git clone https://github.com/jrdalino/calculator-frontend.git
+$ git clone https://github.com/jrdalino/calculator-python.git
+```
+
+### Module 7.7 Update IAM Settings for your Workspace
+- Reference: https://eksworkshop.com/prerequisites/workspaceiam/
+
+### Module 7.7 Create an SSH Key
+- Reference: https://eksworkshop.com/prerequisites/sshkey/
+
+## Module 8: Launch EKS using EKCTL
+
+### Module 8.1
+```
+$ cd ~/environment
+$ git clone https://github.com/jrdalino/calculator-frontend.git
+$ git clone https://github.com/jrdalino/calculator-python.git
+```
+### Module 8.2 Install EKSCTL prerequisites
+```
+$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+$ sudo mv -v /tmp/eksctl /usr/local/bin
+$ eksctl version
+```
+
+### Module 8.3 Create an EKS Cluster (This will take ~15 minutes) and test cluster
+```
+$ eksctl create cluster --name=eksworkshop-eksctl --nodes=3 --node-ami=auto --region=${AWS_REGION}
+```
+```
+$ kubectl get nodes
+```
+
+## Module 9: Deploy MicroServices to EKS
 - containerized with Docker and Kubernetes for the orchestration
 
-## Module 9: Setup CI/CD for Front End
+### Module 9.1
+
+## Module 10: Setup CI/CD for Front End
 - proper CI/CD processes to put in place
 
-## Module 10: Setup CI/CD for Back End
+## Module 11: Setup CI/CD for Back End
 - proper CI/CD processes to put in place
 
-## Module 11: Setup Monitoring using Prometheus and Grafana
+## Module 12: Setup Monitoring using Prometheus and Grafana
 - Basic monitoring
 
-## Module 12: Implement Health Checks
+## Module 13: Implement Health Checks
 - The API being a crucial part of the application it needs to be highly available
 
-## Module 13: Implementing Auto Scaling
+## Module 14: Implementing Auto Scaling
 
-## Module 14: Log REST operations performed to S3
+## Module 15: Log Amazon EKS API Calls with CloudTrail
 
-## Module 15: S3 and Athena Report
+## Module 16: Log REST operations performed to S3
+
+## Module 17: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 
-## Module 16: Add additional feature
+## Module 18: Add additional feature
 - Additional killer feature of your choice
