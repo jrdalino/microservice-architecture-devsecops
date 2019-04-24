@@ -415,6 +415,9 @@ function calcListener ( jQuery ) {
 
 ### Module 3.4 Add default.conf file
 ```
+$ vi default.conf
+```
+```
 server {
     listen       80;
     server_name  localhost;
