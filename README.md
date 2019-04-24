@@ -1,10 +1,6 @@
 # python-calculator-rest-api-docker-kubernetes
 
 ## Prerequisites
-Docker
-```
-$ docker -v
-```
 Python
 ```
 $ Python3 --version
@@ -12,6 +8,10 @@ $ Python3 --version
 Flask
 ```
 $ flask --version
+```
+Docker
+```
+$ docker -v
 ```
 Create and Navigate to Directory
 ```
@@ -25,18 +25,22 @@ $ flask/bin/pip install flask
 - Basic calculations (add, subtract, multiply, divide)
 - Advanced calculations (square root, cube root, power, factorial)
 - Calculator triggered by developers via a web api
+- References: 
+https://github.com/ajportier/rest-calculator
+https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
+TODO: Use Flask-RESTful https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
 
 ```
 HTTP METHOD | URI                                                         | Action
------------   -----------------------------------------------------------   ----------------
-POST        | http://[hostname]/add {"argument1":1, "argument2":2 }       | Adds two numbers
-POST        | http://[hostname]/subtract {"argument1":1, "argument2":2 }  | Subracts two numbers
-POST        | http://[hostname]/multiply {"argument1":1, "argument2":2 }  | Multiplies two numbers
-POST        | http://[hostname]/divide {"argument1":1, "argument2":2 }    | Divides two numbers
-POST        | http://[hostname]/squareroot {"argument1":1 }               | Gets the square root of a number
-POST        | http://[hostname]/cuberoot {"argument1":1 }                 | Gets the cube root of a number
-POST        | http://[hostname]/exp {"argument1":1, "argument2":2 }       | Gets the the exponent of number1 raised to number2
-POST        | http://[hostname]/factorial {"argument1":1 }                | Get the factorial of a number
+-----------   -----------------------------------------------------------   --------------------------------------------------
+POST        | http://[hostname]/add {"argument1":a, "argument2":b }       | Adds two numbers (a + b)
+POST        | http://[hostname]/subtract {"argument1":a, "argument2":b }  | Subracts two numbers (a - b)
+POST        | http://[hostname]/multiply {"argument1":a, "argument2":b }  | Multiplies two numbers (a * b)
+POST        | http://[hostname]/divide {"argument1":a, "argument2":b }    | Divides two numbers (a / b)
+POST        | http://[hostname]/squareroot {"argument1":a }               | Gets the square root of a number (a)
+POST        | http://[hostname]/cuberoot {"argument1":a }                 | Gets the cube root of a number (a)
+POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
+POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
 ### Module 1.1 Add calculator.py
@@ -66,7 +70,62 @@ def add_args():
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
+
+@app.route('/subtract', methods=['POST'])
+def subtract_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        answer = arg1 - arg2
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
+@app.route('/multiply', methods=['POST'])
+def multiply_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        answer = arg1 * arg2
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
+@app.route('/divide', methods=['POST'])
+def divide_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        answer = arg1 / arg2
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+    except ZeroDivisionError:
+        abort(400)
         
+# TODO Square Root
+# TODO Cube Root
+        
+@app.route('/exp', methods=['POST'])
+def exponent_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        answer = arg1 ** arg2
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
+# TODO Factorial
+
 if __name__ == '__main__':
     app.run(debug=True)
 ```
@@ -113,7 +172,7 @@ ENTRYPOINT ["python"]
 CMD ["calculator.py"]
 ```
 
-### Module 1.4 Build and Run Locally
+### Module 1.5 Build and Run Locally
 ```
 $ docker build -t python-calculator-rest-api-docker-kubernetes:latest .
 $ docker run -d -p 5000:5000 python-calculator-rest-api-docker-kubernetes:latest
