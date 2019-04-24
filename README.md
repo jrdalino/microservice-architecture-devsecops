@@ -321,6 +321,7 @@ $ kubectl get nodes
 
 ## Module 12: Setup Monitoring using Prometheus and Grafana
 - Basic monitoring
+- References: https://eksworkshop.com/monitoring/
 
 ## Module 13: Implement Health Checks
 - The API being a crucial part of the application it needs to be highly available
@@ -333,10 +334,11 @@ $ kubectl get nodes
 - References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
 
 ## Module 16: Log REST operations performed to S3
--
+- Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
 
 ## Module 17: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
+- Refences: https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
 
 ## Module 18: Add additional feature
 - Additional killer feature of your choice
