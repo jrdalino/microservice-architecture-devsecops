@@ -248,13 +248,6 @@ $ touch querycalc.js
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="{{ url_for('static', filename='js/querycalc.js') }}"></script>
-        <script type="text/javascript">
-            // once the DOM is ready start the calculator listener function
-            $( document ).ready( calcListener ); 
-        </script>
         <title>Simple RESTful Calculator - Web Client</title>
     </head>
     <body>
@@ -280,6 +273,15 @@ $ touch querycalc.js
             </div>
             </form>
         </div>
+
+        <link rel="stylesheet" type="text/css" href="./css/base.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="./js/querycalc.js"></script>
+        <script type="text/javascript">
+            // once the DOM is ready start the calculator listener function
+            $( document ).ready( calcListener ); 
+        </script>
+
     </body>
 </html>
 ```
@@ -441,7 +443,7 @@ $ vi Dockerfile
 ```
 FROM nginx:alpine
 COPY default.conf /etc/nginx/conf.d/default.conf
-COPY index.html /usr/share/nginx/html/index.html
+COPY . /usr/share/nginx/html
 ```
 
 ### Module 3.6 Build and Run Locally
