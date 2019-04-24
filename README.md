@@ -26,9 +26,9 @@ $ flask/bin/pip install flask
 - Advanced calculations (square root, cube root, power, factorial)
 - Calculator triggered by developers via a web api
 - References: 
-https://github.com/ajportier/rest-calculator
-https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
-TODO: Use Flask-RESTful https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
+- https://github.com/ajportier/rest-calculator
+- https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
+- TODO: Use Flask-RESTful https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
 
 ```
 HTTP METHOD | URI                                                         | Action
