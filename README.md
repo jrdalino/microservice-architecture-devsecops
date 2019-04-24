@@ -218,7 +218,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 }
 ```
 
--TODO: Test Factorial
+- TODO: Test Factorial
 
 ## Module 2: TODO - Backend Unit Tests
 - References:
@@ -229,14 +229,19 @@ http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 ### Modile 3.1 Create and Navigate to Directory
 ```
-$ mkdir calculator-rest-api
-$ cd calculator-rest-api
-$ vi index.html
-$ vi ~/css/base.css
-$ vi ~/js/querycalc.js
+$ mkdir calculator-frontend
+$ cd calculator-frontend
+$ mkdir css
+$ mkdir js
+$ touch index.html
+$ cd css
+$ touch base.css
+$ cd ..
+$ cd js
+$ touch querycalc.js
 ```
 
-### Module 3.2 Create ~/templates/index.html file
+### Module 3.2 Create index.html file
 ```
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -279,7 +284,7 @@ $ vi ~/js/querycalc.js
 </html>
 ```
 
-### Module 3.2 Create ~/static/css/base.css file
+### Module 3.2 Create base.css file
 ```
 body {
     margin: 0;
@@ -319,7 +324,7 @@ body {
 }
 ```
 
-### Module 3.3 Create ~/static/js/querycalc.js file
+### Module 3.3 Create querycalc.js file
 ```
 function calcListener ( jQuery ) {
     console.log( "READY!" );
@@ -408,17 +413,43 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Module 3.4 
+### Module 3.4 Add default.conf file
 ```
-$ vi requirements.txt 
+server {
+    listen       80;
+    server_name  localhost;
+
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+}
+```
+
+### Module 3.5 Create the Docker File
+```
+$ vi Dockerfile
 ```
 ```
-Flask==0.10.1
-Jinja2==2.7.3
-MarkupSafe==0.23
-Werkzeug==0.9.6
-itsdangerous==0.24
-wsgiref==0.1.2
+FROM nginx:alpine
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY index.html /usr/share/nginx/html/index.html
+```
+
+### Module 3.6 Build and Run Locally
+```
+$ docker build -t calculator-frontend:latest .
+$ docker run -d -p 8080:80 calculator-frontend:latest
+```
+
+### Module 3.7 Test User Interface
+```
+$ curl http://localhost:8080
 ```
 
 ## Module 4: TODO - Frontend Unit Tests
