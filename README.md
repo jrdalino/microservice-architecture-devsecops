@@ -219,13 +219,199 @@ Test again
 - References:
 http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
-## Module 3: Frontend HTML, CSS and JS for Calculator Local
+## Module 3: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
+
+### Module 3.1 Create ~/templates/index.html file
+```
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="{{ url_for('static', filename='js/querycalc.js') }}"></script>
+        <script type="text/javascript">
+            // once the DOM is ready start the calculator listener function
+            $( document ).ready( calcListener ); 
+        </script>
+        <title>Simple RESTful Calculator - Web Client</title>
+    </head>
+    <body>
+        <div class="outer-container">
+            <h1>Simple RESTful Calculator</h1>
+            <form id="calcform" method="POST">
+            <div class="arguments">
+                Argument 1: <input type="text" id="argument1" value = ""/><br/>
+                Argument 2: <input type="text" id="argument2" value = ""/><br/>
+            </div>
+            <div class="buttons">
+                <div class="button-row">
+                    <input class= "func-btn" type="button" id="add" value="Add"/>
+                    <input class= "func-btn" type="button" id="subtract" value="Subtract"/>
+                </div>
+                <div class="button-row">
+                    <input class= "func-btn" type="button" id="multiply" value="Multiply"/>
+                    <input class= "func-btn" type="button" id="divide" value="Divide"/>
+                </div>
+                <div class="button-row">
+                    <input class= "func-btn" type="button" id="exp" value="Exponent"/>
+                </div>
+            </div>
+            </form>
+        </div>
+    </body>
+</html>
+```
+
+### Module 3.2 Create ~/static/css/base.css file
+```
+body {
+    margin: 0;
+    padding: 0;
+    background-color: white;
+}
+
+.outer-container {
+    width: 500px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: auto;
+    text-align: center;
+    background-color: lightblue;
+}
+
+.arguments {
+    margin: auto;
+    padding: 5px;
+}
+
+.buttons {
+    padding: 5px;
+}
+
+.button-row {
+    height: 50px;
+}
+
+.func-btn {
+	-webkit-appearance: none;
+    width: 50%;
+    height: 50px;
+    float: left;
+    padding: 5px;
+}
+```
+
+### Module 3.3 Create ~/static/js/querycalc.js file
+```
+function calcListener ( jQuery ) {
+    console.log( "READY!" );
+
+    $( "#add" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        var arg2 = $( "#argument2" ).val();
+        doMath (arg1, arg2, 'add');
+        e.preventDefault();
+    });
+
+    $( "#subtract" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        var arg2 = $( "#argument2" ).val();
+        doMath (arg1, arg2, 'subtract');
+        e.preventDefault();
+    });
+
+    $( "#multiply" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        var arg2 = $( "#argument2" ).val();
+        doMath (arg1, arg2, 'multiply');
+        e.preventDefault();
+    });
+
+    $( "#divide" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        var arg2 = $( "#argument2" ).val();
+        doMath (arg1, arg2, 'divide');
+        e.preventDefault();
+    });
+    
+    $( "#exp" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        var arg2 = $( "#argument2" ).val();
+        doMath (arg1, arg2, 'exp');
+        e.preventDefault();
+    })
+    
+    function doMath( arg1, arg2, resource ) {
+        var textStatus, jqXHR, errorThrown = '';
+
+        console.log( "Calling " + resource + " on " + arg1 + " and " + arg2 );
+
+        
+        try {
+            arg1 = Number( arg1 );
+            arg2 = Number( arg2 );
+            //TODO handle non-numeric inputs
+            if ( isNaN(arg1) || isNaN(arg2) ) throw "NaN";
+
+            // Flask requires a JSON string and the following content-type
+            $.ajaxSetup({
+                contentType: "application/json"
+            });
+
+            // Makes an ajax call to url "resource" supplying arg1 and arg2
+            $.ajax({
+                type: "POST",
+                url: resource,
+                data: JSON.stringify({ argument1: arg1, argument2: arg2 }),
+                dataType: "json",
+                success: function ( data ) {
+                    var answer = String(data[ 'answer' ]);
+                    console.log( "We got an answer! " + answer );
+
+                    // Put the answer in argument1 and blank out argument2
+                    $( "#argument1" ).val( answer );
+                    $( "#argument2" ).val( '' );
+                },
+                error: function ( textStatus, jqXHR, errorThrown ) {
+                    console.log("Something has gone wrong:" + errorThrown);
+                    $( "#argument1" ).val( '' );
+                    $( "#argument2" ).val( '' );
+                }
+            });
+        }
+
+        catch( err ) {
+            console.log("Error: " + err);
+            $( "#argument1" ).val( '' );
+            $( "#argument2" ).val( '' );
+        }
+    }
+    
+}
+```
+
+### Module 3.4 
+```
+$ vi requirements.txt 
+```
+```
+Flask==0.10.1
+Jinja2==2.7.3
+MarkupSafe==0.23
+Werkzeug==0.9.6
+itsdangerous==0.24
+wsgiref==0.1.2
+```
 
 ## Module 4: Frontend Unit Tests
 TODO: Front End Unit Tests
 
 ## Module 5: Push Backend and Frontend to ECR
+
 ### Module 5.1
 
 ## Module 6: Create Amazon EKS Cluster VPC using Cloudformation
