@@ -655,14 +655,49 @@ $ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
 
 ## Module 14: Deploy Grafana
 - References: https://eksworkshop.com/monitoring/deploy-grafana/
-### Module 14.1:
+
+### Module 14.1: Install Grafana
 ```
-$
+$ kubectl create namespace grafana
+$ helm install stable/grafana \
+    --name grafana \
+    --namespace grafana \
+    --set persistence.storageClassName="gp2" \
+    --set adminPassword="EKS!sAWSome" \
+    --set datasources."datasources\.yaml".apiVersion=1 \
+    --set datasources."datasources\.yaml".datasources[0].name=Prometheus \
+    --set datasources."datasources\.yaml".datasources[0].type=prometheus \
+    --set datasources."datasources\.yaml".datasources[0].url=http://prometheus-server.prometheus.svc.cluster.local \
+    --set datasources."datasources\.yaml".datasources[0].access=proxy \
+    --set datasources."datasources\.yaml".datasources[0].isDefault=true \
+    --set service.type=LoadBalancer
 ```
 
-### Module 14.2: 
+### Module 14.2: Check if Grafana is deployed
 ```
-$ 
+$ kubectl get all -n grafana
+```
+
+
+### Module 14.3: Get Grafana ELB URL
+```
+$ export ELB=$(kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+$ echo "http://$ELB"
+```
+
+### Module 14.4: Login using admin and password
+```
+$ kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+```
+
+### Module 14.5: Create Grafana Dashboards
+
+### Module 14.6 Cleanup
+```
+$ helm delete prometheus
+$ helm del --purge prometheus
+$ helm delete grafana
+$ helm del --purge grafana
 ```
 
 ## Module 15: Implement Health Checks
