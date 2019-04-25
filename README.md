@@ -21,6 +21,12 @@ AWS CLI
 ```
 $ aws --version
 ```
+Working Directory
+```
+$ cd ~
+$ mkdir environment
+$ cd ~/environment
+```
 
 ## Module 1: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
@@ -44,7 +50,7 @@ POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
-### Modile 1.1 Create and Navigate to Directory
+### Module 1.1 Create and Navigate to Directory
 ```
 $ mkdir calculator-rest-api
 $ cd calculator-rest-api
@@ -285,7 +291,7 @@ $ touch querycalc.js
 </html>
 ```
 
-### Module 3.2 Create base.css file
+### Module 3.3 Create base.css file
 ```
 body {
     margin: 0;
@@ -325,7 +331,7 @@ body {
 }
 ```
 
-### Module 3.3 Create querycalc.js file
+### Module 3.4 Create querycalc.js file
 ```
 function calcListener ( jQuery ) {
     console.log( "READY!" );
@@ -414,7 +420,7 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Module 3.4 Add default.conf file
+### Module 3.5 Add default.conf file
 ```
 $ vi default.conf
 ```
@@ -435,7 +441,7 @@ server {
 }
 ```
 
-### Module 3.5 Create the Docker File
+### Module 3.6 Create the Docker File
 ```
 $ vi Dockerfile
 ```
@@ -445,13 +451,13 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY . /usr/share/nginx/html
 ```
 
-### Module 3.6 Build and Run Locally
+### Module 3.7 Build and Run Locally
 ```
 $ docker build -t calculator-frontend:latest .
 $ docker run -d -p 8080:80 calculator-frontend:latest
 ```
 
-### Module 3.7 Test User Interface
+### Module 3.8 Test User Interface
 ```
 $ curl http://localhost:8080
 ```
@@ -459,14 +465,31 @@ $ curl http://localhost:8080
 ## Module 4: TODO - Frontend Unit Tests
 
 ## Module 5: Push Backend and Frontend to ECR
+### Module 5.1 Create the ECR Repository
+```
+$ aws ecr create repository --repository-name restful-python-calculator/backend-service
+$ aws ecr create repository --repository-name restful-python-calculator/frontend-service
+```
 
-### Module 5.1
+### Module 5.2 Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+```
+$ $(aws ecr get-login --no-include-email)
+```
 
-## Module 6: Create Amazon EKS Cluster VPC using Cloudformation
+### Module 5.3 Push our Docker Image
+```
+$ docker push 486051038643.dkr.ecr.ap-southeast-1.amazonaws.com/restful-python-calculator/backend-service:latest
+$ docker push 486051038643.dkr.ecr.ap-southeast-1.amazonaws.com/restful-python-calculator/frontend-service:latest
+```
+
+### Module 5.4 Validate Image has been pushed
+```
+$ aws ecr describe-images --repository-name restful-python-calculator/backend-service:latest
+$ aws ecr describe-images --repository-name restful-python-calculator/frontend-service:latest
+```
+
+## Module 6: Create AWS Resources using Cloudformation (OPTIONAL)
 - TODO: Use Terraform https://dzone.com/articles/amazon-aws-eks-and-rds-postgresql-with-terraform-i
-```
-https://amazon-eks.s3-us-west-2.amazonaws.com/cloudformation/2019-02-11/amazon-eks-vpc-sample.yaml
-```
 
 ## Module 7: Configure Prerequisites for EKS
 
@@ -477,17 +500,13 @@ $ mkdir -p ~/.kube
 
 ### Module 7.2: Install kubectl
 ```
-sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl"
-```
-```
+$ sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl"
 $ sudo chmod +x /usr/local/bin/kubectl
 ```
 
 ### Module 7.3: Install IAM Authenticator
 ```
 $ go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
-```
-```
 $ sudo mv ~/go/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 ```
 
@@ -545,44 +564,123 @@ $ kubectl get nodes
 
 ### Module 9.1
 
-## Module 10: Setup CI/CD for Front End
+## Module 10: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 - Reference: https://eksworkshop.com/codepipeline/
 
-### Module 10.1: Create IAM role
+### Module 10.1 Create an S3 Bucket for Pipeline Artifacts
 ```
-$ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-$ TRUST="{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::${ACCOUNT_ID}:root\" }, \"Action\": \"sts:AssumeRole\" } ] }"
-$ echo '{ "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Action": "eks:Describe*", "Resource": "*" } ] }' > /tmp/iam-role-policy
-$ aws iam create-role --role-name EksWorkshopCodeBuildKubectlRole --assume-role-policy-document "$TRUST" --output text --query 'Role.Arn'
-$ aws iam put-role-policy --role-name EksWorkshopCodeBuildKubectlRole --policy-name eks-describe --policy-document file:///tmp/iam-role-policy
+$ aws s3 mb s3://jrdalino-workshop-artifacts
 ```
 
-### Module 10.2: Modify AWS-Auth Config Map
+### Module 10.2 Modify S3 BUcket Policy
+Replace:
+- REPLACE_ME_CODEBUILD_ROLE_ARN
+- REPLACE_ME_CODEPIPELINE_ROLE_ARN
+- ArtifactsBucketName
+
 ```
-$ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-$ ROLE="    - rolearn: arn:aws:iam::$ACCOUNT_ID:role/EksWorkshopCodeBuildKubectlRole\n      username: build\n      groups:\n        - system:masters"
-$ kubectl get -n kube-system configmap/aws-auth -o yaml | awk "/mapRoles: \|/{print;print \"$ROLE\";next}1" > /tmp/aws-auth-patch.yml
-$ kubectl patch configmap/aws-auth -n kube-system --patch "$(cat /tmp/aws-auth-patch.yml)"
+$ vi ~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Module 10.3 Setup CodePipeline
-- TODO: Replace Github with CodeCommit
-```
-Execute CloudFormation Template - https://s3.amazonaws.com/eksworkshop.com/templates/master/ci-cd-codepipeline.cfn.yml
-```
+### Module 10.3 Grant S3 Bucket access to your CI/CD Pipeline
+Replace:
+- ArtifactsBucketName
 
-### Module 10.4 Review
 ```
-$ kubectl describe deployment hello-k8s
-$ kubectl describe service hello-k8s
+$ aws s3api put-bucket-policy \
+--bucket jrdalino-workshop-artifacts \
+--policy file://~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Module 10.5 Trigger New Release
+### Module 10.4 Create a CodeCommit Repository
+```
+$ aws codecommit create-repository \
+--repository-name MythicalMysfitsService-Repository
+```
 
+### Module 10.5 View/Modify Buildspec file
+No need to modify for this workshop
+```
+$ vi ~/environment/modern-app-workshop/app/buildspec.yml
+```
 
-## Module 11: Setup CI/CD for Back End
-- Same as Module 10.
+### Module 10.6: Modify CodeBuild Project Input File
+Replace:
+- REPLACE_ME_ACCOUNT_ID
+- REPLACE_ME_REGION
+- REPLACE_ME_CODEBUILD_ROLE_ARN
+```
+$ vi ~/environment/modern-app-workshop/aws-cli/code-build-project.json
+```
+
+### Module 10.7 Create the CodeBuild Project
+```
+$ aws codebuild create-project \
+--cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-build-project.json
+```
+
+### Module 10.8: Modify CodePipeline Input File
+Replace:
+- roleArn = REPLACE_ME_CODEPIPELINE_ROLE_ARN
+- location = REPLACE_ME_ARTIFACTS_BUCKET_NAME
+```
+$ vi ~/environment/modern-app-workshop/aws-cli/code-pipeline.json
+```
+
+### Module 10.9: Create a pipeline in CodePipeline
+```
+$ aws codepipeline create-pipeline \
+--cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-pipeline.json
+```
+
+### Module 10.10: Modify ECR Policy
+Replace:
+- REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
+```
+$ vi ~/environment/modern-app-workshop/aws-cli/ecr-policy.json
+```
+
+### Module 10.11: Enable automated Access to the ECR Image Repository
+```
+$ aws ecr set-repository-policy \
+--repository-name mythicalmysfits/service \
+--policy-text file://~/environment/modern-app-workshop/aws-cli/ecr-policy.json
+```
+
+### Module 10.12 Configure Git
+```
+$ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
+$ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
+$ git config --global credential.helper '!aws codecommit credential-helper $@'
+$ git config --global credential.UseHttpPath true
+$ cd ~/environment/
+```
+
+### Module 10.13 Clone Repository
+```
+$ git clone https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MythicalMysfitsService-Repository
+```
+
+### Module 10.14: Copy the application files into our repository directory
+```
+$ cp -r ~/environment/modern-app-workshop/app/* ~/environment/MythicalMysfitsService-Repository/
+```
+
+### Module 10.15 Make a small code change
+```
+$ vi ~/environment/MythicalMysfitsService-Repository/service/mysfits-response.json
+```
+
+### Module 10.16 Push the Code Change
+```
+$ cd ~/environment/MythicalMysfitsService-Repository/
+$ git add .
+$ git commit -m "I changed the age of one of the mysfits."
+$ git push
+```
+
+## Module 11: Setup CI/CD for Front End Service (Same as Module 10)
 
 ## Module 12: Install Helm
 
