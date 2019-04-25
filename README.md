@@ -483,7 +483,9 @@ server {
 }
 ```
 
-### Module 2.6 Create the Docker File
+### Module 2.6 TODO - Frontend Unit Tests
+
+### Module 2.7 Create the Docker File
 ```
 $ vi Dockerfile
 ```
@@ -493,10 +495,13 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY . /usr/share/nginx/html
 ```
 
-### Module 2.7 Build and Run Locally
+### Module 2.7 Build, Tag and Run the Docker Image Locally
+Replace:
+- AccountId: 707538076348
+- Region: us-east-1
 ```
-$ docker build -t calculator-frontend:latest .
-$ docker run -d -p 8080:80 calculator-frontend:latest
+$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
+$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
 ### Module 2.8 Test User Interface
 ```
