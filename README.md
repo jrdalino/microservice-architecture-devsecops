@@ -584,26 +584,103 @@ $ kubectl describe service hello-k8s
 ## Module 11: Setup CI/CD for Back End
 - Same as Module 10.
 
-## Module 12: Setup Monitoring using Prometheus and Grafana
+## Module 12: Install Helm
+
+### Module 12.1: Install Helm CLI
+```
+$ cd ~/environment
+$ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+$ chmod +x get_helm.sh
+$ ./get_helm.sh
+```
+
+### Module 12.2: Configure Helm access with RBAC
+```
+cat <<EoF > ~/environment/rbac.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tiller
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: tiller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: tiller
+    namespace: kube-system
+EoF
+```
+
+### Module 12.3: Apply the config
+```
+$ kubectl apply -f ~/environment/rbac.yaml
+```
+
+### Module 12.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
+```
+$ helm init --service-account tiller
+```
+
+## Module 13: Deploy Prometheus
 - Basic monitoring
 - References: https://eksworkshop.com/monitoring/
 
-## Module 13: Implement Health Checks
+### Module 13.1: Install Prometheus
+```
+$ kubectl create namespace prometheus
+$ helm install stable/prometheus \
+    --name prometheus \
+    --namespace prometheus \
+    --set alertmanager.persistentVolume.storageClass="gp2" \
+    --set server.persistentVolume.storageClass="gp2"
+```
+
+### Module 13.2: Check if Prometheus components deployed as expected
+```
+$ kubectl get all -n prometheus
+```
+
+### Module 13.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
+```
+$ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
+```
+
+## Module 14: Deploy Grafana
+- References: https://eksworkshop.com/monitoring/deploy-grafana/
+### Module 14.1:
+```
+$
+```
+
+### Module 14.2: 
+```
+$ 
+```
+
+## Module 15: Implement Health Checks
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/
 
-## Module 14: Implementing Auto Scaling
+## Module 16: Implementing Auto Scaling
 - References: https://eksworkshop.com/scaling/
 
-## Module 15: Log Amazon EKS API Calls with CloudTrail
+## Module 17: Log Amazon EKS API Calls with CloudTrail
 - References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
 
-## Module 16: Log REST operations performed to S3
+## Module 18: Log REST operations performed to S3
 - Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
 
-## Module 17: S3 and Athena Report
+## Module 19: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 - Refences: https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
 
-## Module 18: Add additional feature
+## Module 20: Add additional feature
 - Additional killer feature of your choice
