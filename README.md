@@ -703,11 +703,98 @@ $ helm del --purge grafana
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/livenessprobe/
 
-### Module 15.1: 
+### Module 15.1: Configure the Probe
+```
+$ mkdir -p ~/environment/healthchecks
+$ cat <<EoF > ~/environment/healthchecks/liveness-app.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: liveness-app
+spec:
+  containers:
+  - name: liveness
+    image: brentley/ecsdemo-nodejs
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 3000
+      initialDelaySeconds: 5
+      periodSeconds: 5
+EoF
+```
+
+### Module 15.2: Create the pod using the manifest
+```
+$ kubectl apply -f ~/environment/healthchecks/liveness-app.yaml
+$ kubectl get pod liveness-app
+$ kubectl describe pod liveness-app
+```
+
+### Module 15.3: Introduce a Failure to Test
+```
+$ kubectl exec -it liveness-app -- /bin/kill -s SIGUSR1 1
+$ kubectl describe pod liveness-app
+$ kubectl get pod liveness-app
+$ kubectl logs liveness-app
+```
+
+### Module 15.4: Clean Up
+```
+$ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
+```
 
 ## Module 16: Implement Readiness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/readinessprobe/
+
+### Module 16.1: Configure the Probe
+```
+$ cat <<EoF > ~/environment/healthchecks/deployment-app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: readiness-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: readiness-deployment
+  template:
+    metadata:
+      labels:
+        app: readiness-deployment
+    spec:
+      containers:
+      - name: readiness-deployment
+        image: alpine
+        command: ["sh", "-c", "touch /tmp/healthy && sleep 86400"]
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          periodSeconds: 3
+EoF
+```
+
+### Module 16.2: Create a deployment
+```
+$ kubectl apply -f ~/environment/healthchecks/readiness-deployment.yaml
+$ kubectl describe deployment readiness-deployment | grep Replicas:
+```
+
+### Module 16.3: Restore pod to Ready status
+```
+$ kubectl exec -it <YOUR-READINESS-POD-NAME> -- touch /tmp/healthy
+$ kubectl get pods -l app=readiness-deployment
+```
+
+### Module 16.4: Clean Up
+```
+$ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
+```
 
 ## Module 17: Implementing Auto Scaling
 - References: https://eksworkshop.com/scaling/
