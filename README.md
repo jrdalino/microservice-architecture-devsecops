@@ -678,7 +678,6 @@ $ helm install stable/grafana \
 $ kubectl get all -n grafana
 ```
 
-
 ### Module 14.3: Get Grafana ELB URL
 ```
 $ export ELB=$(kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
@@ -700,22 +699,28 @@ $ helm delete grafana
 $ helm del --purge grafana
 ```
 
-## Module 15: Implement Health Checks
+## Module 15: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
-- References: https://eksworkshop.com/healthchecks/
+- References: https://eksworkshop.com/healthchecks/livenessprobe/
 
-## Module 16: Implementing Auto Scaling
+### Module 15.1: 
+
+## Module 16: Implement Readiness Probe Health Checks
+- The API being a crucial part of the application it needs to be highly available
+- References: https://eksworkshop.com/healthchecks/readinessprobe/
+
+## Module 17: Implementing Auto Scaling
 - References: https://eksworkshop.com/scaling/
 
-## Module 17: Log Amazon EKS API Calls with CloudTrail
+## Module 18: Log Amazon EKS API Calls with CloudTrail
 - References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
 
-## Module 18: Log REST operations performed to S3
+## Module 19: Log REST operations performed to S3
 - Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
 
-## Module 19: S3 and Athena Report
+## Module 20: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 - Refences: https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
 
-## Module 20: Add additional feature
+## Module 21: Add additional feature
 - Additional killer feature of your choice
