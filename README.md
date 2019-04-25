@@ -160,7 +160,11 @@ $ ./calculator.py
 $ curl http://localhost:5000
 ```
 
-### Module 1.5 Create the Dockerfile
+### Module 1.5: TODO - Backend Unit Tests
+- References: http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
+
+
+### Module 1.6 Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -173,13 +177,17 @@ ENTRYPOINT ["python"]
 CMD ["calculator.py"]
 ```
 
-### Module 1.6 Build and Run Locally
+### Module 1.7 Build, Tag and Run the Docker Image locally
+Replace:
+- AccountId: 707538076348
+- Region: us-east-1
+
 ```
-$ docker build -t calculator-rest-api:latest .
-$ docker run -d -p 5000:5000 calculator-rest-api:latest
+$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
+$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
 ```
 
-### Module 1.7 Test Math Operations
+### Module 1.8 Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -225,8 +233,6 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 
 - TODO: Test Factorial
 
-### Module 1.8: TODO - Backend Unit Tests
-- References: http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 ### Module 1.9 Create the ECR Repository
 ```
