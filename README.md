@@ -165,7 +165,6 @@ $ curl http://localhost:5000
 $ vi Dockerfile
 ```
 ```
-# Dockerfile - this is a comment. Delete me if you want.
 FROM python:2.7
 COPY . /calculator
 WORKDIR /calculator
@@ -467,8 +466,8 @@ $ curl http://localhost:8080
 ## Module 5: Push Backend and Frontend to ECR
 ### Module 5.1 Create the ECR Repository
 ```
-$ aws ecr create repository --repository-name restful-python-calculator/backend-service
-$ aws ecr create repository --repository-name restful-python-calculator/frontend-service
+$ aws ecr create repository --repository-name jrdalino/calculator-rest-api
+$ aws ecr create repository --repository-name jrdalino/calculator-frontend
 ```
 
 ### Module 5.2 Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
@@ -478,14 +477,14 @@ $ $(aws ecr get-login --no-include-email)
 
 ### Module 5.3 Push our Docker Image
 ```
-$ docker push 486051038643.dkr.ecr.ap-southeast-1.amazonaws.com/restful-python-calculator/backend-service:latest
-$ docker push 486051038643.dkr.ecr.ap-southeast-1.amazonaws.com/restful-python-calculator/frontend-service:latest
+$ docker push 707538076348.dkr.ecr.ap-southeast-1.amazonaws.com/jrdalino/calculator-rest-api:latest
+$ docker push 707538076348.dkr.ecr.ap-southeast-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
 
 ### Module 5.4 Validate Image has been pushed
 ```
-$ aws ecr describe-images --repository-name restful-python-calculator/backend-service:latest
-$ aws ecr describe-images --repository-name restful-python-calculator/frontend-service:latest
+$ aws ecr describe-images --repository-name jrdalino/calculator-rest-api:latest
+$ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
 ```
 
 ## Module 6: Create AWS Resources using Cloudformation (OPTIONAL)
