@@ -221,8 +221,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 - TODO: Test Factorial
 
 ## Module 2: TODO - Backend Unit Tests
-- References:
-http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
+- References: http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 ## Module 3: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
@@ -458,7 +457,6 @@ $ curl http://localhost:8080
 ```
 
 ## Module 4: TODO - Frontend Unit Tests
-TODO: Front End Unit Tests
 
 ## Module 5: Push Backend and Frontend to ECR
 
@@ -551,9 +549,40 @@ $ kubectl get nodes
 - proper CI/CD processes to put in place
 - Reference: https://eksworkshop.com/codepipeline/
 
+### Module 10.1: Create IAM role
+```
+$ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+$ TRUST="{ \"Version\": \"2012-10-17\", \"Statement\": [ { \"Effect\": \"Allow\", \"Principal\": { \"AWS\": \"arn:aws:iam::${ACCOUNT_ID}:root\" }, \"Action\": \"sts:AssumeRole\" } ] }"
+$ echo '{ "Version": "2012-10-17", "Statement": [ { "Effect": "Allow", "Action": "eks:Describe*", "Resource": "*" } ] }' > /tmp/iam-role-policy
+$ aws iam create-role --role-name EksWorkshopCodeBuildKubectlRole --assume-role-policy-document "$TRUST" --output text --query 'Role.Arn'
+$ aws iam put-role-policy --role-name EksWorkshopCodeBuildKubectlRole --policy-name eks-describe --policy-document file:///tmp/iam-role-policy
+```
+
+### Module 10.2: Modify AWS-Auth Config Map
+```
+$ ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+$ ROLE="    - rolearn: arn:aws:iam::$ACCOUNT_ID:role/EksWorkshopCodeBuildKubectlRole\n      username: build\n      groups:\n        - system:masters"
+$ kubectl get -n kube-system configmap/aws-auth -o yaml | awk "/mapRoles: \|/{print;print \"$ROLE\";next}1" > /tmp/aws-auth-patch.yml
+$ kubectl patch configmap/aws-auth -n kube-system --patch "$(cat /tmp/aws-auth-patch.yml)"
+```
+
+### Module 10.3 Setup CodePipeline
+- TODO: Replace Github with CodeCommit
+```
+Execute CloudFormation Template - https://s3.amazonaws.com/eksworkshop.com/templates/master/ci-cd-codepipeline.cfn.yml
+```
+
+### Module 10.4 Review
+```
+$ kubectl describe deployment hello-k8s
+$ kubectl describe service hello-k8s
+```
+
+### Module 10.5 Trigger New Release
+
+
 ## Module 11: Setup CI/CD for Back End
-- proper CI/CD processes to put in place
-- Reference: https://eksworkshop.com/codepipeline/
+- Same as Module 10.
 
 ## Module 12: Setup Monitoring using Prometheus and Grafana
 - Basic monitoring
