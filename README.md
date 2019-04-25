@@ -230,7 +230,6 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 
 ## Module 3: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
-
 ### Modile 3.1 Create and Navigate to Directory
 ```
 $ mkdir calculator-frontend
@@ -487,11 +486,15 @@ $ aws ecr describe-images --repository-name jrdalino/calculator-rest-api:latest
 $ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
 ```
 
-## Module 6: Create AWS Resources using Cloudformation (OPTIONAL)
-- TODO: Use Terraform https://dzone.com/articles/amazon-aws-eks-and-rds-postgresql-with-terraform-i
+### (Optional) Clean up
+```
+$ aws ecr delete-repository --repository-name jrdalino/calculator-rest-api --force
+$ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --force
+```
+
+## (Optional) Module 6: Create AWS Resources using Cloudformation
 
 ## Module 7: Configure Prerequisites for EKS
-
 ### Module 7.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
 $ mkdir -p ~/.kube
