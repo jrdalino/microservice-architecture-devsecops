@@ -602,7 +602,31 @@ $ kubectl get nodes
 ```
 
 ```
-
+[ℹ]  using region us-east-1
+[ℹ]  setting availability zones to [us-east-1f us-east-1b]
+[ℹ]  subnets for us-east-1f - public:192.168.0.0/19 private:192.168.64.0/19
+[ℹ]  subnets for us-east-1b - public:192.168.32.0/19 private:192.168.96.0/19
+[ℹ]  nodegroup "ng-8595caf6" will use "ami-0abcb9f9190e867ab" [AmazonLinux2/1.12]
+[ℹ]  creating EKS cluster "calculator-eksctl" in "us-east-1" region
+[ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
+[ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --name=calculator-eksctl'
+[ℹ]  2 sequential tasks: { create cluster control plane "calculator-eksctl", create nodegroup "ng-8595caf6" }
+[ℹ]  building cluster stack "eksctl-calculator-eksctl-cluster"
+[ℹ]  deploying stack "eksctl-calculator-eksctl-cluster"
+[ℹ]  buildings nodegroup stack "eksctl-calculator-eksctl-nodegroup-ng-8595caf6"
+[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-8595caf6
+[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-8595caf6
+[ℹ]  deploying stack "eksctl-calculator-eksctl-nodegroup-ng-8595caf6"
+[✔]  all EKS cluster resource for "calculator-eksctl" had been created
+[✔]  saved kubeconfig as "/Users/jrdalino/.kube/config"
+[ℹ]  adding role "arn:aws:iam::707538076348:role/eksctl-calculator-eksctl-nodegrou-NodeInstanceRole-7REDM5GRSCSC" to auth ConfigMap
+[ℹ]  nodegroup "ng-8595caf6" has 0 node(s)
+[ℹ]  waiting for at least 2 node(s) to become ready in "ng-8595caf6"
+[ℹ]  nodegroup "ng-8595caf6" has 2 node(s)
+[ℹ]  node "ip-192-168-13-208.ec2.internal" is ready
+[ℹ]  node "ip-192-168-44-92.ec2.internal" is ready
+[ℹ]  kubectl command should work with "/Users/jrdalino/.kube/config", try 'kubectl get nodes'
+[✔]  EKS cluster "calculator-eksctl" in "us-east-1" region is ready
 ```
 
 ### Step 4.3 Export Worker Role name ** Is this really needed?
@@ -631,15 +655,15 @@ $ vi deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecsdemo-nodejs
+  name: calculator-rest-api
   labels:
-    app: ecsdemo-nodejs
+    app: calculator-rest-api
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ecsdemo-nodejs
+      app: calculator-rest-api
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -648,12 +672,12 @@ spec:
   template:
     metadata:
       labels:
-        app: ecsdemo-nodejs
+        app: calculator-rest-api
     spec:
       containers:
-      - image: brentley/ecsdemo-nodejs:latest
+      - image: jrdalino/calculator-rest-api:latest
         imagePullPolicy: Always
-        name: ecsdemo-nodejs
+        name: calculator-rest-api
         ports:
         - containerPort: 3000
           protocol: TCP
@@ -669,10 +693,10 @@ $ vi service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecsdemo-nodejs
+  name: calculator-rest-api
 spec:
   selector:
-    app: ecsdemo-nodejs
+    app: calculator-rest-api
   ports:
    -  protocol: TCP
       port: 80
@@ -712,15 +736,15 @@ $ vi deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ecsdemo-frontend
+  name: calculator-frontend
   labels:
-    app: ecsdemo-frontend
+    app: calculator-frontend
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ecsdemo-frontend
+      app: calculator-frontend
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -729,20 +753,18 @@ spec:
   template:
     metadata:
       labels:
-        app: ecsdemo-frontend
+        app: calculator-frontend
     spec:
       containers:
-      - image: brentley/ecsdemo-frontend:latest
+      - image: jrdalino/calculator-frontend:latest
         imagePullPolicy: Always
-        name: ecsdemo-frontend
+        name: calculator-frontend
         ports:
         - containerPort: 3000
           protocol: TCP
         env:
-        - name: CRYSTAL_URL
-          value: "http://ecsdemo-crystal.default.svc.cluster.local/crystal"
-        - name: NODEJS_URL
-          value: "http://ecsdemo-nodejs.default.svc.cluster.local/"
+        - name: REST_API_URL
+          value: "http://calculator-rest-api.default.svc.cluster.local/calculator-rest-api"
 ```
 
 ### Step 6.2 Create our service.yaml file
@@ -755,10 +777,10 @@ $ vi service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: ecsdemo-frontend
+  name: calculator-frontend
 spec:
   selector:
-    app: ecsdemo-frontend
+    app: calculator-frontend
   type: LoadBalancer
   ports:
    -  protocol: TCP
@@ -781,7 +803,7 @@ $ kubectl get deployment calculator-frontend
 
 ### Step 6.5 Find the Service Address
 ```
-$ kubectl get service ecsdemo-frontend -o wide
+$ kubectl get service calculator-frontend -o wide
 ```
 
 ### Step 6.6 Scale the Frontend Service
