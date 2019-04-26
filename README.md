@@ -596,6 +596,9 @@ $echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
 ```
 
 ### (Optional) Clean up
+```
+$ eksctl delete cluster --name=eksworkshop-eksctl
+```
 
 ## Module 5: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
@@ -782,16 +785,16 @@ $ kubectl delete -f kubernetes/deployment.yaml
 # ****************************************************************************************************************************
 # ****************************************************************************************************************************
 
-## Module 6: Setup CI/CD for Back End Service
+## Module 7: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 - Reference: https://eksworkshop.com/codepipeline/
 
-### Step 6.1: Create an S3 Bucket for Pipeline Artifacts
+### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
 ```
 $ aws s3 mb s3://jrdalino-workshop-artifacts
 ```
 
-### Step 6.2: Modify S3 BUcket Policy
+### Step 7.2: Modify S3 BUcket Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN
 - REPLACE_ME_CODEPIPELINE_ROLE_ARN
@@ -801,7 +804,7 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 6.3: Grant S3 Bucket access to your CI/CD Pipeline
+### Step 7.3: Grant S3 Bucket access to your CI/CD Pipeline
 Replace:
 - ArtifactsBucketName
 
@@ -811,19 +814,19 @@ $ aws s3api put-bucket-policy \
 --policy file://~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 6.4: Create a CodeCommit Repository
+### Step 7.4: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository \
 --repository-name MythicalMysfitsService-Repository
 ```
 
-### Step 6.5: View/Modify Buildspec file
+### Step 7.5: View/Modify Buildspec file
 No need to modify for this workshop
 ```
 $ vi ~/environment/modern-app-workshop/app/buildspec.yml
 ```
 
-### Step 6.6: Modify CodeBuild Project Input File
+### Step 7.6: Modify CodeBuild Project Input File
 Replace:
 - REPLACE_ME_ACCOUNT_ID
 - REPLACE_ME_REGION
@@ -832,13 +835,13 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/code-build-project.json
 ```
 
-### Step 6.7: Create the CodeBuild Project
+### Step 7.7: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
 --cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-build-project.json
 ```
 
-### Step 6.8: Modify CodePipeline Input File
+### Step 7.8: Modify CodePipeline Input File
 Replace:
 - roleArn = REPLACE_ME_CODEPIPELINE_ROLE_ARN
 - location = REPLACE_ME_ARTIFACTS_BUCKET_NAME
@@ -846,27 +849,27 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/code-pipeline.json
 ```
 
-### Step 6.9: Create a pipeline in CodePipeline
+### Step 7.9: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-pipeline.json
 ```
 
-### Step 6.10: Modify ECR Policy
+### Step 7.10: Modify ECR Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
 ```
 $ vi ~/environment/modern-app-workshop/aws-cli/ecr-policy.json
 ```
 
-### Step 6.11: Enable automated Access to the ECR Image Repository
+### Step 7.11: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
 --repository-name mythicalmysfits/service \
 --policy-text file://~/environment/modern-app-workshop/aws-cli/ecr-policy.json
 ```
 
-### Step 6.12: Configure Git
+### Step 7.12: Configure Git
 ```
 $ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
 $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
@@ -875,22 +878,22 @@ $ git config --global credential.UseHttpPath true
 $ cd ~/environment/
 ```
 
-### Step 6.13: Clone Repository
+### Step 7.13: Clone Repository
 ```
 $ git clone https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MythicalMysfitsService-Repository
 ```
 
-### Step 6.14: Copy the application files into our repository directory
+### Step 7.14: Copy the application files into our repository directory
 ```
 $ cp -r ~/environment/modern-app-workshop/app/* ~/environment/MythicalMysfitsService-Repository/
 ```
 
-### Step 6.15: Make a small code change
+### Step 7.15: Make a small code change
 ```
 $ vi ~/environment/MythicalMysfitsService-Repository/service/mysfits-response.json
 ```
 
-### Step 6.16: Push the Code Change
+### Step 7.16: Push the Code Change
 ```
 $ cd ~/environment/MythicalMysfitsService-Repository/
 $ git add .
@@ -898,11 +901,11 @@ $ git commit -m "I changed the age of one of the mysfits."
 $ git push
 ```
 
-## Module 7: Setup CI/CD for Front End Service (Same as Module 10)
+## Module 8: Setup CI/CD for Front End Service (Same as Module 10)
 
-## Module 8: Install Helm
+## Module 9: Install Helm
 
-### Step 8.1: Install Helm CLI
+### Step 9.1: Install Helm CLI
 ```
 $ cd ~/environment
 $ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
@@ -910,7 +913,7 @@ $ chmod +x get_helm.sh
 $ ./get_helm.sh
 ```
 
-### Step 8.2: Configure Helm access with RBAC
+### Step 9.2: Configure Helm access with RBAC
 ```
 cat <<EoF > ~/environment/rbac.yaml
 ---
@@ -935,21 +938,21 @@ subjects:
 EoF
 ```
 
-### Step 8.3: Apply the config
+### Step 9.3: Apply the config
 ```
 $ kubectl apply -f ~/environment/rbac.yaml
 ```
 
-### Step 8.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
+### Step 9.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
 ```
 $ helm init --service-account tiller
 ```
 
-## Module 9: Deploy Prometheus
+## Module 10: Deploy Prometheus
 - Basic monitoring
 - References: https://eksworkshop.com/monitoring/
 
-### Step 9.1: Install Prometheus
+### Step 10.1: Install Prometheus
 ```
 $ kubectl create namespace prometheus
 $ helm install stable/prometheus \
@@ -959,20 +962,26 @@ $ helm install stable/prometheus \
     --set server.persistentVolume.storageClass="gp2"
 ```
 
-### Step 9.2: Check if Prometheus components deployed as expected
+### Step 10.2: Check if Prometheus components deployed as expected
 ```
 $ kubectl get all -n prometheus
 ```
 
-### Step 9.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
+### Step 10.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
 ```
 $ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
 ```
 
-## Module 10: Deploy Grafana
+### (Optional) Clean up
+```
+$ helm delete prometheus
+$ helm del --purge prometheus
+```
+
+## Module 11: Deploy Grafana
 - References: https://eksworkshop.com/monitoring/deploy-grafana/
 
-### Step 10.1: Install Grafana
+### Step 11.1: Install Grafana
 ```
 $ kubectl create namespace grafana
 $ helm install stable/grafana \
@@ -989,37 +998,35 @@ $ helm install stable/grafana \
     --set service.type=LoadBalancer
 ```
 
-### Step 10.2: Check if Grafana is deployed
+### Step 11.2: Check if Grafana is deployed
 ```
 $ kubectl get all -n grafana
 ```
 
-### Step 10.3: Get Grafana ELB URL
+### Step 11.3: Get Grafana ELB URL
 ```
 $ export ELB=$(kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 $ echo "http://$ELB"
 ```
 
-### Step 10.4: Login using admin and password
+### Step 11.4: Login using admin and password
 ```
 $ kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-### Step 10.5: Create Grafana Dashboards
+### Step 11.5: Create Grafana Dashboards
 
 ### (Optional) Clean up
 ```
-$ helm delete prometheus
-$ helm del --purge prometheus
 $ helm delete grafana
 $ helm del --purge grafana
 ```
 
-## Module 11: Implement Liveness Probe Health Checks
+## Module 12: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/livenessprobe/
 
-### Step 11.1: Configure the Probe
+### Step 12.1: Configure the Probe
 ```
 $ mkdir -p ~/environment/healthchecks
 $ cat <<EoF > ~/environment/healthchecks/liveness-app.yaml
@@ -1040,14 +1047,14 @@ spec:
 EoF
 ```
 
-### Step 11.2: Create the pod using the manifest
+### Step 12.2: Create the pod using the manifest
 ```
 $ kubectl apply -f ~/environment/healthchecks/liveness-app.yaml
 $ kubectl get pod liveness-app
 $ kubectl describe pod liveness-app
 ```
 
-### Step 11.3: Introduce a Failure to Test
+### Step 12.3: Introduce a Failure to Test
 ```
 $ kubectl exec -it liveness-app -- /bin/kill -s SIGUSR1 1
 $ kubectl describe pod liveness-app
@@ -1060,11 +1067,11 @@ $ kubectl logs liveness-app
 $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 ```
 
-## Module 12: Implement Readiness Probe Health Checks
+## Module 13: Implement Readiness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/readinessprobe/
 
-### Step 12.1: Configure the Probe
+### Step 13.1: Configure the Probe
 ```
 $ cat <<EoF > ~/environment/healthchecks/deployment-app.yaml
 apiVersion: apps/v1
@@ -1095,13 +1102,13 @@ spec:
 EoF
 ```
 
-### Step 12.2: Create a deployment
+### Step 13.2: Create a deployment
 ```
 $ kubectl apply -f ~/environment/healthchecks/readiness-deployment.yaml
 $ kubectl describe deployment readiness-deployment | grep Replicas:
 ```
 
-### Step 12.3: Restore pod to Ready status
+### Step 13.3: Restore pod to Ready status
 ```
 $ kubectl exec -it <YOUR-READINESS-POD-NAME> -- touch /tmp/healthy
 $ kubectl get pods -l app=readiness-deployment
@@ -1112,18 +1119,18 @@ $ kubectl get pods -l app=readiness-deployment
 $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 ```
 
-## Module 13: Implementing Auto Scaling
+## Module 14: Implementing Auto Scaling
 - References: https://eksworkshop.com/scaling/
 
-## Module 14: Log Amazon EKS API Calls with CloudTrail
+## Module 15: Log Amazon EKS API Calls with CloudTrail
 - References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
 
-## Module 15: Log REST operations performed to S3
+## Module 16: Log REST operations performed to S3
 - Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
 
-## Module 16: S3 and Athena Report
+## Module 17: S3 and Athena Report
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 - Refences: https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
 
-## Module 17: Add additional feature
+## Module 18: Add additional feature
 - Additional killer feature of your choice
