@@ -565,6 +565,7 @@ $ aws-iam-authenticator help
 ```
 $ brew install jq
 $ brew install gettext
+$ brew link --force gettext
 ```
 
 ### Step 3.5 Verify the binaries are in the path and executable
