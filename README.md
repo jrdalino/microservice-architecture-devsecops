@@ -945,6 +945,10 @@ $ git push
 
 ## Module 8: Setup CI/CD for Front End Service (Same as Module 10)
 
+# ************************************************************
+# ************************************************************
+# ************************************************************
+
 ## Module 9: Install Helm
 
 ### Step 9.1: Install Helm CLI
@@ -1099,9 +1103,9 @@ $ kubectl describe pod liveness-app
 ### Step 12.3: Introduce a Failure to Test
 ```
 $ kubectl exec -it liveness-app -- /bin/kill -s SIGUSR1 1
-$ kubectl describe pod liveness-app
 $ kubectl get pod liveness-app
 $ kubectl logs liveness-app
+$ kubectl logs liveness-app --previous
 ```
 
 ### (Optional) Clean Up
@@ -1115,7 +1119,7 @@ $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 
 ### Step 13.1: Configure the Probe
 ```
-$ cat <<EoF > ~/environment/healthchecks/deployment-app.yaml
+$ cat <<EoF > ~/environment/healthchecks/readiness-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -1144,13 +1148,25 @@ spec:
 EoF
 ```
 
-### Step 13.2: Create a deployment
+### Step 13.2: Create a deployment to test readiness probe
 ```
 $ kubectl apply -f ~/environment/healthchecks/readiness-deployment.yaml
+$ kubectl get pods -l app=readiness-deployment
+```
+
+### Step 13.3: Confirm that all the replicas are available to serve traffic when a service is pointed to this deployment
+```
 $ kubectl describe deployment readiness-deployment | grep Replicas:
 ```
 
-### Step 13.3: Restore pod to Ready status
+### Step 13.4: Introduce a Failure
+```
+$ kubectl exec -it <YOUR-READINESS-POD-NAME> -- rm /tmp/healthy
+$ kubectl get pods -l app=readiness-deployment
+$ kubectl describe deployment readiness-deployment | grep Replicas:
+```
+
+### Step 13.5: Restore pod to Ready Status
 ```
 $ kubectl exec -it <YOUR-READINESS-POD-NAME> -- touch /tmp/healthy
 $ kubectl get pods -l app=readiness-deployment
