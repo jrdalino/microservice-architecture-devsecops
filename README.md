@@ -586,27 +586,35 @@ $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file
 
 ### Step 4.1 Download the eksctl binaries
 ```
-$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
-$ sudo mv -v /tmp/eksctl /usr/local/bin
+$ brew install weaveworks/tap/eksctl
 $ eksctl version
 ```
 
 ### Step 4.2 Create an EKS Cluster (This will take ~15 minutes) and test cluster
 ```
-$ eksctl create cluster --name=eksworkshop-eksctl --nodes=2 --node-ami=auto --region=${AWS_REGION}
+$ eksctl create cluster \
+--name=calculator-eksctl \
+--nodes=2 \
+--node-ami=auto \
+--node-type=t2.medium \ 
+--region=${AWS_REGION}
 $ kubectl get nodes
+```
+
+```
+
 ```
 
 ### Step 4.3 Export Worker Role name ** Is this really needed?
 ```
 $ INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep nodegroup)
 $ ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
-$echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
+$ echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
 ```
 
 ### (Optional) Clean up
 ```
-$ eksctl delete cluster --name=eksworkshop-eksctl
+$ eksctl delete cluster --name=calculator-eksctl
 ```
 
 ## Module 5: Deploy Backend MicroService to EKS
