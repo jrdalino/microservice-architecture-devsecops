@@ -579,7 +579,7 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
 ### Step 3.6 Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
 ```
 $ ssh-keygen
-$ aws ec2 import-key-pair --key-name "eksworkshop" --public-key-material file://~/.ssh/id_rsa.pub
+$ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file://~/.ssh/id_rsa.pub
 ```
 
 ## Module 4: Launch EKS using EKCTL
