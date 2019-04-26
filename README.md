@@ -535,7 +535,7 @@ $ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
 $ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --force
 ```
 
-## Module 3: Configure Prerequisites for EKS
+## Module 3: Install Kubernetes Tools
 
 ### Step 3.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
@@ -567,18 +567,11 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
   done
 ```
 
-### Step 3.6 Clone the Frontend and Backend Sevice Repos
+### Step 3.6 Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
 ```
-$ cd ~/environment
-$ git clone https://github.com/jrdalino/calculator-frontend.git
-$ git clone https://github.com/jrdalino/calculator-python.git
+$ ssh-keygen
+$ aws ec2 import-key-pair --key-name "eksworkshop" --public-key-material file://~/.ssh/id_rsa.pub
 ```
-
-### Step 3.7 Update IAM Settings for your Workspace
-- Reference: https://eksworkshop.com/prerequisites/workspaceiam/
-
-### Step 3.8 Create an SSH Key
-- Reference: https://eksworkshop.com/prerequisites/sshkey/
 
 ## Module 4: Launch EKS using EKCTL
 
