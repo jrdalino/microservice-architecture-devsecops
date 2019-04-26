@@ -676,7 +676,7 @@ spec:
         app: calculator-rest-api
     spec:
       containers:
-      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-apilatest
+      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
         imagePullPolicy: Always
         name: calculator-rest-api
         ports:
