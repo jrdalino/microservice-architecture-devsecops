@@ -680,7 +680,7 @@ spec:
         imagePullPolicy: Always
         name: calculator-rest-api
         ports:
-        - containerPort: 3000
+        - containerPort: 5000
           protocol: TCP
 ```
 
@@ -702,7 +702,7 @@ spec:
   ports:
    -  protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 5000
 ```
 
 ### Step 5.3 Deploy our Backend REST API and watch progress
