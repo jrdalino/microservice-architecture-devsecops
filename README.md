@@ -50,7 +50,7 @@ POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
-### Module 1.1 Create and Navigate to Directory
+### Step 1.1: Create and Navigate to Directory
 ```
 $ mkdir calculator-rest-api
 $ cd calculator-rest-api
@@ -58,7 +58,7 @@ $ virtualenv flask
 $ flask/bin/pip install flask
 ```
 
-### Module 1.2 Add calculator.py
+### Step 1.2: Add calculator.py
 ```
 $ vi calculator.py
 ```
@@ -145,7 +145,7 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 ```
 
-### Module 1.3 Create the requirements.txt file
+### Step 1.3: Create the requirements.txt file
 ```
 $ vi requirements.txt
 ```
@@ -153,18 +153,18 @@ $ vi requirements.txt
 flask
 ```
 
-### Module 1.4 Run Locally and Test
+### Step 1.4: Run Locally and Test
 ```
 $ chmod a+x calculator.py
 $ ./calculator.py
 $ curl http://localhost:5000
 ```
 
-### Module 1.5: TODO - Backend Unit Tests
+### Step 1.5: (TODO) Backend Unit Tests
 - References: http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
 
 
-### Module 1.6 Create the Dockerfile
+### Step 1.6: Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -177,7 +177,7 @@ ENTRYPOINT ["python"]
 CMD ["calculator.py"]
 ```
 
-### Module 1.7 Build, Tag and Run the Docker Image locally
+### Step 1.7: Build, Tag and Run the Docker Image locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -187,7 +187,7 @@ $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calcul
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
 ```
 
-### Module 1.8 Test Math Operations
+### Step 1.8: Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -234,7 +234,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 - TODO: Test Factorial
 
 
-### Module 1.9 Create the ECR Repository
+### Step 1.9: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-rest-api
 ```
@@ -252,17 +252,17 @@ OUTPUT
 }
 ```
 
-### Module 1.10 Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 1.10: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Module 1.11 Push our Docker Image
+### Step 1.11: Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
 ```
 
-### Module 1.12 Validate Image has been pushed
+### Step 1.12: Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-rest-api:latest
 ```
@@ -274,7 +274,8 @@ $ aws ecr delete-repository --repository-name jrdalino/calculator-rest-api --for
 
 ## Module 2: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
-### Modile 2.1 Create and Navigate to Directory
+
+### Step 2.1: Create and Navigate to Directory
 ```
 $ mkdir calculator-frontend
 $ cd calculator-frontend
@@ -288,7 +289,7 @@ $ cd js
 $ touch querycalc.js
 ```
 
-### Module 2.2 Create index.html file
+### Step 2.2: Create index.html file
 ```
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -333,7 +334,7 @@ $ touch querycalc.js
 </html>
 ```
 
-### Module 2.3 Create base.css file
+### Step 2.3: Create base.css file
 ```
 body {
     margin: 0;
@@ -373,7 +374,7 @@ body {
 }
 ```
 
-### Module 2.4 Create querycalc.js file
+### Step 2.4: Create querycalc.js file
 ```
 function calcListener ( jQuery ) {
     console.log( "READY!" );
@@ -462,7 +463,7 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Module 2.5 Add default.conf file
+### Step 2.5: Add default.conf file
 ```
 $ vi default.conf
 ```
@@ -483,9 +484,10 @@ server {
 }
 ```
 
-### Module 2.6 TODO - Frontend Unit Tests
+### Step 2.6: (TODO) Frontend Unit Tests
+- References: TBD
 
-### Module 2.7 Create the Docker File
+### Step 2.7: Create the Docker File
 ```
 $ vi Dockerfile
 ```
@@ -495,7 +497,7 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY . /usr/share/nginx/html
 ```
 
-### Module 2.7 Build, Tag and Run the Docker Image Locally
+### Step 2.8: Build, Tag and Run the Docker Image Locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -503,27 +505,27 @@ Replace:
 $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
-### Module 2.8 Test User Interface
+### Step 2.9: Test functionality
 ```
 $ curl http://localhost:8080
 ```
 
-### Module 2.9 Create the ECR Repository
+### Step 2.10: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-frontend
 ```
 
-### Module 2.10 Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 2.11: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Module 2.11 Push our Docker Image
+### Step 2.12 Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
 
-### Module 2.12 Validate Image has been pushed
+### Step 2.13 Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
 ```
@@ -534,29 +536,30 @@ $ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --for
 ```
 
 ## Module 3: Configure Prerequisites for EKS
-### Module 3.1: Create the default ~/.kube directory for storing kubectl configuration
+
+### Step 3.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
 $ mkdir -p ~/.kube
 ```
 
-### Module 3.2: Install kubectl
+### Step 3.2: Install kubectl
 ```
 $ sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl"
 $ sudo chmod +x /usr/local/bin/kubectl
 ```
 
-### Module 3.3: Install IAM Authenticator
+### Step 3.3: Install IAM Authenticator
 ```
 $ go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
 $ sudo mv ~/go/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 ```
 
-### Module 3.4 Install JQ and envsubst
+### Step 3.4 Install JQ and envsubst
 ```
 $ sudo yum -y install jq gettext
 ```
 
-### Module 3.5 Verify the binaries are in the path and executable
+### Step 3.5 Verify the binaries are in the path and executable
 ```
 $ for command in kubectl aws-iam-authenticator jq envsubst
   do
@@ -564,35 +567,35 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
   done
 ```
 
-### Module 3.6 Clone the Frontend and Backend Sevice Repos
+### Step 3.6 Clone the Frontend and Backend Sevice Repos
 ```
 $ cd ~/environment
 $ git clone https://github.com/jrdalino/calculator-frontend.git
 $ git clone https://github.com/jrdalino/calculator-python.git
 ```
 
-### Module 3.7 Update IAM Settings for your Workspace
+### Step 3.7 Update IAM Settings for your Workspace
 - Reference: https://eksworkshop.com/prerequisites/workspaceiam/
 
-### Module 3.7 Create an SSH Key
+### Step 3.8 Create an SSH Key
 - Reference: https://eksworkshop.com/prerequisites/sshkey/
 
 ## Module 4: Launch EKS using EKCTL
 
-### Module 4.1
+### Step 4.1
 ```
 $ cd ~/environment
 $ git clone https://github.com/jrdalino/calculator-frontend.git
 $ git clone https://github.com/jrdalino/calculator-python.git
 ```
-### Module 4.2 Install EKSCTL prerequisites
+### Step 4.2 Install EKSCTL prerequisites
 ```
 $ curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 $ sudo mv -v /tmp/eksctl /usr/local/bin
 $ eksctl version
 ```
 
-### Module 4.3 Create an EKS Cluster (This will take ~15 minutes) and test cluster
+### Step 4.3 Create an EKS Cluster (This will take ~15 minutes) and test cluster
 ```
 $ eksctl create cluster --name=eksworkshop-eksctl --nodes=3 --node-ami=auto --region=${AWS_REGION}
 ```
@@ -607,12 +610,12 @@ $ kubectl get nodes
 - proper CI/CD processes to put in place
 - Reference: https://eksworkshop.com/codepipeline/
 
-### Module 6.1 Create an S3 Bucket for Pipeline Artifacts
+### Step 6.1: Create an S3 Bucket for Pipeline Artifacts
 ```
 $ aws s3 mb s3://jrdalino-workshop-artifacts
 ```
 
-### Module 6.2 Modify S3 BUcket Policy
+### Step 6.2: Modify S3 BUcket Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN
 - REPLACE_ME_CODEPIPELINE_ROLE_ARN
@@ -622,7 +625,7 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Module 6.3 Grant S3 Bucket access to your CI/CD Pipeline
+### Step 6.3: Grant S3 Bucket access to your CI/CD Pipeline
 Replace:
 - ArtifactsBucketName
 
@@ -632,19 +635,19 @@ $ aws s3api put-bucket-policy \
 --policy file://~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Module 6.4 Create a CodeCommit Repository
+### Step 6.4: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository \
 --repository-name MythicalMysfitsService-Repository
 ```
 
-### Module 6.5 View/Modify Buildspec file
+### Step 6.5: View/Modify Buildspec file
 No need to modify for this workshop
 ```
 $ vi ~/environment/modern-app-workshop/app/buildspec.yml
 ```
 
-### Module 6.6: Modify CodeBuild Project Input File
+### Step 6.6: Modify CodeBuild Project Input File
 Replace:
 - REPLACE_ME_ACCOUNT_ID
 - REPLACE_ME_REGION
@@ -653,13 +656,13 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/code-build-project.json
 ```
 
-### Module 6.7 Create the CodeBuild Project
+### Step 6.7: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
 --cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-build-project.json
 ```
 
-### Module 6.8: Modify CodePipeline Input File
+### Step 6.8: Modify CodePipeline Input File
 Replace:
 - roleArn = REPLACE_ME_CODEPIPELINE_ROLE_ARN
 - location = REPLACE_ME_ARTIFACTS_BUCKET_NAME
@@ -667,27 +670,27 @@ Replace:
 $ vi ~/environment/modern-app-workshop/aws-cli/code-pipeline.json
 ```
 
-### Module 6.9: Create a pipeline in CodePipeline
+### Step 6.9: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-pipeline.json
 ```
 
-### Module 6.10: Modify ECR Policy
+### Step 6.10: Modify ECR Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
 ```
 $ vi ~/environment/modern-app-workshop/aws-cli/ecr-policy.json
 ```
 
-### Module 6.11: Enable automated Access to the ECR Image Repository
+### Step 6.11: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
 --repository-name mythicalmysfits/service \
 --policy-text file://~/environment/modern-app-workshop/aws-cli/ecr-policy.json
 ```
 
-### Module 6.12 Configure Git
+### Step 6.12: Configure Git
 ```
 $ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
 $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
@@ -696,22 +699,22 @@ $ git config --global credential.UseHttpPath true
 $ cd ~/environment/
 ```
 
-### Module 6.13 Clone Repository
+### Step 6.13: Clone Repository
 ```
 $ git clone https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MythicalMysfitsService-Repository
 ```
 
-### Module 6.14: Copy the application files into our repository directory
+### Step 6.14: Copy the application files into our repository directory
 ```
 $ cp -r ~/environment/modern-app-workshop/app/* ~/environment/MythicalMysfitsService-Repository/
 ```
 
-### Module 6.15 Make a small code change
+### Step 6.15: Make a small code change
 ```
 $ vi ~/environment/MythicalMysfitsService-Repository/service/mysfits-response.json
 ```
 
-### Module 6.16 Push the Code Change
+### Step 6.16: Push the Code Change
 ```
 $ cd ~/environment/MythicalMysfitsService-Repository/
 $ git add .
@@ -723,7 +726,7 @@ $ git push
 
 ## Module 8: Install Helm
 
-### Module 8.1: Install Helm CLI
+### Step 8.1: Install Helm CLI
 ```
 $ cd ~/environment
 $ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
@@ -731,7 +734,7 @@ $ chmod +x get_helm.sh
 $ ./get_helm.sh
 ```
 
-### Module 8.2: Configure Helm access with RBAC
+### Step 8.2: Configure Helm access with RBAC
 ```
 cat <<EoF > ~/environment/rbac.yaml
 ---
@@ -756,12 +759,12 @@ subjects:
 EoF
 ```
 
-### Module 8.3: Apply the config
+### Step 8.3: Apply the config
 ```
 $ kubectl apply -f ~/environment/rbac.yaml
 ```
 
-### Module 8.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
+### Step 8.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
 ```
 $ helm init --service-account tiller
 ```
@@ -770,7 +773,7 @@ $ helm init --service-account tiller
 - Basic monitoring
 - References: https://eksworkshop.com/monitoring/
 
-### Module 9.1: Install Prometheus
+### Step 9.1: Install Prometheus
 ```
 $ kubectl create namespace prometheus
 $ helm install stable/prometheus \
@@ -780,12 +783,12 @@ $ helm install stable/prometheus \
     --set server.persistentVolume.storageClass="gp2"
 ```
 
-### Module 9.2: Check if Prometheus components deployed as expected
+### Step 9.2: Check if Prometheus components deployed as expected
 ```
 $ kubectl get all -n prometheus
 ```
 
-### Module 9.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
+### Step 9.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
 ```
 $ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
 ```
@@ -793,7 +796,7 @@ $ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
 ## Module 10: Deploy Grafana
 - References: https://eksworkshop.com/monitoring/deploy-grafana/
 
-### Module 10.1: Install Grafana
+### Step 10.1: Install Grafana
 ```
 $ kubectl create namespace grafana
 $ helm install stable/grafana \
@@ -810,23 +813,23 @@ $ helm install stable/grafana \
     --set service.type=LoadBalancer
 ```
 
-### Module 10.2: Check if Grafana is deployed
+### Step 10.2: Check if Grafana is deployed
 ```
 $ kubectl get all -n grafana
 ```
 
-### Module 10.3: Get Grafana ELB URL
+### Step 10.3: Get Grafana ELB URL
 ```
 $ export ELB=$(kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 $ echo "http://$ELB"
 ```
 
-### Module 10.4: Login using admin and password
+### Step 10.4: Login using admin and password
 ```
 $ kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-### Module 10.5: Create Grafana Dashboards
+### Step 10.5: Create Grafana Dashboards
 
 ### (Optional) Clean up
 ```
@@ -840,7 +843,7 @@ $ helm del --purge grafana
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/livenessprobe/
 
-### Module 11.1: Configure the Probe
+### Step 11.1: Configure the Probe
 ```
 $ mkdir -p ~/environment/healthchecks
 $ cat <<EoF > ~/environment/healthchecks/liveness-app.yaml
@@ -861,14 +864,14 @@ spec:
 EoF
 ```
 
-### Module 11.2: Create the pod using the manifest
+### Step 11.2: Create the pod using the manifest
 ```
 $ kubectl apply -f ~/environment/healthchecks/liveness-app.yaml
 $ kubectl get pod liveness-app
 $ kubectl describe pod liveness-app
 ```
 
-### Module 11.3: Introduce a Failure to Test
+### Step 11.3: Introduce a Failure to Test
 ```
 $ kubectl exec -it liveness-app -- /bin/kill -s SIGUSR1 1
 $ kubectl describe pod liveness-app
@@ -885,7 +888,7 @@ $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 - The API being a crucial part of the application it needs to be highly available
 - References: https://eksworkshop.com/healthchecks/readinessprobe/
 
-### Module 12.1: Configure the Probe
+### Step 12.1: Configure the Probe
 ```
 $ cat <<EoF > ~/environment/healthchecks/deployment-app.yaml
 apiVersion: apps/v1
@@ -916,19 +919,19 @@ spec:
 EoF
 ```
 
-### Module 12.2: Create a deployment
+### Step 12.2: Create a deployment
 ```
 $ kubectl apply -f ~/environment/healthchecks/readiness-deployment.yaml
 $ kubectl describe deployment readiness-deployment | grep Replicas:
 ```
 
-### Module 12.3: Restore pod to Ready status
+### Step 12.3: Restore pod to Ready status
 ```
 $ kubectl exec -it <YOUR-READINESS-POD-NAME> -- touch /tmp/healthy
 $ kubectl get pods -l app=readiness-deployment
 ```
 
-### Module 12.4: Clean Up
+### (Optional) Clean Up
 ```
 $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 ```
