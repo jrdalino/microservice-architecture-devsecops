@@ -575,29 +575,212 @@ $ aws ec2 import-key-pair --key-name "eksworkshop" --public-key-material file://
 
 ## Module 4: Launch EKS using EKCTL
 
-### Step 4.1
-```
-$ cd ~/environment
-$ git clone https://github.com/jrdalino/calculator-frontend.git
-$ git clone https://github.com/jrdalino/calculator-python.git
-```
-### Step 4.2 Install EKSCTL prerequisites
+### Step 4.1 Download the eksctl binaries
 ```
 $ curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 $ sudo mv -v /tmp/eksctl /usr/local/bin
 $ eksctl version
 ```
 
-### Step 4.3 Create an EKS Cluster (This will take ~15 minutes) and test cluster
+### Step 4.2 Create an EKS Cluster (This will take ~15 minutes) and test cluster
 ```
-$ eksctl create cluster --name=eksworkshop-eksctl --nodes=3 --node-ami=auto --region=${AWS_REGION}
-```
-```
+$ eksctl create cluster --name=eksworkshop-eksctl --nodes=2 --node-ami=auto --region=${AWS_REGION}
 $ kubectl get nodes
 ```
 
-## Module 5: Deploy MicroServices to EKS
+### Step 4.3 Export Worker Role name ** Is this really needed?
+```
+$ INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep nodegroup)
+$ ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
+$echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
+```
+
+### (Optional) Clean up
+
+## Module 5: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
+
+### Step 5.1 Create our deployment.yaml file
+```
+$ cd ~/environment/calculator-rest-api
+$ mkdir kubernetes
+$ vi deployment.yaml
+```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecsdemo-nodejs
+  labels:
+    app: ecsdemo-nodejs
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecsdemo-nodejs
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ecsdemo-nodejs
+    spec:
+      containers:
+      - image: brentley/ecsdemo-nodejs:latest
+        imagePullPolicy: Always
+        name: ecsdemo-nodejs
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+```
+
+### Step 5.2 Create our service.yaml file
+```
+$ cd ~/environment/calculator-rest-api/kubernetes
+$ vi service.yaml
+```
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecsdemo-nodejs
+spec:
+  selector:
+    app: ecsdemo-nodejs
+  ports:
+   -  protocol: TCP
+      port: 80
+      targetPort: 3000
+```
+
+### Step 5.3 Deploy our Backend REST API and watch progress
+```
+$ kubectl apply -f kubernetes/deployment.yaml
+$ kubectl apply -f kubernetes/service.yaml
+$ kubectl get deployment calculator-rest-api
+```
+
+### Step 5.4 Scale the Backend Service
+```
+$ kubectl get deployments
+$ kubectl scale deployment calculator-rest-api --replicas=3
+$ kubectl get deployments
+```
+
+### (Optional) Clean up
+```
+$ cd ~/environment/calculator-rest-api
+$ kubectl delete -f kubernetes/service.yaml
+$ kubectl delete -f kubernetes/deployment.yaml
+```
+
+## Module 6: Deploy our Frontend Service to EKS
+### Step 6.1 Create our deployment.yaml file
+```
+$ cd ~/environment/calculator-frontend
+$ mkdir kubernetes
+$ vi deployment.yaml
+```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecsdemo-frontend
+  labels:
+    app: ecsdemo-frontend
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ecsdemo-frontend
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: ecsdemo-frontend
+    spec:
+      containers:
+      - image: brentley/ecsdemo-frontend:latest
+        imagePullPolicy: Always
+        name: ecsdemo-frontend
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        env:
+        - name: CRYSTAL_URL
+          value: "http://ecsdemo-crystal.default.svc.cluster.local/crystal"
+        - name: NODEJS_URL
+          value: "http://ecsdemo-nodejs.default.svc.cluster.local/"
+```
+
+### Step 6.2 Create our service.yaml file
+```
+$ cd ~/environment/calculator-frontend/kubernetes
+$ vi service.yaml
+```
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecsdemo-frontend
+spec:
+  selector:
+    app: ecsdemo-frontend
+  type: LoadBalancer
+  ports:
+   -  protocol: TCP
+      port: 80
+      targetPort: 3000
+```
+
+### Step 6.3 Ensure ELB service Role exists
+```
+$ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
+```
+
+### Step 6.4 Deploy our Frontend Service and watch progress
+```
+$ cd ~/environment/calculator-frontend
+$ kubectl apply -f kubernetes/deployment.yaml
+$ kubectl apply -f kubernetes/service.yaml
+$ kubectl get deployment calculator-frontend
+```
+
+### Step 6.5 Find the Service Address
+```
+$ kubectl get service ecsdemo-frontend -o wide
+```
+
+### Step 6.6 Scale the Frontend Service
+```
+$ kubectl get deployments
+$ kubectl scale deployment calculator-frontend --replicas=3
+$ kubectl get deployments
+```
+
+### (Optional) Clean up
+```
+$ cd ~/environment/calculator-frontend
+$ kubectl delete -f kubernetes/service.yaml
+$ kubectl delete -f kubernetes/deployment.yaml
+```
+
+# ****************************************************************************************************************************
+# ****************************************************************************************************************************
+# ****************************************************************************************************************************
 
 ## Module 6: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
