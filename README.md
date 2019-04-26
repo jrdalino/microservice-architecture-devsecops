@@ -648,6 +648,7 @@ $ eksctl delete cluster --name=calculator-eksctl
 ```
 $ cd ~/environment/calculator-rest-api
 $ mkdir kubernetes
+$ cd kubernetes
 $ vi deployment.yaml
 ```
 
@@ -706,6 +707,7 @@ spec:
 
 ### Step 5.3 Deploy our Backend REST API and watch progress
 ```
+$ cd ~/environment/calculator-rest-api
 $ kubectl apply -f kubernetes/deployment.yaml
 $ kubectl apply -f kubernetes/service.yaml
 $ kubectl get deployment calculator-rest-api
