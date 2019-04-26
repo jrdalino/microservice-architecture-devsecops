@@ -697,6 +697,7 @@ metadata:
 spec:
   selector:
     app: calculator-rest-api
+  type: LoadBalancer
   ports:
    -  protocol: TCP
       port: 80
