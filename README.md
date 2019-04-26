@@ -21,6 +21,10 @@ AWS CLI
 ```
 $ aws --version
 ```
+Homebrew
+```
+$ brew --version
+```
 Working Directory
 ```
 $ cd ~
@@ -542,21 +546,25 @@ $ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --for
 $ mkdir -p ~/.kube
 ```
 
-### Step 3.2: Install kubectl
+### Step 3.2: Install kubectl on MAC
 ```
-$ sudo curl --silent --location -o /usr/local/bin/kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/linux/amd64/kubectl"
-$ sudo chmod +x /usr/local/bin/kubectl
+$ sudo curl -o kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/darwin/amd64/kubectl"
+$ sudo chmod +x ./kubectl
+$ mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+$ echo 'export PATH=$HOME/bin:$PATH' >> ~/.bash_profile
+$ kubectl version --short --client
 ```
 
 ### Step 3.3: Install IAM Authenticator
 ```
-$ go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator
-$ sudo mv ~/go/bin/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+$ brew install aws-iam-authenticator
+$ aws-iam-authenticator help
 ```
 
 ### Step 3.4 Install JQ and envsubst
 ```
-$ sudo yum -y install jq gettext
+$ brew install jq
+$ brew install gettext
 ```
 
 ### Step 3.5 Verify the binaries are in the path and executable
