@@ -833,6 +833,11 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
 
 ### Step 7.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
+$ cd ~/environment/calculator-rest-api
+$ mkdir cfn
+$ vi eks-calculator-codebuild-codepipeline-iam-role.yaml
+```
+```
 ---
 AWSTemplateFormatVersion: '2010-09-09'
 Resources:
@@ -948,6 +953,8 @@ Replace:
 - ArtifactsBucketName
 
 ```
+$ cd ~/environment/calculator-rest-api
+$ mkdir aws-cli
 $ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
 ```
 
@@ -959,8 +966,8 @@ $ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
         "Effect": "Allow",
         "Principal": {
           "AWS": [
-            "REPLACE_ME_CODEBUILD_ROLE_ARN",
-            "REPLACE_ME_CODEPIPELINE_ROLE_ARN"
+            "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole",
+            "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole"
           ]
         },
         "Action": [
@@ -969,8 +976,8 @@ $ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
           "s3:GetBucketVersioning"
         ],
         "Resource": [
-          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME/*",
-          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+          "arn:aws:s3:::jrdalino-calculator-artifacts/*",
+          "arn:aws:s3:::jrdalino-calculator-artifacts"
         ]
       },
       {
@@ -978,14 +985,14 @@ $ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
         "Effect": "Allow",
         "Principal": {
           "AWS": [
-            "REPLACE_ME_CODEBUILD_ROLE_ARN",
-            "REPLACE_ME_CODEPIPELINE_ROLE_ARN"
+            "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole",
+            "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole"
           ]
         },
         "Action": "s3:PutObject",
         "Resource": [
-          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME/*",
-          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+          "arn:aws:s3:::jrdalino-calculator-artifacts/*",
+          "arn:aws:s3:::jrdalino-calculator-artifacts"
         ]
       }
     ]
@@ -1010,6 +1017,8 @@ $ aws codecommit create-repository \
 
 ### Step 7.6: View/Modify Buildspec file
 ```
+$ cd ~/environment/calculator-rest-api
+$ mkdir app
 $ vi ~/environment/calculator-rest-api/app/buildspec.yml
 ```
 
