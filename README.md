@@ -1109,6 +1109,100 @@ Replace:
 $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
 
+```
+{
+  "pipeline": {
+      "name": "MythicalMysfitsServiceCICDPipeline",
+      "roleArn": "REPLACE_ME_CODEPIPELINE_ROLE_ARN",
+      "stages": [
+        {
+          "name": "Source",
+          "actions": [
+            {
+              "inputArtifacts": [
+    
+              ],
+              "name": "Source",
+              "actionTypeId": {
+                "category": "Source",
+                "owner": "AWS",
+                "version": "1",
+                "provider": "CodeCommit"
+              },
+              "outputArtifacts": [
+                {
+                  "name": "MythicalMysfitsService-SourceArtifact"
+                }
+              ],
+              "configuration": {
+                "BranchName": "master",
+                "RepositoryName": "MythicalMysfitsService-Repository"
+              },
+              "runOrder": 1
+            }
+          ]
+        },
+        {
+          "name": "Build",
+          "actions": [
+            {
+              "name": "Build",
+              "actionTypeId": {
+                "category": "Build",
+                "owner": "AWS",
+                "version": "1",
+                "provider": "CodeBuild"
+              },
+              "outputArtifacts": [
+                {
+                  "name": "MythicalMysfitsService-BuildArtifact"
+                }
+              ],
+              "inputArtifacts": [
+                {
+                  "name": "MythicalMysfitsService-SourceArtifact"
+                }
+              ],
+              "configuration": {
+                "ProjectName": "MythicalMysfitsServiceCodeBuildProject"
+              },
+              "runOrder": 1
+            }
+          ]
+        },
+        {
+          "name": "Deploy",
+          "actions": [
+            {
+              "name": "Deploy",
+              "actionTypeId": {
+                "category": "Deploy",
+                "owner": "AWS",
+                "version": "1",
+                "provider": "ECS"
+              },
+              "inputArtifacts": [
+                {
+                  "name": "MythicalMysfitsService-BuildArtifact"
+                }
+              ],
+              "configuration": {
+                "ClusterName": "MythicalMysfits-Cluster",
+                "ServiceName": "MythicalMysfits-Service",
+                "FileName": "imagedefinitions.json"
+              }
+            }
+          ]
+        }
+      ],
+      "artifactStore": {
+        "type": "S3",
+        "location": "REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+      }
+  }
+}
+```
+
 ### Step 7.10: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
@@ -1120,6 +1214,31 @@ Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
 ```
 $ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
+```
+
+```
+{
+  "Statement": [
+    {
+      "Sid": "AllowPushPull",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+         "REPLACE_ME_CODEBUILD_ROLE_ARN"
+        ]
+      },
+      "Action": [
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:PutImage",
+        "ecr:InitiateLayerUpload",
+        "ecr:UploadLayerPart",
+        "ecr:CompleteLayerUpload"
+      ]
+    }
+  ]
+}
 ```
 
 ### Step 7.12: Enable automated Access to the ECR Image Repository
