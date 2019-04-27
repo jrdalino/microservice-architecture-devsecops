@@ -561,14 +561,14 @@ $ brew install aws-iam-authenticator
 $ aws-iam-authenticator help
 ```
 
-### Step 3.4 Install JQ and envsubst
+### Step 3.4: Install JQ and envsubst
 ```
 $ brew install jq
 $ brew install gettext
 $ brew link --force gettext
 ```
 
-### Step 3.5 Verify the binaries are in the path and executable
+### Step 3.5: Verify the binaries are in the path and executable
 ```
 $ for command in kubectl aws-iam-authenticator jq envsubst
   do
@@ -576,7 +576,7 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
   done
 ```
 
-### Step 3.6 Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
+### Step 3.6: Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
 ```
 $ ssh-keygen
 $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file://~/.ssh/id_rsa.pub
@@ -584,13 +584,13 @@ $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file
 
 ## Module 4: Launch EKS using EKCTL
 
-### Step 4.1 Download the eksctl binaries
+### Step 4.1: Download the eksctl binaries
 ```
 $ brew install weaveworks/tap/eksctl
 $ eksctl version
 ```
 
-### Step 4.2 Create an EKS Cluster (This will take ~15 minutes) and test cluster
+### Step 4.2: Create an EKS Cluster (This will take ~15 minutes) and test cluster
 ```
 $ eksctl create cluster \
 --name=calculator-eksctl \
@@ -629,7 +629,7 @@ $ kubectl get nodes
 [✔]  EKS cluster "calculator-eksctl" in "us-east-1" region is ready
 ```
 
-### Step 4.3 Export Worker Role name ** Is this really needed?
+### Step 4.3: Export Worker Role name ** Is this really needed?
 ```
 $ INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep nodegroup)
 $ ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
@@ -644,7 +644,7 @@ $ eksctl delete cluster --name=calculator-eksctl
 ## Module 5: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
 
-### Step 5.1 Create our deployment.yaml file
+### Step 5.1: Create our deployment.yaml file
 ```
 $ cd ~/environment/calculator-rest-api
 $ mkdir kubernetes
@@ -684,7 +684,7 @@ spec:
           protocol: TCP
 ```
 
-### Step 5.2 Create our service.yaml file
+### Step 5.2: Create our service.yaml file
 ```
 $ cd ~/environment/calculator-rest-api/kubernetes
 $ vi service.yaml
@@ -705,7 +705,7 @@ spec:
       targetPort: 5000
 ```
 
-### Step 5.3 Deploy our Backend REST API and watch progress
+### Step 5.3: Deploy our Backend REST API and watch progress
 ```
 $ cd ~/environment/calculator-rest-api
 $ kubectl apply -f kubernetes/deployment.yaml
@@ -713,7 +713,7 @@ $ kubectl apply -f kubernetes/service.yaml
 $ kubectl get deployment calculator-rest-api
 ```
 
-### Step 5.4 Scale the Backend Service
+### Step 5.4: Scale the Backend Service
 ```
 $ kubectl get deployments
 $ kubectl scale deployment calculator-rest-api --replicas=3
@@ -728,7 +728,7 @@ $ kubectl delete -f kubernetes/deployment.yaml
 ```
 
 ## Module 6: Deploy our Frontend Service to EKS
-### Step 6.1 Create our deployment.yaml file
+### Step 6.1: Create our deployment.yaml file
 ```
 $ cd ~/environment/calculator-frontend
 $ mkdir kubernetes
@@ -770,7 +770,7 @@ spec:
           value: "http://calculator-rest-api.default.svc.cluster.local/calculator-rest-api"
 ```
 
-### Step 6.2 Create our service.yaml file
+### Step 6.2: Create our service.yaml file
 ```
 $ cd ~/environment/calculator-frontend/kubernetes
 $ vi service.yaml
@@ -791,12 +791,12 @@ spec:
       targetPort: 3000
 ```
 
-### Step 6.3 Ensure ELB service Role exists
+### Step 6.3: Ensure ELB service Role exists
 ```
 $ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
 ```
 
-### Step 6.4 Deploy our Frontend Service and watch progress
+### Step 6.4: Deploy our Frontend Service and watch progress
 ```
 $ cd ~/environment/calculator-frontend
 $ kubectl apply -f kubernetes/deployment.yaml
@@ -804,12 +804,12 @@ $ kubectl apply -f kubernetes/service.yaml
 $ kubectl get deployment calculator-frontend
 ```
 
-### Step 6.5 Find the Service Address
+### Step 6.5: Find the Service Address
 ```
 $ kubectl get service calculator-frontend -o wide
 ```
 
-### Step 6.6 Scale the Frontend Service
+### Step 6.6: Scale the Frontend Service
 ```
 $ kubectl get deployments
 $ kubectl scale deployment calculator-frontend --replicas=3
@@ -827,7 +827,7 @@ $ kubectl delete -f kubernetes/deployment.yaml
 # ************************************************************
 # ************************************************************
 
-## Module 7: Setup CI/CD for Back End Service
+## Module 7: (TODO) Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 - Reference: https://eksworkshop.com/codepipeline/
 
@@ -943,7 +943,7 @@ $ git commit -m "I changed the age of one of the mysfits."
 $ git push
 ```
 
-## Module 8: Setup CI/CD for Front End Service (Same as Module 10)
+## Module 8: (TODO) Setup CI/CD for Front End Service (Same as Module 10)
 
 # ************************************************************
 # ************************************************************
@@ -994,9 +994,7 @@ $ kubectl apply -f ~/environment/rbac.yaml
 $ helm init --service-account tiller
 ```
 
-## Module 10: Deploy Prometheus
-- Basic monitoring
-- References: https://eksworkshop.com/monitoring/
+## Module 10: Deploy Prometheus for basic monitoring
 
 ### Step 10.1: Install Prometheus
 ```
@@ -1024,8 +1022,7 @@ $ helm delete prometheus
 $ helm del --purge prometheus
 ```
 
-## Module 11: Deploy Grafana
-- References: https://eksworkshop.com/monitoring/deploy-grafana/
+## Module 11: Deploy Grafana to create Dashboards
 
 ### Step 11.1: Install Grafana
 ```
@@ -1070,7 +1067,6 @@ $ helm del --purge grafana
 
 ## Module 12: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
-- References: https://eksworkshop.com/healthchecks/livenessprobe/
 
 ### Step 12.1: Configure the Probe
 ```
@@ -1115,7 +1111,6 @@ $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 
 ## Module 13: Implement Readiness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
-- References: https://eksworkshop.com/healthchecks/readinessprobe/
 
 ### Step 13.1: Configure the Probe
 ```
