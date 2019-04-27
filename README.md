@@ -831,15 +831,20 @@ $ kubectl delete -f kubernetes/deployment.yaml
 $ aws s3 mb s3://jrdalino-calculator-artifacts
 ```
 
-### Step 7.2: Create Codebuild and Codepipeline Role
+### Step 7.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+
   # An IAM role that allows the AWS CodeBuild service to perform the actions
   # required to complete a build of our source code retrieved from CodeCommit,
   # and push the created image to ECR.
-  MythicalMysfitsServiceCodeBuildServiceRole:
+
+  CalculatorServiceCodeBuildServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: MythicalMysfitsServiceCodeBuildServiceRole
+      RoleName: CalculatorServiceCodeBuildServiceRole
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -848,7 +853,7 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
             Service: codebuild.amazonaws.com
           Action: sts:AssumeRole
       Policies:
-      - PolicyName: "MythicalMysfitsService-CodeBuildServicePolicy"
+      - PolicyName: "CalculatorService-CodeBuildServicePolicy"
         PolicyDocument:
           Version: "2012-10-17"
           Statement:
@@ -860,7 +865,7 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
             - "codecommit:Get*"
             - "codecommit:GitPull"
             Resource:
-            - Fn::Sub: arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:MythicalMysfitsServiceRepository
+            - Fn::Sub: arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:CalculatorServiceRepository
           - Effect: "Allow"
             Action:
             - "logs:CreateLogGroup"
@@ -879,19 +884,18 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
             - "ecr:InitiateLayerUpload"
             - "ecr:GetAuthorizationToken"
             Resource: "*"
-```
 
-```
   # An IAM role that allows the AWS CodePipeline service to perform it's
   # necessary actions. We have intentionally left permissions on this role
   # that will not be used by the CodePipeline service during this workshop.
   # This will allow you to more simply use CodePipeline in the future should
   # you want to use the service for Pipelines that interact with different
   # AWS services than the ones used in this workshop.
-  MythicalMysfitsServiceCodePipelineServiceRole:
+
+  CalculatorServiceCodePipelineServiceRole:
     Type: AWS::IAM::Role
     Properties:
-      RoleName: MythicalMysfitsServiceCodePipelineServiceRole
+      RoleName: CalculatorServiceCodePipelineServiceRole
       AssumeRolePolicyDocument:
         Statement:
         - Effect: Allow
@@ -902,7 +906,7 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
           - sts:AssumeRole
       Path: "/"
       Policies:
-      - PolicyName: MythicalMysfitsService-codepipeline-service-policy
+      - PolicyName: CalculatorService-codepipeline-service-policy
         PolicyDocument:
           Statement:
           - Action:
@@ -929,6 +933,7 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
             - autoscaling:*
             - cloudwatch:*
             - ecs:*
+            - eks:*
             - codebuild:*
             - iam:PassRole
             Resource: "*"
