@@ -32,6 +32,35 @@ $ mkdir environment
 $ cd ~/environment
 ```
 
+## Module 0: Configure Git Repository
+
+### Step 0.1: Configure Git
+```
+$ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
+$ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
+$ git config --global credential.helper '!aws codecommit credential-helper $@'
+$ git config --global credential.UseHttpPath true
+$ cd ~/environment/
+```
+
+### Step 0.2: Create a CodeCommit Repository
+```
+$ aws codecommit create-repository \
+--repository-name calculator-rest-api
+```
+
+### Step 0.3: Clone the repository
+```
+$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api
+```
+
+### Step 0.4: Push the Code Change
+```
+$ git add .
+$ git commit -m "Initial"
+$ git push
+```
+
 ## Module 1: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
 - Advanced calculations (square root, cube root, power, factorial)
@@ -1009,13 +1038,7 @@ $ aws s3api put-bucket-policy \
 --policy file://~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 7.5: Create a CodeCommit Repository
-```
-$ aws codecommit create-repository \
---repository-name calculator-rest-api
-```
-
-### Step 7.6: View/Modify Buildspec file
+### Step 7.5: View/Modify Buildspec file
 ```
 $ cd ~/environment/calculator-rest-api
 $ mkdir app
@@ -1065,7 +1088,7 @@ artifacts:
   files: imagedefinitions.json
 ```
 
-### Step 7.7: View/Modify CodeBuild Project Input File
+### Step 7.6: View/Modify CodeBuild Project Input File
 Replace:
 - REPLACE_ME_ACCOUNT_ID
 - REPLACE_ME_REGION
@@ -1104,16 +1127,14 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
 }
 ```
 
-### Step 7.8: Create the CodeBuild Project
+### Step 7.7: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
 --cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-build-project.json
 ```
 
-### Step 7.9: Modify CodePipeline Input File
+### Step 7.8: Modify CodePipeline Input File
 Replace:
-- roleArn = REPLACE_ME_CODEPIPELINE_ROLE_ARN
-- location = REPLACE_ME_ARTIFACTS_BUCKET_NAME
 ```
 $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
@@ -1121,8 +1142,8 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
 {
   "pipeline": {
-      "name": "MythicalMysfitsServiceCICDPipeline",
-      "roleArn": "REPLACE_ME_CODEPIPELINE_ROLE_ARN",
+      "name": "CalculatorServiceCICDPipeline",
+      "roleArn": "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole",
       "stages": [
         {
           "name": "Source",
@@ -1140,12 +1161,12 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
               },
               "outputArtifacts": [
                 {
-                  "name": "MythicalMysfitsService-SourceArtifact"
+                  "name": "CalculatorService-SourceArtifact"
                 }
               ],
               "configuration": {
                 "BranchName": "master",
-                "RepositoryName": "MythicalMysfitsService-Repository"
+                "RepositoryName": "calculator-rest-api"
               },
               "runOrder": 1
             }
@@ -1164,63 +1185,39 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
               },
               "outputArtifacts": [
                 {
-                  "name": "MythicalMysfitsService-BuildArtifact"
+                  "name": "CalculatorService-BuildArtifact"
                 }
               ],
               "inputArtifacts": [
                 {
-                  "name": "MythicalMysfitsService-SourceArtifact"
+                  "name": "CalculatorService-SourceArtifact"
                 }
               ],
               "configuration": {
-                "ProjectName": "MythicalMysfitsServiceCodeBuildProject"
+                "ProjectName": "CalculatorServiceCodeBuildProject"
               },
               "runOrder": 1
-            }
-          ]
-        },
-        {
-          "name": "Deploy",
-          "actions": [
-            {
-              "name": "Deploy",
-              "actionTypeId": {
-                "category": "Deploy",
-                "owner": "AWS",
-                "version": "1",
-                "provider": "ECS"
-              },
-              "inputArtifacts": [
-                {
-                  "name": "MythicalMysfitsService-BuildArtifact"
-                }
-              ],
-              "configuration": {
-                "ClusterName": "MythicalMysfits-Cluster",
-                "ServiceName": "MythicalMysfits-Service",
-                "FileName": "imagedefinitions.json"
-              }
             }
           ]
         }
       ],
       "artifactStore": {
         "type": "S3",
-        "location": "REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+        "location": "jrdalino-calculator-artifacts"
       }
   }
 }
 ```
 
-### Step 7.10: Create a pipeline in CodePipeline
+### Step 7.9: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
 
-### Step 7.11: Modify ECR Policy
-Replace:
-- REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
+### Step 7.10: Modify ECR Policy
+Replace: CodeBuild Role ARN
+
 ```
 $ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 ```
@@ -1233,7 +1230,7 @@ $ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-         "REPLACE_ME_CODEBUILD_ROLE_ARN"
+         "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole"
         ]
       },
       "Action": [
@@ -1250,44 +1247,14 @@ $ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 }
 ```
 
-### Step 7.12: Enable automated Access to the ECR Image Repository
+### Step 7.11: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
---repository-name mythicalmysfits/service \
+--repository-name jrdalino/calculator-rest-api \
 --policy-text file://~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 ```
 
-### Step 7.13: Configure Git
-```
-$ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
-$ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
-$ git config --global credential.helper '!aws codecommit credential-helper $@'
-$ git config --global credential.UseHttpPath true
-$ cd ~/environment/
-```
-
-### Step 7.14: Clone Repository
-```
-$ git clone https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MythicalMysfitsService-Repository
-```
-
-### Step 7.15: Copy the application files into our repository directory
-```
-$ cp -r ~/environment/calculator-rest-api/app/* ~/environment/MythicalMysfitsService-Repository/
-```
-
-### Step 7.16: Make a small code change
-```
-$ vi ~/environment/MythicalMysfitsService-Repository/service/mysfits-response.json
-```
-
-### Step 7.17: Push the Code Change
-```
-$ cd ~/environment/MythicalMysfitsService-Repository/
-$ git add .
-$ git commit -m "I changed the age of one of the mysfits."
-$ git push
-```
+### Step 7.12: Make a small code change and push changes
 
 ## Module 8: (TODO) Setup CI/CD for Front End Service (Same as Module 10)
 
