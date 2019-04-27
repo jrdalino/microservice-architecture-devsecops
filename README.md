@@ -1178,10 +1178,130 @@ $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 ```
 
 ## Module 14: Implementing Auto Scaling
-- References: https://eksworkshop.com/scaling/
+
+### Step 14.1: Configure Horizontal Pod AutoScaler (HPA) - Deploy the Metrics Server
+```
+$ helm install stable/metrics-server \
+    --name metrics-server \
+    --version 2.0.4 \
+    --namespace metrics
+$ kubectl get apiservice v1beta1.metrics.k8s.io -o yaml
+```
+
+### Step 14.2: Scale an Application with Horizontal Pod AutoScaler (HPA)
+- Deploy a Sample App
+```
+kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80
+```
+
+- Create an HPA Resource
+```
+$ kubectl autoscale deployment php-apache --cpu-percent=50 --min=1 --max=10
+$ kubectl get hpa
+```
+
+- Generate load to trigger scaling
+```
+$ kubectl run -i --tty load-generator --image=busybox /bin/sh
+$ while true; do wget -q -O - http://php-apache; done
+$ kubectl get hpa -w
+```
+
+### Step 14.3: Configure Cluster AutoScaler (CA)
+- Configure the Cluster Autoscaler (CA)
+```
+$ mkdir ~/environment/cluster-autoscaler
+$ cd ~/environment/cluster-autoscaler
+$ wget https://eksworkshop.com/scaling/deploy_ca.files/cluster_autoscaler.yml
+```
+
+- Configure the ASG Min: 2 and Max: 8
+
+- Configure the Cluster Autoscaler
+- Open https://eksworkshop.com/scaling/deploy_ca.files/cluster_autoscaler.yml and change <AUTOSCALING GROUP NAME>, AWS_REGION and minimum nodes (2) and maximum nodes (8) and ASG Name
+
+- Create an IAM Policy
+```
+$ test -n "$ROLE_NAME" && echo ROLE_NAME is "$ROLE_NAME" || echo ROLE_NAME is not set
+```
+
+```
+$ mkdir ~/environment/asg_policy
+cat <<EoF > ~/environment/asg_policy/k8s-asg-policy.json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:DescribeAutoScalingInstances",
+        "autoscaling:SetDesiredCapacity",
+        "autoscaling:TerminateInstanceInAutoScalingGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EoF
+$ aws iam put-role-policy --role-name $ROLE_NAME --policy-name ASG-Policy-For-Worker --policy-document file://~/environment/asg_policy/k8s-asg-policy.json
+$ aws iam get-role-policy --role-name $ROLE_NAME --policy-name ASG-Policy-For-Worker
+```
+
+- Deploy the Cluster Autoscaler
+```
+$ kubectl apply -f ~/environment/cluster-autoscaler/cluster_autoscaler.yml
+$ kubectl logs -f deployment/cluster-autoscaler -n kube-system
+```
+
+### Step 14.4: Scale a Cluster with Cluster Auto Scaler
+- Deploy a Sample App
+```
+cat <<EoF> ~/environment/cluster-autoscaler/nginx.yaml
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx-to-scaleout
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: nginx
+        app: nginx
+    spec:
+      containers:
+      - image: nginx
+        name: nginx-to-scaleout
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 512Mi
+EoF
+kubectl apply -f ~/environment/cluster-autoscaler/nginx.yaml
+kubectl get deployment/nginx-to-scaleout
+```
+
+- Scale our ReplicaSet to 10
+```
+$ kubectl scale --replicas=10 deployment/nginx-to-scaleout
+$ kubectl get pods -o wide --watch
+$ kubectl logs -f deployment/cluster-autoscaler -n kube-system
+```
+
+### (Optional) Clean Up
+```
+$ kubectl delete -f ~/environment/cluster-autoscaler/cluster_autoscaler.yml
+$ kubectl delete -f ~/environment/cluster-autoscaler/nginx.yaml
+$ kubectl delete hpa,svc php-apache
+$ kubectl delete deployment php-apache load-generator
+$ rm -rf ~/environment/cluster-autoscaler
+```
 
 ## Module 15: Logging with Elasticache, Fluentd, and Kibana (EFK)
-- References: https://eksworkshop.com/logging/
 
 ### Step 15.1: Configure IAM Policy for Worker Nodes
 ```
