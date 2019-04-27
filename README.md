@@ -1043,22 +1043,22 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t mythicalmysfits/service:latest .
+      - docker build -t jrdalino/calculator-rest-api:latest .
       # Tag the built docker image using the appropriate Amazon ECR endpoint and relevant
       # repository for our service container. This ensures that when the docker push
       # command is executed later, it will be pushed to the appropriate repository.
-      - docker tag mythicalmysfits/service:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest
+      - docker tag jrdalino/calculator-rest-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image..
       # Push the image to ECR.
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest
       - echo Completed pushing Docker image. Deploying Docker image to AWS Fargate on `date`
       # Create a artifacts file that contains the name and location of the image
       # pushed to ECR. This will be used by AWS CodePipeline to automate
       # deployment of this specific container to Amazon ECS.
-      - printf '[{"name":"MythicalMysfits-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest > imagedefinitions.json
+      - printf '[{"name":"Calculator-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest > imagedefinitions.json
 artifacts:
   # Indicate that the created imagedefinitions.json file created on the previous
   # line is to be referenceable as an artifact of the build execution job.
@@ -1076,7 +1076,7 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
 
 ```
 {
-  "name": "MythicalMysfitsServiceCodeBuildProject",
+  "name": "CalculatorServiceCodeBuildProject",
   "artifacts": {
     "type": "no_artifacts"
   },
@@ -1087,19 +1087,19 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
     "environmentVariables": [
       {
         "name": "AWS_ACCOUNT_ID",
-        "value": "REPLACE_ME_ACCOUNT_ID"
+        "value": "707538076348"
       },
       {
         "name": "AWS_DEFAULT_REGION",
-        "value": "REPLACE_ME_REGION"
+        "value": "us-east-1"
       }
     ],
     "type": "LINUX_CONTAINER"
   },
-  "serviceRole": "REPLACE_ME_CODEBUILD_ROLE_ARN",
+  "serviceRole": "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole",
   "source": {
     "type": "CODECOMMIT",
-    "location": "https://git-codecommit.REPLACE_ME_REGION.amazonaws.com/v1/repos/MythicalMysfitsService-Repository"
+    "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/CalculatorService-Repository"
   }
 }
 ```
