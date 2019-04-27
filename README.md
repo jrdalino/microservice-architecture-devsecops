@@ -1180,8 +1180,114 @@ $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 ## Module 14: Implementing Auto Scaling
 - References: https://eksworkshop.com/scaling/
 
-## Module 15: Log Amazon EKS API Calls with CloudTrail
-- References: https://docs.aws.amazon.com/eks/latest/userguide/logging-using-cloudtrail.html
+## Module 15: Logging with Elasticache, Fluentd, and Kibana (EFK)
+- References: https://eksworkshop.com/logging/
+
+### Step 15.1: Configure IAM Policy for Worker Nodes
+```
+$ test -n "$ROLE_NAME" && echo ROLE_NAME is "$ROLE_NAME" || echo ROLE_NAME is not set
+```
+
+```
+$ mkdir ~/environment/iam_policy
+cat <<EoF > ~/environment/iam_policy/k8s-logs-policy.json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "logs:DescribeLogGroups",
+                "logs:DescribeLogStreams",
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "*",
+            "Effect": "Allow"
+        }
+    ]
+}
+EoF
+
+$ aws iam put-role-policy --role-name $ROLE_NAME --policy-name Logs-Policy-For-Worker --policy-document file://~/environment/iam_policy/k8s-logs-policy.json
+```
+
+```
+$ aws iam get-role-policy --role-name $ROLE_NAME --policy-name Logs-Policy-For-Worker
+```
+
+### Step 15.2: Provision an Elasticsearch Cluster
+```
+$ aws es create-elasticsearch-domain \
+  --domain-name kubernetes-logs \
+  --elasticsearch-version 6.3 \
+  --elasticsearch-cluster-config \
+  InstanceType=m4.large.elasticsearch,InstanceCount=2 \
+  --ebs-options EBSEnabled=true,VolumeType=standard,VolumeSize=100 \
+  --access-policies '{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["es:*"],"Resource":"*"}]}'
+```
+
+```
+$ aws es describe-elasticsearch-domain --domain-name kubernetes-logs --query 'DomainStatus.Processing'
+```
+
+### Step 15.3: Deploy Fluentd
+- Replace REGION and CLUSTER_NAME
+```
+$ mkdir ~/environment/fluentd
+$ cd ~/environment/fluentd
+$ wget https://eksworkshop.com/logging/deploy.files/fluentd.yml
+$ kubectl apply -f ~/environment/fluentd/fluentd.yml
+$ kubectl get pods -w --namespace=kube-system
+```
+
+### Step 15.4: Configure CloudWatch Logs
+```
+$ cat <<EoF > ~/environment/iam_policy/lambda.json
+{
+   "Version": "2012-10-17",
+   "Statement": [
+   {
+     "Effect": "Allow",
+     "Principal": {
+        "Service": "lambda.amazonaws.com"
+     },
+   "Action": "sts:AssumeRole"
+   }
+ ]
+}
+EoF
+
+$ aws iam create-role --role-name lambda_basic_execution --assume-role-policy-document file://~/environment/iam_policy/lambda.json
+
+$ aws iam attach-role-policy --role-name lambda_basic_execution --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+```
+
+- CloudWatch Logs Console
+- Select the log group /eks/eksworkshop-eksctl/containers. 
+- Click on Actions and select Stream to Amazon ElasticSearch Service.
+- Select the ElasticSearch Cluster kubernetes-logs and IAM role lambda_basic_execution
+- Click Next
+- Select Common Log Format and click Next
+- Review the configuration. Click Next and then Start Streaming
+
+### Step 15.6 Configure Kibana
+- In Amazon Elasticsearch console, select the kubernetes-logs under My domains
+- Open the Kibana dashboard from the link. After a few minutes, records will begin to be indexed by ElasticSearch. 
+- You’ll need to configure an index patterns in Kibana.
+- Set Index Pattern as cwl-* and click Next
+- Select @timestamp from the dropdown list and select Create index pattern
+- Click on Discover and explore your logs
+
+### (Optional) Clean Up
+```
+$ cd ~/environment
+$ kubectl delete -f ~/environment/fluentd/fluentd.yml
+$ rm -rf ~/environment/fluentd/
+$ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
+$ aws logs delete-log-group --log-group-name /eks/eksworkshop-eksctl/containers
+$ rm -rf ~/environment/iam_policy/
+```
 
 ## Module 16: Log REST operations performed to S3
 - Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
