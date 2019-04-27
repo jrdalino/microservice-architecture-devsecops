@@ -58,7 +58,7 @@ $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-r
 ```
 $ git add .
 $ git commit -m "Initial"
-$ git push
+$ git push origin master
 ```
 
 ## Module 1: Backend Python Flask Rest API for Calculator Local
@@ -158,6 +158,7 @@ def divide_args():
         abort(400)
         
 # TODO Square Root
+
 # TODO Cube Root
         
 @app.route('/exp', methods=['POST'])
