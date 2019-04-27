@@ -1393,11 +1393,11 @@ metadata:
 spec:
   containers:
   - name: liveness
-    image: brentley/ecsdemo-nodejs
+    image: jrdalino/calculator-rest-api
     livenessProbe:
       httpGet:
         path: /health
-        port: 3000
+        port: 5000
       initialDelaySeconds: 5
       periodSeconds: 5
 EoF
