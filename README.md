@@ -823,20 +823,15 @@ $ kubectl delete -f kubernetes/service.yaml
 $ kubectl delete -f kubernetes/deployment.yaml
 ```
 
-# ************************************************************
-# ************************************************************
-# ************************************************************
-
-## Module 7: (TODO) Setup CI/CD for Back End Service
+## Module 7: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
-- Reference: https://eksworkshop.com/codepipeline/
 
 ### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
 ```
 $ aws s3 mb s3://jrdalino-calculator-artifacts
 ```
 
-### Step 7.2: (TODO) Create Codebuild and Codepipeline Role
+### Step 7.2: Create Codebuild and Codepipeline Role
 ```
   # An IAM role that allows the AWS CodeBuild service to perform the actions
   # required to complete a build of our source code retrieved from CodeCommit,
