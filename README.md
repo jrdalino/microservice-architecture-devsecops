@@ -1099,7 +1099,7 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
   "serviceRole": "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole",
   "source": {
     "type": "CODECOMMIT",
-    "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api-Repository"
+    "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api"
   }
 }
 ```
