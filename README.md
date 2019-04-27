@@ -833,85 +833,303 @@ $ kubectl delete -f kubernetes/deployment.yaml
 
 ### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
 ```
-$ aws s3 mb s3://jrdalino-workshop-artifacts
+$ aws s3 mb s3://jrdalino-calculator-artifacts
 ```
 
-### Step 7.2: Modify S3 BUcket Policy
+### Step 7.2: (TODO) Create Codebuild and Codepipeline Role
+```
+  # An IAM role that allows the AWS CodeBuild service to perform the actions
+  # required to complete a build of our source code retrieved from CodeCommit,
+  # and push the created image to ECR.
+  MythicalMysfitsServiceCodeBuildServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: MythicalMysfitsServiceCodeBuildServiceRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: Allow
+          Principal:
+            Service: codebuild.amazonaws.com
+          Action: sts:AssumeRole
+      Policies:
+      - PolicyName: "MythicalMysfitsService-CodeBuildServicePolicy"
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+          - Effect: "Allow"
+            Action:
+            - "codecommit:ListBranches"
+            - "codecommit:ListRepositories"
+            - "codecommit:BatchGetRepositories"
+            - "codecommit:Get*"
+            - "codecommit:GitPull"
+            Resource:
+            - Fn::Sub: arn:aws:codecommit:${AWS::Region}:${AWS::AccountId}:MythicalMysfitsServiceRepository
+          - Effect: "Allow"
+            Action:
+            - "logs:CreateLogGroup"
+            - "logs:CreateLogStream"
+            - "logs:PutLogEvents"
+            Resource: "*"
+          - Effect: "Allow"
+            Action:
+            - "s3:PutObject"
+            - "s3:GetObject"
+            - "s3:GetObjectVersion"
+            - "s3:ListBucket"
+            Resource: "*"
+          - Effect: "Allow"
+            Action:
+            - "ecr:InitiateLayerUpload"
+            - "ecr:GetAuthorizationToken"
+            Resource: "*"
+```
+
+```
+  # An IAM role that allows the AWS CodePipeline service to perform it's
+  # necessary actions. We have intentionally left permissions on this role
+  # that will not be used by the CodePipeline service during this workshop.
+  # This will allow you to more simply use CodePipeline in the future should
+  # you want to use the service for Pipelines that interact with different
+  # AWS services than the ones used in this workshop.
+  MythicalMysfitsServiceCodePipelineServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: MythicalMysfitsServiceCodePipelineServiceRole
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - codepipeline.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: "/"
+      Policies:
+      - PolicyName: MythicalMysfitsService-codepipeline-service-policy
+        PolicyDocument:
+          Statement:
+          - Action:
+            - codecommit:GetBranch
+            - codecommit:GetCommit
+            - codecommit:UploadArchive
+            - codecommit:GetUploadArchiveStatus
+            - codecommit:CancelUploadArchive
+            Resource: "*"
+            Effect: Allow
+          - Action:
+            - s3:GetObject
+            - s3:GetObjectVersion
+            - s3:GetBucketVersioning
+            Resource: "*"
+            Effect: Allow
+          - Action:
+            - s3:PutObject
+            Resource:
+            - arn:aws:s3:::*
+            Effect: Allow
+          - Action:
+            - elasticloadbalancing:*
+            - autoscaling:*
+            - cloudwatch:*
+            - ecs:*
+            - codebuild:*
+            - iam:PassRole
+            Resource: "*"
+            Effect: Allow
+          Version: "2012-10-17"
+```
+
+### Step 7.3: Modify S3 Bucket Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN
 - REPLACE_ME_CODEPIPELINE_ROLE_ARN
 - ArtifactsBucketName
 
 ```
-$ vi ~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
+$ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 7.3: Grant S3 Bucket access to your CI/CD Pipeline
+```
+{
+    "Statement": [
+      {
+        "Sid": "WhitelistedGet",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+            "REPLACE_ME_CODEBUILD_ROLE_ARN",
+            "REPLACE_ME_CODEPIPELINE_ROLE_ARN"
+          ]
+        },
+        "Action": [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:GetBucketVersioning"
+        ],
+        "Resource": [
+          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME/*",
+          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+        ]
+      },
+      {
+        "Sid": "WhitelistedPut",
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": [
+            "REPLACE_ME_CODEBUILD_ROLE_ARN",
+            "REPLACE_ME_CODEPIPELINE_ROLE_ARN"
+          ]
+        },
+        "Action": "s3:PutObject",
+        "Resource": [
+          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME/*",
+          "arn:aws:s3:::REPLACE_ME_ARTIFACTS_BUCKET_NAME"
+        ]
+      }
+    ]
+}
+```
+
+### Step 7.4: Grant S3 Bucket access to your CI/CD Pipeline
 Replace:
 - ArtifactsBucketName
 
 ```
 $ aws s3api put-bucket-policy \
---bucket jrdalino-workshop-artifacts \
---policy file://~/environment/modern-app-workshop/aws-cli/artifacts-bucket-policy.json
+--bucket jrdalino-calculator-artifacts \
+--policy file://~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 7.4: Create a CodeCommit Repository
+### Step 7.5: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository \
---repository-name MythicalMysfitsService-Repository
+--repository-name calculator-rest-api
 ```
 
-### Step 7.5: View/Modify Buildspec file
-No need to modify for this workshop
+### Step 7.6: View/Modify Buildspec file
 ```
-$ vi ~/environment/modern-app-workshop/app/buildspec.yml
+$ vi ~/environment/calculator-rest-api/app/buildspec.yml
 ```
 
-### Step 7.6: Modify CodeBuild Project Input File
+```
+# A buildspec.yml file informs AWS CodeBuild of all the actions that should be
+# taken during a build execution for our application. We are able to divide the
+# build execution in separate pre-defined phases for logical organization, and
+# list the commands that will be executed on the provisioned build server
+# performing a build execution job.
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      # Retrieves docker credentials so that the subsequent docker push command is
+      # authorized. Authentication is performed automatically by the AWS CLI
+      # using the AWS credentials associated with the IAM role assigned to the
+      # instances in your AWS CodeBuild project.
+      - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t mythicalmysfits/service:latest .
+      # Tag the built docker image using the appropriate Amazon ECR endpoint and relevant
+      # repository for our service container. This ensures that when the docker push
+      # command is executed later, it will be pushed to the appropriate repository.
+      - docker tag mythicalmysfits/service:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image..
+      # Push the image to ECR.
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest
+      - echo Completed pushing Docker image. Deploying Docker image to AWS Fargate on `date`
+      # Create a artifacts file that contains the name and location of the image
+      # pushed to ECR. This will be used by AWS CodePipeline to automate
+      # deployment of this specific container to Amazon ECS.
+      - printf '[{"name":"MythicalMysfits-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/mythicalmysfits/service:latest > imagedefinitions.json
+artifacts:
+  # Indicate that the created imagedefinitions.json file created on the previous
+  # line is to be referenceable as an artifact of the build execution job.
+  files: imagedefinitions.json
+```
+
+### Step 7.7: View/Modify CodeBuild Project Input File
 Replace:
 - REPLACE_ME_ACCOUNT_ID
 - REPLACE_ME_REGION
 - REPLACE_ME_CODEBUILD_ROLE_ARN
 ```
-$ vi ~/environment/modern-app-workshop/aws-cli/code-build-project.json
+$ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
 ```
 
-### Step 7.7: Create the CodeBuild Project
+```
+{
+  "name": "MythicalMysfitsServiceCodeBuildProject",
+  "artifacts": {
+    "type": "no_artifacts"
+  },
+  "environment": {
+    "computeType": "BUILD_GENERAL1_SMALL",
+    "image": "aws/codebuild/python:3.5.2",
+    "privilegedMode": true,
+    "environmentVariables": [
+      {
+        "name": "AWS_ACCOUNT_ID",
+        "value": "REPLACE_ME_ACCOUNT_ID"
+      },
+      {
+        "name": "AWS_DEFAULT_REGION",
+        "value": "REPLACE_ME_REGION"
+      }
+    ],
+    "type": "LINUX_CONTAINER"
+  },
+  "serviceRole": "REPLACE_ME_CODEBUILD_ROLE_ARN",
+  "source": {
+    "type": "CODECOMMIT",
+    "location": "https://git-codecommit.REPLACE_ME_REGION.amazonaws.com/v1/repos/MythicalMysfitsService-Repository"
+  }
+}
+```
+
+### Step 7.8: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
---cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-build-project.json
+--cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-build-project.json
 ```
 
-### Step 7.8: Modify CodePipeline Input File
+### Step 7.9: Modify CodePipeline Input File
 Replace:
 - roleArn = REPLACE_ME_CODEPIPELINE_ROLE_ARN
 - location = REPLACE_ME_ARTIFACTS_BUCKET_NAME
 ```
-$ vi ~/environment/modern-app-workshop/aws-cli/code-pipeline.json
+$ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
 
-### Step 7.9: Create a pipeline in CodePipeline
+### Step 7.10: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
---cli-input-json file://~/environment/modern-app-workshop/aws-cli/code-pipeline.json
+--cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ```
 
-### Step 7.10: Modify ECR Policy
+### Step 7.11: Modify ECR Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN = arn:aws:iam::486051038643:role/MythicalMysfitsServiceCodeBuildServiceRole
 ```
-$ vi ~/environment/modern-app-workshop/aws-cli/ecr-policy.json
+$ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 ```
 
-### Step 7.11: Enable automated Access to the ECR Image Repository
+### Step 7.12: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
 --repository-name mythicalmysfits/service \
---policy-text file://~/environment/modern-app-workshop/aws-cli/ecr-policy.json
+--policy-text file://~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 ```
 
-### Step 7.12: Configure Git
+### Step 7.13: Configure Git
 ```
 $ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
 $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
@@ -920,22 +1138,22 @@ $ git config --global credential.UseHttpPath true
 $ cd ~/environment/
 ```
 
-### Step 7.13: Clone Repository
+### Step 7.14: Clone Repository
 ```
 $ git clone https://git-codecommit.ap-southeast-1.amazonaws.com/v1/repos/MythicalMysfitsService-Repository
 ```
 
-### Step 7.14: Copy the application files into our repository directory
+### Step 7.15: Copy the application files into our repository directory
 ```
-$ cp -r ~/environment/modern-app-workshop/app/* ~/environment/MythicalMysfitsService-Repository/
+$ cp -r ~/environment/calculator-rest-api/app/* ~/environment/MythicalMysfitsService-Repository/
 ```
 
-### Step 7.15: Make a small code change
+### Step 7.16: Make a small code change
 ```
 $ vi ~/environment/MythicalMysfitsService-Repository/service/mysfits-response.json
 ```
 
-### Step 7.16: Push the Code Change
+### Step 7.17: Push the Code Change
 ```
 $ cd ~/environment/MythicalMysfitsService-Repository/
 $ git add .
