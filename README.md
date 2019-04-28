@@ -264,7 +264,7 @@ flask
 
 ### Step 1.5: Run Locally and Test
 ```
-$ chmod a+x calculator.py
+$ chmod a+x app.py
 $ ./app.py
 $ curl http://localhost:5000
 ```
@@ -311,6 +311,12 @@ class CalculatorTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+```
+
+### Step 1.7: Run Unit Tests
+```
+$ chmod a+x CalculatorTest.py
+$ ./CalculatorTest.py -v
 ```
 
 ### Step 1.7: Create the Dockerfile
