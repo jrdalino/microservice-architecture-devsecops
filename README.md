@@ -85,38 +85,77 @@ POST        | http://[hostname]/factorial {"argument1":a }                | Get 
 
 ### Step 1.1: Create and Navigate to Directory
 ```
-$ mkdir calculator-rest-api
-$ cd calculator-rest-api
+$ cd ~/environment
+$ mkdir calculator-backend
+$ cd calculator-backend
 $ virtualenv flask
 $ flask/bin/pip install flask
 ```
 
-## Step 1.2 Add Calculator.py
-
-### Step 1.2: Add app.py
+### Step 1.2 Create Calculator Class Calculator.py
 ```
-$ vi calculator.py
+$ vi Calculator.py
+```
+```
+#!/usr/bin/env python
+import math
+
+class Calculator:
+    def __init__(self):
+        pass
+
+    def add(self, arg1, arg2):
+        return float(arg1) + float(arg2)
+
+    def subtract(self, arg1, arg2):
+        return float(arg1) - float(arg2)
+
+    def multiply(self, arg1, arg2):
+        return float(arg1) * float(arg2)
+
+    def divide(self, arg1, arg2):
+        return float(arg1) / (arg2)
+
+    def sqrt(self, arg1):
+        return math.sqrt(float(arg1))
+
+    def cbrt(self, arg1):
+        return round(float(arg1)**(1.0/3))
+
+    def exp(self, arg1, arg2):
+        return float(arg1) ** float(arg2)
+
+    def factorial(self, arg1):
+       if arg1 == 1:
+          return arg1
+       else:
+          return float(arg1)*self.factorial(float(arg1)-1)
+```
+
+### Step 1.3: Add app.py
+```
+$ vi app.py
 ```
 ```
 #!/usr/bin/env python
 from flask import (Flask, jsonify, request, abort, render_template)
-import math
+from Calculator import Calculator
 
 app = Flask(__name__)
 
 @app.route('/')
 def index_page():
     return "This is a RESTful Calculator App built with Python Flask!"
-#    return render_template('index.html')
 
 @app.route('/add', methods=['POST'])
 def add_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        arg2 = float(request.json['argument2'])
-        answer = arg1 + arg2
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        calculator = Calculator()
+        answer = calculator.add(arg1, arg2)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -126,9 +165,10 @@ def subtract_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        arg2 = float(request.json['argument2'])
-        answer = arg1 - arg2
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        calculator = Calculator()
+        answer = calculator.subtract(arg1, arg2)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -138,9 +178,10 @@ def multiply_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        arg2 = float(request.json['argument2'])
-        answer = arg1 * arg2
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        calculator = Calculator()
+        answer = calculator.multiply(arg1, arg2)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -150,9 +191,10 @@ def divide_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        arg2 = float(request.json['argument2'])
-        answer = arg1 / arg2
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        calculator = Calculator()
+        answer = calculator.divide(arg1, arg2)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -164,8 +206,9 @@ def sqrt_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        answer = math.sqrt(arg1)
+        arg1 = request.json['argument1']
+        calculator = Calculator()
+        answer = calculator.sqrt(arg1)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -175,8 +218,9 @@ def cbrt_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        answer = round(arg1**(1.0/3))
+        arg1 = request.json['argument1']
+        calculator = Calculator()        
+        answer = calculator.cbrt(arg1)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -186,9 +230,10 @@ def exponent_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        arg2 = float(request.json['argument2'])
-        answer = arg1 ** arg2
+        arg1 = request.json['argument1']
+        arg2 = request.json['argument2']
+        calculator = Calculator()        
+        answer = calculator.exp(arg1, arg2)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -198,23 +243,18 @@ def factorial_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = float(request.json['argument1'])
-        answer = recur_factorial(arg1)
+        arg1 = request.json['argument1']
+        calculator = Calculator()          
+        answer = calculator.factorial(arg1)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
-
-def recur_factorial(n):
-   if n == 1:
-       return n
-   else:
-       return n*recur_factorial(n-1)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 ```
 
-### Step 1.3: Create the requirements.txt file
+### Step 1.4: Create the requirements.txt file
 ```
 $ vi requirements.txt
 ```
@@ -222,28 +262,68 @@ $ vi requirements.txt
 flask
 ```
 
-### Step 1.4: Run Locally and Test
+### Step 1.5: Run Locally and Test
 ```
 $ chmod a+x calculator.py
-$ ./calculator.py
+$ ./app.py
 $ curl http://localhost:5000
 ```
 
-### Step 1.5: (TODO) Backend Unit Tests
-- References: http://liangshang.github.io/2014/01/17/a-simple-calculator-by-python-and-tdd
+### Step 1.6: (TODO) Backend Unit Tests
+```
+$ vi CalculatorTest.py
+```
+```
+#!/usr/bin/env python
+import unittest
+from Calculator import Calculator
 
+class CalculatorTest(unittest.TestCase):
+    calculator = Calculator()
+    
+    def test_add(self):
+        self.assertEqual(4, self.calculator.add(2,2))
 
-### Step 1.6: Create the Dockerfile
+    def test_subtract(self):
+        self.assertEqual(2, self.calculator.subtract(3,1))
+        self.assertEqual(-2, self.calculator.subtract(1,3))
+
+    def test_multiply(self):
+        self.assertEqual(12, self.calculator.multiply(3,4))
+        self.assertEqual(13.5, self.calculator.multiply(3,4.5))
+
+    def test_divide(self):
+        self.assertEqual(3, self.calculator.divide(9,3))
+        with self.assertRaises(ZeroDivisionError):
+            self.calculator.divide(3,0) 
+    
+    def test_sqrt(self):
+        self.assertEqual(4, self.calculator.sqrt(16))
+
+    def test_cbrt(self):
+        self.assertEqual(4, self.calculator.cbrt(64))
+
+    def test_exp(self):
+        self.assertEqual(32, self.calculator.exp(2,5))
+
+    def test_factorial(self):
+        self.assertEqual(120, self.calculator.factorial(5))
+
+if __name__ == "__main__":
+    unittest.main()
+```
+
+### Step 1.7: Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
 ```
 FROM python:2.7
-COPY . /calculator
-WORKDIR /calculator
+COPY . /app
+WORKDIR /app
 RUN pip install -r requirements.txt
 ENTRYPOINT ["python"]
-CMD ["calculator.py"]
+CMD ["app.py"]
 ```
 
 ### Step 1.7: Build, Tag and Run the Docker Image locally
@@ -252,8 +332,8 @@ Replace:
 - Region: us-east-1
 
 ```
-$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
-$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
+$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
+$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
 ### Step 1.8: Test Math Operations
@@ -289,8 +369,21 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":12, "argu
 }
 ```
 
-- TODO: Test Square Root
-- TODO: Test Cube Root
+- Test Square Root
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":9 }' http://localhost:5000/sqrt
+{
+  "answer": 3
+}
+```
+
+- Test Cube Root
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":64 }' http://localhost:5000/cbrt
+{
+  "answer": 4
+}
+```
 
 - Test Power
 ```
@@ -300,12 +393,17 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argum
 }
 ```
 
-- TODO: Test Factorial
-
+- Test Factorial
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http://localhost:5000/factorial
+{
+  "answer": 120
+}
+```
 
 ### Step 1.9: Create the ECR Repository
 ```
-$ aws ecr create-repository --repository-name jrdalino/calculator-rest-api
+$ aws ecr create-repository --repository-name jrdalino/calculator-backend
 ```
 
 OUTPUT
@@ -313,10 +411,10 @@ OUTPUT
 {
     "repository": {
         "registryId": "707538076348", 
-        "repositoryName": "jrdalino/calculator-rest-api", 
-        "repositoryArn": "arn:aws:ecr:us-east-1:707538076348:repository/jrdalino/calculator-rest-api", 
+        "repositoryName": "jrdalino/calculator-backend", 
+        "repositoryArn": "arn:aws:ecr:us-east-1:707538076348:repository/jrdalino/calculator-backend", 
         "createdAt": 1556234899.0, 
-        "repositoryUri": "707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api"
+        "repositoryUri": "707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend"
     }
 }
 ```
@@ -333,12 +431,12 @@ $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-r
 
 ### Step 1.12: Validate Image has been pushed
 ```
-$ aws ecr describe-images --repository-name jrdalino/calculator-rest-api:latest
+$ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
 ```
 
 ### (Optional) Clean up
 ```
-$ aws ecr delete-repository --repository-name jrdalino/calculator-rest-api --force
+$ aws ecr delete-repository --repository-name jrdalino/calculator-backend --force
 ```
 
 ## Module 2: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
@@ -722,7 +820,7 @@ $ eksctl delete cluster --name=calculator-eksctl
 
 ### Step 5.1: Create our deployment.yaml file
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ mkdir kubernetes
 $ cd kubernetes
 $ vi deployment.yaml
@@ -732,15 +830,15 @@ $ vi deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: calculator-rest-api
+  name: calculator-backend
   labels:
-    app: calculator-rest-api
+    app: calculator-backend
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: calculator-rest-api
+      app: calculator-backend
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -749,12 +847,12 @@ spec:
   template:
     metadata:
       labels:
-        app: calculator-rest-api
+        app: calculator-backend
     spec:
       containers:
-      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
+      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
         imagePullPolicy: Always
-        name: calculator-rest-api
+        name: calculator-backend
         ports:
         - containerPort: 5000
           protocol: TCP
@@ -762,7 +860,7 @@ spec:
 
 ### Step 5.2: Create our service.yaml file
 ```
-$ cd ~/environment/calculator-rest-api/kubernetes
+$ cd ~/environment/calculator-backend/kubernetes
 $ vi service.yaml
 ```
 
@@ -770,10 +868,10 @@ $ vi service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: calculator-rest-api
+  name: calculator-backend
 spec:
   selector:
-    app: calculator-rest-api
+    app: calculator-backend
   type: LoadBalancer
   ports:
    -  protocol: TCP
@@ -783,22 +881,22 @@ spec:
 
 ### Step 5.3: Deploy our Backend REST API and watch progress
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ kubectl apply -f kubernetes/deployment.yaml
 $ kubectl apply -f kubernetes/service.yaml
-$ kubectl get deployment calculator-rest-api
+$ kubectl get deployment calculator-backend
 ```
 
 ### Step 5.4: Scale the Backend Service
 ```
 $ kubectl get deployments
-$ kubectl scale deployment calculator-rest-api --replicas=3
+$ kubectl scale deployment calculator-backend --replicas=3
 $ kubectl get deployments
 ```
 
 ### (Optional) Clean up
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ kubectl delete -f kubernetes/service.yaml
 $ kubectl delete -f kubernetes/deployment.yaml
 ```
@@ -843,7 +941,7 @@ spec:
           protocol: TCP
         env:
         - name: REST_API_URL
-          value: "http://calculator-rest-api.default.svc.cluster.local/calculator-rest-api"
+          value: "http://calculator-backend.default.svc.cluster.local/calculator-backend"
 ```
 
 ### Step 6.2: Create our service.yaml file
@@ -909,7 +1007,7 @@ $ aws s3 mb s3://jrdalino-calculator-artifacts
 
 ### Step 7.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ mkdir cfn
 $ vi eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
@@ -1029,9 +1127,9 @@ Replace:
 - ArtifactsBucketName
 
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ mkdir aws-cli
-$ vi ~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
+$ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
 ```
@@ -1082,14 +1180,14 @@ Replace:
 ```
 $ aws s3api put-bucket-policy \
 --bucket jrdalino-calculator-artifacts \
---policy file://~/environment/calculator-rest-api/aws-cli/artifacts-bucket-policy.json
+--policy file://~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
 ### Step 7.5: View/Modify Buildspec file
 ```
-$ cd ~/environment/calculator-rest-api
+$ cd ~/environment/calculator-backend
 $ mkdir app
-$ vi ~/environment/calculator-rest-api/app/buildspec.yml
+$ vi ~/environment/calculator-backend/app/buildspec.yml
 ```
 
 ```
@@ -1113,22 +1211,22 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t jrdalino/calculator-rest-api:latest .
+      - docker build -t jrdalino/calculator-backend:latest .
       # Tag the built docker image using the appropriate Amazon ECR endpoint and relevant
       # repository for our service container. This ensures that when the docker push
       # command is executed later, it will be pushed to the appropriate repository.
-      - docker tag jrdalino/calculator-rest-api:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest
+      - docker tag jrdalino/calculator-backend:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image..
       # Push the image to ECR.
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest
       - echo Completed pushing Docker image. Deploying Docker image to AWS Fargate on `date`
       # Create a artifacts file that contains the name and location of the image
       # pushed to ECR. This will be used by AWS CodePipeline to automate
       # deployment of this specific container to Amazon ECS.
-      - printf '[{"name":"Calculator-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-rest-api:latest > imagedefinitions.json
+      - printf '[{"name":"Calculator-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest > imagedefinitions.json
 artifacts:
   # Indicate that the created imagedefinitions.json file created on the previous
   # line is to be referenceable as an artifact of the build execution job.
@@ -1141,7 +1239,7 @@ Replace:
 - REPLACE_ME_REGION
 - REPLACE_ME_CODEBUILD_ROLE_ARN
 ```
-$ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
+$ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
 
 ```
@@ -1169,7 +1267,7 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
   "serviceRole": "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole",
   "source": {
     "type": "CODECOMMIT",
-    "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api"
+    "location": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend"
   }
 }
 ```
@@ -1177,13 +1275,13 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-build-project.json
 ### Step 7.7: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
---cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-build-project.json
+--cli-input-json file://~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
 
 ### Step 7.8: Modify CodePipeline Input File
 Replace:
 ```
-$ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
+$ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
 ```
@@ -1213,7 +1311,7 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
               ],
               "configuration": {
                 "BranchName": "master",
-                "RepositoryName": "calculator-rest-api"
+                "RepositoryName": "calculator-backend"
               },
               "runOrder": 1
             }
@@ -1259,14 +1357,14 @@ $ vi ~/environment/calculator-rest-api/aws-cli/code-pipeline.json
 ### Step 7.9: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
---cli-input-json file://~/environment/calculator-rest-api/aws-cli/code-pipeline.json
+--cli-input-json file://~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
 ### Step 7.10: Modify ECR Policy
 Replace: CodeBuild Role ARN
 
 ```
-$ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
+$ vi ~/environment/calculator-backend/aws-cli/ecr-policy.json
 ```
 
 ```
@@ -1297,8 +1395,8 @@ $ vi ~/environment/calculator-rest-api/aws-cli/ecr-policy.json
 ### Step 7.11: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
---repository-name jrdalino/calculator-rest-api \
---policy-text file://~/environment/calculator-rest-api/aws-cli/ecr-policy.json
+--repository-name jrdalino/calculator-backend \
+--policy-text file://~/environment/calculator-backend/aws-cli/ecr-policy.json
 ```
 
 ### Step 7.12: Make a small code change and push changes
