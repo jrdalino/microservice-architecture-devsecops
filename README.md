@@ -91,7 +91,9 @@ $ virtualenv flask
 $ flask/bin/pip install flask
 ```
 
-### Step 1.2: Add calculator.py
+## Step 1.2 Add Calculator.py
+
+### Step 1.2: Add app.py
 ```
 $ vi calculator.py
 ```
@@ -501,7 +503,7 @@ function calcListener ( jQuery ) {
             // Makes an ajax call to url "resource" supplying arg1 and arg2
             $.ajax({
                 type: "POST",
-                url: resource,
+                url: "/api/"+ resource,
                 data: JSON.stringify({ argument1: arg1, argument2: arg2 }),
                 dataType: "json",
                 success: function ( data ) {
@@ -542,6 +544,17 @@ server {
     location / {
         root   /usr/share/nginx/html;
         index  index.html index.htm;
+    }
+    
+    location /api {
+        proxy_pass_request_headers on;
+	proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_ssl_session_reuse off;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://calculator-rest-api.service:5000
     }
 
     error_page   500 502 503 504  /50x.html;
