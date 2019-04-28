@@ -54,7 +54,7 @@ $ aws codecommit create-repository \
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api
 ```
 
-### Step 0.4: Push the Code Change
+### Step 0.4: Push initial
 ```
 $ git add .
 $ git commit -m "Initial"
@@ -112,8 +112,8 @@ def add_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = request.json['argument1']
-        arg2 = request.json['argument2']
+        arg1 = float(request.json['argument1'])
+        arg2 = float(request.json['argument2'])
         answer = arg1 + arg2
         return (jsonify({'answer':answer}), 200)
     except KeyError:
@@ -124,8 +124,8 @@ def subtract_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = request.json['argument1']
-        arg2 = request.json['argument2']
+        arg1 = float(request.json['argument1'])
+        arg2 = float(request.json['argument2'])
         answer = arg1 - arg2
         return (jsonify({'answer':answer}), 200)
     except KeyError:
@@ -136,8 +136,8 @@ def multiply_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = request.json['argument1']
-        arg2 = request.json['argument2']
+        arg1 = float(request.json['argument1'])
+        arg2 = float(request.json['argument2'])
         answer = arg1 * arg2
         return (jsonify({'answer':answer}), 200)
     except KeyError:
@@ -148,32 +148,65 @@ def divide_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = request.json['argument1']
-        arg2 = request.json['argument2']
+        arg1 = float(request.json['argument1'])
+        arg2 = float(request.json['argument2'])
         answer = arg1 / arg2
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
     except ZeroDivisionError:
         abort(400)
-        
-# TODO Square Root
 
-# TODO Cube Root
-        
+@app.route('/sqrt', methods=['POST'])
+def sqrt_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = float(request.json['argument1'])
+        answer = math.sqrt(arg1)
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
+@app.route('/cbrt', methods=['POST'])
+def cbrt_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = float(request.json['argument1'])
+        answer = round(arg1**(1.0/3))
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
 @app.route('/exp', methods=['POST'])
 def exponent_args():
     if not request.json:
         abort(400)
     try:
-        arg1 = request.json['argument1']
-        arg2 = request.json['argument2']
+        arg1 = float(request.json['argument1'])
+        arg2 = float(request.json['argument2'])
         answer = arg1 ** arg2
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
 
-# TODO Factorial
+@app.route('/factorial', methods=['POST'])
+def factorial_args():
+    if not request.json:
+        abort(400)
+    try:
+        arg1 = float(request.json['argument1'])
+        answer = recur_factorial(arg1)
+        return (jsonify({'answer':answer}), 200)
+    except KeyError:
+        abort(400)
+
+def recur_factorial(n):
+   if n == 1:
+       return n
+   else:
+       return n*recur_factorial(n-1)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
