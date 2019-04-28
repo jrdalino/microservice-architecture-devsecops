@@ -319,7 +319,7 @@ $ chmod a+x CalculatorTest.py
 $ ./CalculatorTest.py -v
 ```
 
-### Step 1.7: Create the Dockerfile
+### Step 1.8: Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -332,7 +332,7 @@ ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
 
-### Step 1.7: Build, Tag and Run the Docker Image locally
+### Step 1.9: Build, Tag and Run the Docker Image locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -342,7 +342,7 @@ $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calcul
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 1.8: Test Math Operations
+### Step 1.10: Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -407,7 +407,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http
 }
 ```
 
-### Step 1.9: Create the ECR Repository
+### Step 1.11: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-backend
 ```
@@ -425,17 +425,17 @@ OUTPUT
 }
 ```
 
-### Step 1.10: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 1.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 1.11: Push our Docker Image
+### Step 1.13: Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 1.12: Validate Image has been pushed
+### Step 1.14: Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
 ```
