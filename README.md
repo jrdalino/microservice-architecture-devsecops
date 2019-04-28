@@ -46,12 +46,12 @@ $ cd ~/environment/
 ### Step 0.2: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository \
---repository-name calculator-rest-api
+--repository-name calculator-backend
 ```
 
 ### Step 0.3: Clone the repository
 ```
-$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-rest-api
+$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend
 ```
 
 ### Step 0.4: Push initial
