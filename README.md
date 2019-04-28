@@ -432,7 +432,7 @@ $ $(aws ecr get-login --no-include-email)
 
 ### Step 1.11: Push our Docker Image
 ```
-$ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-rest-api:latest
+$ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
 ### Step 1.12: Validate Image has been pushed
@@ -658,7 +658,7 @@ server {
         proxy_ssl_session_reuse off;
         proxy_set_header Host $http_host;
         proxy_redirect off;
-        proxy_pass http://calculator-rest-api.service:5000
+        proxy_pass http://calculator-backend.service:5000
     }
 
     error_page   500 502 503 504  /50x.html;
@@ -1543,7 +1543,7 @@ metadata:
 spec:
   containers:
   - name: liveness
-    image: jrdalino/calculator-rest-api
+    image: jrdalino/calculator-backend
     livenessProbe:
       httpGet:
         path: /health
