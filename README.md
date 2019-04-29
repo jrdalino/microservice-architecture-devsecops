@@ -32,6 +32,49 @@ $ mkdir environment
 $ cd ~/environment
 ```
 
+Backend Project Layout will look like this:
+```
+~/environment/calculator-backend
+├── app/
+│   └── buildspec.yml
+├── aws-cli/
+│   └── artifacts-bucket-policy.json
+│   └── code-build-project.json
+├── cfn/
+│   └── eks-calculator-codebuild-codepipeline-iam-role.yml
+├── flaskr/
+│   ├── __init__.py
+│   ├── app.py
+│   └── calculator.py
+├── kubernetes/
+│   ├── deployment.yml
+│   └── service.yml
+├── requirements.txt
+├── tests/
+│   └── test_calculator.py
+├── venv/
+├── Dockerfile
+└── .gitignore
+```
+
+Frontend Project Layout will look like this:
+```
+~/environment/calculator-backend
+├── flaskr/
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── auth/
+│   │   │   ├── login.html
+│   │   │   └── register.html
+│   │   └── blog/
+│   │       ├── index.html
+│   └── static/
+│       └── style.css
+│       └── js.css
+├── tests/
+└── MANIFEST.in
+```
+
 ## Module 1: Configure Calculator Backend Git Repository
 
 ### Step 1.1: Configure Git
@@ -67,7 +110,7 @@ $ git push origin master
 
 ### (Optional) Clean up
 ```
-aws codecommit delete-repository \
+$ aws codecommit delete-repository \
 --repository-name calculator-backend
 ```
 
@@ -89,58 +132,19 @@ POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
-Backend Project Layout will look like this:
-```
-~/environment/calculator-backend
-├── app/
-│   └── buildspec.yml
-├── aws-cli/
-│   └── artifacts-bucket-policy.json
-│   └── code-build-project.json
-├── cfn/
-│   └── eks-calculator-codebuild-codepipeline-iam-rolew.yml
-├── flaskr/
-│   ├── __init__.py
-│   ├── app.py
-│   └── calculator.py
-├── kubernetes/
-│   ├── deploymeny.yml
-│   └── service.yml
-├── requirements.txt
-├── tests/
-│   └── test_calculator.py
-├── venv/
-├── Dockerfile
-└── .gitignore
-```
-
-Frontend Project Layout will look like this:
-```
-~/environment/calculator-backend
-├── flaskr/
-│   ├── templates/
-│   │   ├── base.html
-│   │   ├── auth/
-│   │   │   ├── login.html
-│   │   │   └── register.html
-│   │   └── blog/
-│   │       ├── index.html
-│   └── static/
-│       └── style.css
-│       └── js.css
-├── tests/
-└── MANIFEST.in
-```
-
 ### Step 2.1: Navigate to working directory
 ```
+$ cd calculator-backend
 $ virtualenv venv
 $ venv/bin/pip install flask
 ```
 
 ### Step 2.2 Create Calculator Class Calculator.py
 ```
-$ vi Calculator.py
+$ cd calculator-backend
+$ mkdir flaskr
+$ cd flaskr
+$ vi calculator.py
 ```
 ```
 #!/usr/bin/env python
@@ -180,12 +184,13 @@ class Calculator:
 
 ### Step 2.3: Add app.py
 ```
+$ cd ~/environment/calculator-backend/flaskr
 $ vi app.py
 ```
 ```
 #!/usr/bin/env python
 from flask import (Flask, jsonify, request, abort, render_template)
-from Calculator import calculator
+from calculator import Calculator
 
 app = Flask(__name__)
 
@@ -302,6 +307,7 @@ if __name__ == '__main__':
 
 ### Step 2.4: Create the requirements.txt file
 ```
+$ cd ~/environment/calculator-backend
 $ vi requirements.txt
 ```
 ```
@@ -318,12 +324,15 @@ $ curl http://localhost:5000
 
 ### Step 2.6: (TODO) Backend Unit Tests
 ```
-$ vi CalculatorTest.py
+$ cd ~/environment/calculator-backend
+$ mkdir tests
+$ tests
+$ vi test_calculator.py
 ```
 ```
 #!/usr/bin/env python
 import unittest
-from Calculator import Calculator
+from calculator import Calculator
 
 class CalculatorTest(unittest.TestCase):
     calculator = Calculator()
@@ -362,8 +371,8 @@ if __name__ == "__main__":
 
 ### Step 2.7: Run Unit Tests
 ```
-$ chmod a+x CalculatorTest.py
-$ ./CalculatorTest.py -v
+$ chmod a+x test_calculator.py
+$ ./test_calculator.py -v
 ```
 
 ### Step 2.8 Save changes to remote git repository
