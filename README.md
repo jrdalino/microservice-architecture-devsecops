@@ -92,7 +92,7 @@ POST        | http://[hostname]/factorial {"argument1":a }                | Get 
 ### Step 2.1: Navigate to working directory
 ```
 $ virtualenv venv
-$ flask/bin/pip install flask
+$ venv/bin/pip install flask
 ```
 
 ### Step 2.2 Create Calculator Class Calculator.py
@@ -142,7 +142,7 @@ $ vi app.py
 ```
 #!/usr/bin/env python
 from flask import (Flask, jsonify, request, abort, render_template)
-from Calculator import Calculator
+from Calculator import calculator
 
 app = Flask(__name__)
 
