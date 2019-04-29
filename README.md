@@ -91,7 +91,7 @@ POST        | http://[hostname]/factorial {"argument1":a }                | Get 
 
 ### Step 2.1: Navigate to working directory
 ```
-$ virtualenv flask
+$ virtualenv venv
 $ flask/bin/pip install flask
 ```
 
