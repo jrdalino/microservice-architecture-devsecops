@@ -325,6 +325,7 @@ $ ./CalculatorTest.py -v
 
 ### Step 2.8 Save changes to remote git repository
 ```
+$ ECHO venv >> .gitignore
 $ git add --all
 $ git commit -m "Initial"
 $ git push origin master
