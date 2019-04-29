@@ -32,9 +32,9 @@ $ mkdir environment
 $ cd ~/environment
 ```
 
-## Module 0: Configure Git Repository
+## Module 1: Configure Calculator Backend Git Repository
 
-### Step 0.1: Configure Git
+### Step 1.1: Configure Git
 ```
 $ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
 $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
@@ -43,32 +43,35 @@ $ git config --global credential.UseHttpPath true
 $ cd ~/environment/
 ```
 
-### Step 0.2: Create a CodeCommit Repository
+### Step 1.2: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository \
 --repository-name calculator-backend
 ```
 
-### Step 0.3: Clone the repository
+### Step 1.3: Clone the repository
 ```
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend
 ```
 
-### Step 0.4: Push initial
+### Step 1.4: Test access to repo by adding README.md file and push to remote repository
 ```
+$ vi README.md
 $ git add .
-$ git commit -m "Initial"
+$ git commit -m "Adding README.md"
 $ git push origin master
 ```
 
-## Module 1: Backend Python Flask Rest API for Calculator Local
+### (Optional) Clean up
+```
+aws codecommit delete-repository \
+--repository-name calculator-backend
+```
+
+## Module 2: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
 - Advanced calculations (square root, cube root, power, factorial)
 - Calculator triggered by developers via a web api
-- References: 
-- https://github.com/ajportier/rest-calculator
-- https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
-- TODO: Use Flask-RESTful https://blog.miguelgrinberg.com/post/designing-a-restful-api-using-flask-restful
 
 ```
 HTTP METHOD | URI                                                         | Action
@@ -83,16 +86,14 @@ POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
 
-### Step 1.1: Create and Navigate to Directory
+### Step 2.1: Navigate to working directory
 ```
-$ cd ~/environment
-$ mkdir calculator-backend
-$ cd calculator-backend
+$ cd ~/environment/calculator-backend
 $ virtualenv flask
 $ flask/bin/pip install flask
 ```
 
-### Step 1.2 Create Calculator Class Calculator.py
+### Step 2.2 Create Calculator Class Calculator.py
 ```
 $ vi Calculator.py
 ```
@@ -132,7 +133,7 @@ class Calculator:
           return float(arg1)*self.factorial(float(arg1)-1)
 ```
 
-### Step 1.3: Add app.py
+### Step 2.3: Add app.py
 ```
 $ vi app.py
 ```
@@ -254,22 +255,23 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 ```
 
-### Step 1.4: Create the requirements.txt file
+### Step 2.4: Create the requirements.txt file
 ```
 $ vi requirements.txt
 ```
 ```
 flask
+flask_restful
 ```
 
-### Step 1.5: Run Locally and Test
+### Step 2.5: Run Locally and Test
 ```
 $ chmod a+x app.py
 $ ./app.py
 $ curl http://localhost:5000
 ```
 
-### Step 1.6: (TODO) Backend Unit Tests
+### Step 2.6: (TODO) Backend Unit Tests
 ```
 $ vi CalculatorTest.py
 ```
@@ -313,13 +315,13 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-### Step 1.7: Run Unit Tests
+### Step 2.7: Run Unit Tests
 ```
 $ chmod a+x CalculatorTest.py
 $ ./CalculatorTest.py -v
 ```
 
-### Step 1.8: Create the Dockerfile
+### Step 2.8: Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -332,7 +334,7 @@ ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
 
-### Step 1.9: Build, Tag and Run the Docker Image locally
+### Step 2.9: Build, Tag and Run the Docker Image locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -342,7 +344,7 @@ $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calcul
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 1.10: Test Math Operations
+### Step 2.10: Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -359,7 +361,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":4, "argum
 }
 ```
 
-- Test Mulitply
+- Test Multiply
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":3 }' http://localhost:5000/multiply
 {
@@ -407,37 +409,31 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http
 }
 ```
 
-### Step 1.11: Create the ECR Repository
+### Step 2.11: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-backend
 ```
 
-OUTPUT
-```
-{
-    "repository": {
-        "registryId": "707538076348", 
-        "repositoryName": "jrdalino/calculator-backend", 
-        "repositoryArn": "arn:aws:ecr:us-east-1:707538076348:repository/jrdalino/calculator-backend", 
-        "createdAt": 1556234899.0, 
-        "repositoryUri": "707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend"
-    }
-}
-```
-
-### Step 1.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 2.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 1.13: Push our Docker Image
+### Step 2.13: Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 1.14: Validate Image has been pushed
+### Step 2.14: Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
+```
+
+### Step 2.15: Save changes to remote git repository
+```
+$ git add .
+$ git commit -m "Initial"
+$ git push origin master
 ```
 
 ### (Optional) Clean up
@@ -445,10 +441,29 @@ $ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
 $ aws ecr delete-repository --repository-name jrdalino/calculator-backend --force
 ```
 
-## Module 2: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
+## Module 3: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
 
-### Step 2.1: Create and Navigate to Directory
+### Step 3.1: Configure Calculator Front Git Repository
+```
+$ aws codecommit create-repository \
+--repository-name calculator-frontend
+```
+
+### Step 3.2: Clone the repository
+```
+$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend
+```
+
+### Step 3.3: Test access to repo by adding README.md file and push to remote repository
+```
+$ vi README.md
+$ git add .
+$ git commit -m "Adding README.md"
+$ git push origin master
+```
+
+### Step 3.4: Create and Navigate to Directory
 ```
 $ mkdir calculator-frontend
 $ cd calculator-frontend
@@ -462,7 +477,7 @@ $ cd js
 $ touch querycalc.js
 ```
 
-### Step 2.2: Create index.html file
+### Step 3.5: Create index.html file
 ```
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -507,7 +522,7 @@ $ touch querycalc.js
 </html>
 ```
 
-### Step 2.3: Create base.css file
+### Step 3.6: Create base.css file
 ```
 body {
     margin: 0;
@@ -547,7 +562,7 @@ body {
 }
 ```
 
-### Step 2.4: Create querycalc.js file
+### Step 3.7: Create querycalc.js file
 ```
 function calcListener ( jQuery ) {
     console.log( "READY!" );
@@ -636,7 +651,7 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Step 2.5: Add default.conf file
+### Step 3.8: Add default.conf file
 ```
 $ vi default.conf
 ```
@@ -668,10 +683,9 @@ server {
 }
 ```
 
-### Step 2.6: (TODO) Frontend Unit Tests
-- References: TBD
+### Step 3.9: (TODO) Frontend Unit Tests
 
-### Step 2.7: Create the Docker File
+### Step 3.10: Create the Docker File
 ```
 $ vi Dockerfile
 ```
@@ -681,7 +695,7 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY . /usr/share/nginx/html
 ```
 
-### Step 2.8: Build, Tag and Run the Docker Image Locally
+### Step 3.11: Build, Tag and Run the Docker Image Locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -689,37 +703,41 @@ Replace:
 $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
-### Step 2.9: Test functionality
+### Step 3.12: Test functionality
 ```
 $ curl http://localhost:8080
 ```
 
-### Step 2.10: Create the ECR Repository
+### Step 3.13: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-frontend
 ```
 
-### Step 2.11: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 3.14: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 2.12 Push our Docker Image
+### Step 3.15 Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
 
-### Step 2.13 Validate Image has been pushed
+### Step 3.16 Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
 ```
 
 ### (Optional) Clean up
 ```
-$ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --force
+$ aws ecr delete-repository \
+--repository-name jrdalino/calculator-frontend --force
+
+$ aws codecommit delete-repository \
+--repository-name calculator-frontend
 ```
 
-## Module 3: Install Kubernetes Tools
+## Module 4: Install Kubernetes Tools
 
 ### Step 3.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
