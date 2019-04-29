@@ -56,11 +56,14 @@ $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-b
 
 ### Step 1.4: Test access to repo by adding README.md file and push to remote repository
 ```
+$ cd calculator-backend
 $ vi README.md
 $ git add .
 $ git commit -m "Adding README.md"
 $ git push origin master
 ```
+
+### Step 1.5 
 
 ### (Optional) Clean up
 ```
@@ -88,7 +91,6 @@ POST        | http://[hostname]/factorial {"argument1":a }                | Get 
 
 ### Step 2.1: Navigate to working directory
 ```
-$ cd ~/environment/calculator-backend
 $ virtualenv flask
 $ flask/bin/pip install flask
 ```
@@ -321,7 +323,14 @@ $ chmod a+x CalculatorTest.py
 $ ./CalculatorTest.py -v
 ```
 
-### Step 2.8: Create the Dockerfile
+### Step 2.8 Save changes to remote git repository
+```
+$ git add --all
+$ git commit -m "Initial"
+$ git push origin master
+```
+
+### Step 2.9: Create the Dockerfile
 ```
 $ vi Dockerfile
 ```
@@ -334,7 +343,7 @@ ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
 
-### Step 2.9: Build, Tag and Run the Docker Image locally
+### Step 2.10: Build, Tag and Run the Docker Image locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -344,7 +353,7 @@ $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calcul
 $ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 2.10: Test Math Operations
+### Step 2.11: Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -409,31 +418,24 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http
 }
 ```
 
-### Step 2.11: Create the ECR Repository
+### Step 2.12: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-backend
 ```
 
-### Step 2.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 2.13: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 2.13: Push our Docker Image
+### Step 2.14: Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
 ```
 
-### Step 2.14: Validate Image has been pushed
+### Step 2.15: Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
-```
-
-### Step 2.15: Save changes to remote git repository
-```
-$ git add .
-$ git commit -m "Initial"
-$ git push origin master
 ```
 
 ### (Optional) Clean up
