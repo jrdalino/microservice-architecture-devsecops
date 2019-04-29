@@ -88,6 +88,9 @@ POST        | http://[hostname]/cuberoot {"argument1":a }                 | Gets
 POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
+Project Layout will look like this:
+```
+```
 
 ### Step 2.1: Navigate to working directory
 ```
