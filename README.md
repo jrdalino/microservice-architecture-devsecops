@@ -88,8 +88,48 @@ POST        | http://[hostname]/cuberoot {"argument1":a }                 | Gets
 POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
-Project Layout will look like this:
+
+Backend Project Layout will look like this:
 ```
+~/environment/calculator-backend
+├── app/
+│   └── buildspec.yml
+├── aws-cli/
+│   └── artifacts-bucket-policy.json
+│   └── code-build-project.json
+├── cfn/
+│   └── eks-calculator-codebuild-codepipeline-iam-rolew.yml
+├── flaskr/
+│   ├── __init__.py
+│   ├── app.py
+│   └── calculator.py
+├── kubernetes/
+│   ├── deploymeny.yml
+│   └── service.yml
+├── requirements.txt
+├── tests/
+│   └── test_calculator.py
+├── venv/
+├── Dockerfile
+└── .gitignore
+```
+
+Frontend Project Layout will look like this:
+```
+~/environment/calculator-backend
+├── flaskr/
+│   ├── templates/
+│   │   ├── base.html
+│   │   ├── auth/
+│   │   │   ├── login.html
+│   │   │   └── register.html
+│   │   └── blog/
+│   │       ├── index.html
+│   └── static/
+│       └── style.css
+│       └── js.css
+├── tests/
+└── MANIFEST.in
 ```
 
 ### Step 2.1: Navigate to working directory
