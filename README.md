@@ -2156,5 +2156,5 @@ $ rm -rf ~/environment/iam_policy/
 # ************************************************************
 # ************************************************************
 
-## Module 16: Add additional feature
+## Module 18: Add additional feature
 - Additional killer feature of your choice
