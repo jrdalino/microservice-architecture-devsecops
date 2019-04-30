@@ -142,8 +142,6 @@ $ venv/bin/pip install flask
 ### Step 2.2 Create Calculator Class Calculator.py
 ```
 $ cd ~/environment/calculator-backend
-$ mkdir flaskr
-$ cd flaskr
 $ vi calculator.py
 ```
 ```
@@ -184,7 +182,7 @@ class Calculator:
 
 ### Step 2.3: Add app.py
 ```
-$ cd ~/environment/calculator-backend/flaskr
+$ cd ~/environment/calculator-backend
 $ vi app.py
 ```
 ```
@@ -317,7 +315,7 @@ flask_restful
 
 ### Step 2.5: Run Locally and Test
 ```
-$ cd ~/environment/calculator-backend/flaskr
+$ cd ~/environment/calculator-backend
 $ chmod a+x app.py
 $ ./app.py
 $ curl http://localhost:5000
@@ -326,8 +324,6 @@ $ curl http://localhost:5000
 ### Step 2.6: Backend Unit Tests
 ```
 $ cd ~/environment/calculator-backend
-$ mkdir tests
-$ cd flaskr
 $ vi test_calculator.py
 ```
 ```
@@ -513,15 +509,7 @@ $ aws codecommit create-repository --repository-name calculator-frontend
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-frontend
 ```
 
-### Step 3.3: Setup .gitignore
-```
-$ cd ~/environment/calculator-frontend
-$ vi .gitignore
-```
-```
-```
-
-### Step 3.4: Test access to repo by adding README.md file and push to remote repository
+### Step 3.3: Test access to repo by adding README.md file and push to remote repository
 ```
 $ cd ~/environment/calculator-frontend
 $ echo "calculator-frontend" >> README.md
