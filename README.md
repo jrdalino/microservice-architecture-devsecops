@@ -134,8 +134,8 @@ POST        | http://[hostname]/add {"argument1":a, "argument2":b }       | Adds
 POST        | http://[hostname]/subtract {"argument1":a, "argument2":b }  | Subracts two numbers (a - b)
 POST        | http://[hostname]/multiply {"argument1":a, "argument2":b }  | Multiplies two numbers (a * b)
 POST        | http://[hostname]/divide {"argument1":a, "argument2":b }    | Divides two numbers (a / b)
-POST        | http://[hostname]/squareroot {"argument1":a }               | Gets the square root of a number (a)
-POST        | http://[hostname]/cuberoot {"argument1":a }                 | Gets the cube root of a number (a)
+POST        | http://[hostname]/sqrt {"argument1":a }                     | Gets the square root of a number (a)
+POST        | http://[hostname]/cbrt {"argument1":a }                     | Gets the cube root of a number (a)
 POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
 POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
 ```
