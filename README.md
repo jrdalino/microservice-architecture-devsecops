@@ -1084,9 +1084,9 @@ $ kubectl get service calculator-backend -o wide
 
 ### (Optional) Clean up
 ```
-$ cd ~/environment/calculator-backend
-$ kubectl delete -f kubernetes/service.yaml
-$ kubectl delete -f kubernetes/deployment.yaml
+$ cd ~/environment/calculator-backend/kubernetes
+$ kubectl delete -f service.yaml
+$ kubectl delete -f deployment.yaml
 ```
 
 ### **************************************************************
@@ -1106,7 +1106,9 @@ $ cd ~/environment/calculator-frontend
 $ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-### Step 8.3: Test functionality of Calculator Frontend + Backend
+### Step 8.3 TODO Enable CORS
+
+### Step 8.4: Test functionality of Calculator Frontend + Backend
 
 ### **************************************************************
 ### **************************************************************
@@ -1520,7 +1522,7 @@ $ aws ecr set-repository-policy \
 # ************************************************************
 # ************************************************************
 
-## Module 10: (TODO) Setup CI/CD for Front End Service (Same as Module 10)
+## Module 10: (TODO) Setup CI/CD for Front End Service
 
 # ************************************************************
 # ************************************************************
