@@ -749,141 +749,13 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Step 4.5: Save changes to remote git repository
+### Step 4.5: Test Locally
+
+### Step 4.6: Save changes to remote git repository
 ```
 $ git add .
 $ git commit -m "Initial"
 $ git push origin master
-```
-
-## Module 5: Deploy Static Site
-
-### Step 5.1: Create an S3 Bucket for Storing Content
-```
-$ aws s3 mb s3://jrdalino-calculator-frontend
-```
-
-### Step 5.2: Create a CloudFront Access Identity
-```
-$ aws cloudfront create-cloud-front-origin-access-identity \
---cloud-front-origin-access-identity-config CallerReference=Calculator,Comment=Calculator
-```
-
-### Step 5.3: Create the S3 Bucket Policy Input File
-```
-$ mkdir aws-cli
-$ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
-```
-```
-{
-    "Version": "2008-10-17",
-    "Id": "PolicyForCloudFrontPrivateContent",
-    "Statement": [
-        {
-            "Sid": "1",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity EXZ8BOEUVCLQY"
-            },
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::jrdalino-calculator-frontend/*"
-        }
-    ]
-}
-```
-
-### Step 5.4: Add a public bucket policy to allow CloudFront
-```
-$ aws s3api put-bucket-policy \
---bucket jrdalino-calculator-frontend \
---policy file://~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
-```
-
-### Step 5.5: Publish the Website Content to S3
-```
-$ cd ~/environment/calculator-frontend
-$ aws s3 cp index.html s3://jrdalino-calculator-frontend/index.html
-$ aws s3 cp base.css s3://jrdalino-calculator-frontend/base.css
-$ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
-```
-
-### Step 5.6: Create the CloudFront Distribution input file
-```
-$ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
-```
-
-```
-{
-  "CallerReference": "Calculator",
-  "Aliases": {
-    "Quantity": 0
-  },
-  "DefaultRootObject": "index.html",
-  "Origins": {
-    "Quantity": 1,
-    "Items": [
-      {
-        "Id": "Calculator",
-        "DomainName": "jrdalino-calculator-frontend.s3.amazonaws.com",
-        "S3OriginConfig": {
-          "OriginAccessIdentity": "origin-access-identity/cloudfront/EXZ8BOEUVCLQY"
-        }
-      }
-    ]
-  },
-  "DefaultCacheBehavior": {
-    "TargetOriginId": "Calculator",
-    "ForwardedValues": {
-      "QueryString": true,
-      "Cookies": {
-        "Forward": "none"
-      }
-    },
-    "TrustedSigners": {
-      "Enabled": false,
-      "Quantity": 0
-    },
-    "ViewerProtocolPolicy": "allow-all",
-    "MinTTL": 0,
-    "MaxTTL": 0,
-    "DefaultTTL": 0
-  },
-  "CacheBehaviors": {
-    "Quantity": 0
-  },
-  "Comment": "",
-  "Logging": {
-    "Enabled": false,
-    "IncludeCookies": true,
-    "Bucket": "",
-    "Prefix": ""
-  },
-  "PriceClass": "PriceClass_All",
-  "Enabled": true
-}
-```
-
-### Step 5.7: Create CloudFront Distribution
-```
-$ aws cloudfront create-distribution \
---distribution-config file://~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
-```
-
-### Step 5.8: Check Status of CloudFront Distribution
-```
-$ aws cloudfront list-distributions
-```
-
-### Step 5.9: Test the Website
-```
-$ curl d5ny4mdta1kxt.cloudfront.net
-```
-
-### (Optional) Clean up
-```
-$ aws cloudfront delete-distribution --id E2KI3RD2QF7PXM
-$ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
-$ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
 ```
 
 ### **************************************************************
@@ -1099,23 +971,143 @@ $ kubectl delete -f deployment.yaml
 ### **************************************************************
 ### **************************************************************
 
-## Module 8: Update Calculator Frontend with ELB Endpoint
+## Module 8: Deploy Frontend
 
 ### Step 8.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://ac6502b4b6b2811e9b3e702e272af59b-1788422217.us-east-1.elb.amazonaws.com/
 ```
 $ vi ~/environment/calculator-frontend/querycalc.js
 ```
 
-### Step 8.2: Deploy Changes to S3
+### Step 8.2: Create an S3 Bucket for Storing Content
+```
+$ aws s3 mb s3://jrdalino-calculator-frontend
+```
+
+### Step 8.3: Create a CloudFront Access Identity
+```
+$ aws cloudfront create-cloud-front-origin-access-identity \
+--cloud-front-origin-access-identity-config CallerReference=Calculator,Comment=Calculator
+```
+
+### Step 8.4: Create the S3 Bucket Policy Input File
+```
+$ mkdir aws-cli
+$ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+```
+```
+{
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
+    "Statement": [
+        {
+            "Sid": "1",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity EXZ8BOEUVCLQY"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::jrdalino-calculator-frontend/*"
+        }
+    ]
+}
+```
+
+### Step 8.5: Add a public bucket policy to allow CloudFront
+```
+$ aws s3api put-bucket-policy \
+--bucket jrdalino-calculator-frontend \
+--policy file://~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+```
+
+### Step 8.6: Publish the Website Content to S3
 ```
 $ cd ~/environment/calculator-frontend
+$ aws s3 cp index.html s3://jrdalino-calculator-frontend/index.html
+$ aws s3 cp base.css s3://jrdalino-calculator-frontend/base.css
 $ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-### Step 8.3 (TODO) Enable CORS on S3 and CloudFront
+### Step 8.7: Create the CloudFront Distribution input file
+```
+$ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
+```
+
+```
+{
+  "CallerReference": "Calculator",
+  "Aliases": {
+    "Quantity": 0
+  },
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "Calculator",
+        "DomainName": "jrdalino-calculator-frontend.s3.amazonaws.com",
+        "S3OriginConfig": {
+          "OriginAccessIdentity": "origin-access-identity/cloudfront/EXZ8BOEUVCLQY"
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "Calculator",
+    "ForwardedValues": {
+      "QueryString": true,
+      "Cookies": {
+        "Forward": "none"
+      }
+    },
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "ViewerProtocolPolicy": "allow-all",
+    "MinTTL": 0,
+    "MaxTTL": 0,
+    "DefaultTTL": 0
+  },
+  "CacheBehaviors": {
+    "Quantity": 0
+  },
+  "Comment": "",
+  "Logging": {
+    "Enabled": false,
+    "IncludeCookies": true,
+    "Bucket": "",
+    "Prefix": ""
+  },
+  "PriceClass": "PriceClass_All",
+  "Enabled": true
+}
+```
+
+### Step 8.8: Create CloudFront Distribution
+```
+$ aws cloudfront create-distribution \
+--distribution-config file://~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
+```
+
+### Step 8.9: Check Status of CloudFront Distribution
+```
+$ aws cloudfront list-distributions
+```
+
+### Step 8.10 (TODO) Enable CORS on S3 and CloudFront
 - https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 
-### Step 8.4: Test functionality of Calculator Frontend + Backend
+### Step 8.11: Test functionality of Calculator Frontend + Backend
+```
+$ curl d5ny4mdta1kxt.cloudfront.net
+```
+
+### (Optional) Clean up
+```
+$ aws cloudfront delete-distribution --id E2KI3RD2QF7PXM
+$ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
+$ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
+```
 
 ### **************************************************************
 ### **************************************************************
