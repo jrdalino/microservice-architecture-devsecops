@@ -1237,6 +1237,13 @@ Resources:
           Version: "2012-10-17"
 ```
 
+```
+$ aws cloudformation create-stack \
+--stack-name eks-calculator-codebuild-codepipeline-iam-role \
+--capabilities CAPABILITY_NAMED_IAM \
+--template-body file://~/environment/calculator-frontend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
+```
+
 ### Step 9.3: Modify S3 Bucket Policy
 Replace:
 - REPLACE_ME_CODEBUILD_ROLE_ARN
