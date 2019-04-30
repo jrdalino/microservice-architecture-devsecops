@@ -952,33 +952,34 @@ $ kubectl get nodes
 
 ```
 [ℹ]  using region us-east-1
-[ℹ]  setting availability zones to [us-east-1f us-east-1b]
-[ℹ]  subnets for us-east-1f - public:192.168.0.0/19 private:192.168.64.0/19
-[ℹ]  subnets for us-east-1b - public:192.168.32.0/19 private:192.168.96.0/19
-[ℹ]  nodegroup "ng-8595caf6" will use "ami-0abcb9f9190e867ab" [AmazonLinux2/1.12]
+[ℹ]  setting availability zones to [us-east-1d us-east-1a]
+[ℹ]  subnets for us-east-1d - public:192.168.0.0/19 private:192.168.64.0/19
+[ℹ]  subnets for us-east-1a - public:192.168.32.0/19 private:192.168.96.0/19
+[ℹ]  nodegroup "ng-2e8e1187" will use "ami-0abcb9f9190e867ab" [AmazonLinux2/1.12]
 [ℹ]  creating EKS cluster "calculator-eksctl" in "us-east-1" region
 [ℹ]  will create 2 separate CloudFormation stacks for cluster itself and the initial nodegroup
 [ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-1 --name=calculator-eksctl'
-[ℹ]  2 sequential tasks: { create cluster control plane "calculator-eksctl", create nodegroup "ng-8595caf6" }
+[ℹ]  2 sequential tasks: { create cluster control plane "calculator-eksctl", create nodegroup "ng-2e8e1187" }
 [ℹ]  building cluster stack "eksctl-calculator-eksctl-cluster"
 [ℹ]  deploying stack "eksctl-calculator-eksctl-cluster"
-[ℹ]  buildings nodegroup stack "eksctl-calculator-eksctl-nodegroup-ng-8595caf6"
-[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-8595caf6
-[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-8595caf6
-[ℹ]  deploying stack "eksctl-calculator-eksctl-nodegroup-ng-8595caf6"
+[ℹ]  buildings nodegroup stack "eksctl-calculator-eksctl-nodegroup-ng-2e8e1187"
+[ℹ]  --nodes-min=2 was set automatically for nodegroup ng-2e8e1187
+[ℹ]  --nodes-max=2 was set automatically for nodegroup ng-2e8e1187
+[ℹ]  deploying stack "eksctl-calculator-eksctl-nodegroup-ng-2e8e1187"
 [✔]  all EKS cluster resource for "calculator-eksctl" had been created
 [✔]  saved kubeconfig as "/Users/jrdalino/.kube/config"
-[ℹ]  adding role "arn:aws:iam::707538076348:role/eksctl-calculator-eksctl-nodegrou-NodeInstanceRole-7REDM5GRSCSC" to auth ConfigMap
-[ℹ]  nodegroup "ng-8595caf6" has 0 node(s)
-[ℹ]  waiting for at least 2 node(s) to become ready in "ng-8595caf6"
-[ℹ]  nodegroup "ng-8595caf6" has 2 node(s)
-[ℹ]  node "ip-192-168-13-208.ec2.internal" is ready
-[ℹ]  node "ip-192-168-44-92.ec2.internal" is ready
+[ℹ]  adding role "arn:aws:iam::707538076348:role/eksctl-calculator-eksctl-nodegrou-NodeInstanceRole-1IGO2PUALGGAC" to auth ConfigMap
+[ℹ]  nodegroup "ng-2e8e1187" has 1 node(s)
+[ℹ]  node "ip-192-168-24-30.ec2.internal" is not ready
+[ℹ]  waiting for at least 2 node(s) to become ready in "ng-2e8e1187"
+[ℹ]  nodegroup "ng-2e8e1187" has 2 node(s)
+[ℹ]  node "ip-192-168-24-30.ec2.internal" is ready
+[ℹ]  node "ip-192-168-35-7.ec2.internal" is ready
 [ℹ]  kubectl command should work with "/Users/jrdalino/.kube/config", try 'kubectl get nodes'
 [✔]  EKS cluster "calculator-eksctl" in "us-east-1" region is ready
 ```
 
-### Step 6.3: Export Worker Role name ** Is this really needed?
+### Step 6.3: Export Worker Role name
 ```
 $ INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep nodegroup)
 $ ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
@@ -1001,8 +1002,7 @@ $ eksctl delete cluster --name=calculator-eksctl
 ```
 $ cd ~/environment/calculator-backend
 $ mkdir kubernetes
-$ cd kubernetes
-$ vi deployment.yaml
+$ vi ~/environment/calculator-backend/kubernetes/deployment.yaml
 ```
 
 ```
@@ -1039,8 +1039,7 @@ spec:
 
 ### Step 7.2: Create our service.yaml file
 ```
-$ cd ~/environment/calculator-backend/kubernetes
-$ vi service.yaml
+$ vi ~/environment/calculator-backend/kubernetes/service.yaml
 ```
 
 ```
@@ -1060,17 +1059,27 @@ spec:
 
 ### Step 7.3: Deploy our Backend REST API and watch progress
 ```
-$ cd ~/environment/calculator-backend
-$ kubectl apply -f kubernetes/deployment.yaml
-$ kubectl apply -f kubernetes/service.yaml
+$ cd ~/environment/calculator-backend/kubernetes
+$ kubectl apply -f deployment.yaml
+$ kubectl apply -f service.yaml
 $ kubectl get deployment calculator-backend
 ```
 
 ### Step 7.4: Scale the Backend Service
 ```
 $ kubectl get deployments
-$ kubectl scale deployment calculator-backend --replicas=3
+$ kubectl scale deployment calculator-backend --replicas=1
 $ kubectl get deployments
+```
+
+### Step 7.5: Ensure ELB service Role exists
+```
+$ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
+```
+
+### Step 7.6: Find the Service Address
+```
+$ kubectl get service calculator-backend -o wide
 ```
 
 ### (Optional) Clean up
@@ -1084,101 +1093,20 @@ $ kubectl delete -f kubernetes/deployment.yaml
 ### **************************************************************
 ### **************************************************************
 
-## Module 8: Deploy our Frontend Service to EKS
-### Step 8.1: Create our deployment.yaml file
+## Module 8: Update Calculator Frontend with ELB Endpoint
+
+### Step 8.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://ac6502b4b6b2811e9b3e702e272af59b-1788422217.us-east-1.elb.amazonaws.com/
+```
+$ vi ~/environment/calculator-frontend/querycalc.js
+```
+
+### Step 8.2: Deploy Changes to S3
 ```
 $ cd ~/environment/calculator-frontend
-$ mkdir kubernetes
-$ vi deployment.yaml
+$ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-```
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: calculator-frontend
-  labels:
-    app: calculator-frontend
-  namespace: default
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: calculator-frontend
-  strategy:
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
-    type: RollingUpdate
-  template:
-    metadata:
-      labels:
-        app: calculator-frontend
-    spec:
-      containers:
-      - image: jrdalino/calculator-frontend:latest
-        imagePullPolicy: Always
-        name: calculator-frontend
-        ports:
-        - containerPort: 3000
-          protocol: TCP
-        env:
-        - name: REST_API_URL
-          value: "http://calculator-backend.default.svc.cluster.local/calculator-backend"
-```
-
-### Step 8.2: Create our service.yaml file
-```
-$ cd ~/environment/calculator-frontend/kubernetes
-$ vi service.yaml
-```
-
-```
-apiVersion: v1
-kind: Service
-metadata:
-  name: calculator-frontend
-spec:
-  selector:
-    app: calculator-frontend
-  type: LoadBalancer
-  ports:
-   -  protocol: TCP
-      port: 80
-      targetPort: 3000
-```
-
-### Step 8.3: Ensure ELB service Role exists
-```
-$ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
-```
-
-### Step 8.4: Deploy our Frontend Service and watch progress
-```
-$ cd ~/environment/calculator-frontend
-$ kubectl apply -f kubernetes/deployment.yaml
-$ kubectl apply -f kubernetes/service.yaml
-$ kubectl get deployment calculator-frontend
-```
-
-### Step 8.5: Find the Service Address
-```
-$ kubectl get service calculator-frontend -o wide
-```
-
-### Step 8.6: Scale the Frontend Service
-```
-$ kubectl get deployments
-$ kubectl scale deployment calculator-frontend --replicas=3
-$ kubectl get deployments
-```
-
-### (Optional) Clean up
-```
-$ cd ~/environment/calculator-frontend
-$ kubectl delete -f kubernetes/service.yaml
-$ kubectl delete -f kubernetes/deployment.yaml
-```
+### Step 8.3: Test functionality of Calculator Frontend + Backend
 
 ### **************************************************************
 ### **************************************************************
