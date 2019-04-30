@@ -765,7 +765,8 @@ $ aws cloudfront create-cloud-front-origin-access-identity \
 
 ### Step 5.3: Create the S3 Bucket Policy Input File
 ```
-$ cd ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+$ mkdir aws-cli
+$ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
 ```
 ```
 {
@@ -776,7 +777,7 @@ $ cd ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
             "Sid": "1",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E3EXTZMN7NG39E"
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity EXZ8BOEUVCLQY"
             },
             "Action": "s3:GetObject",
             "Resource": "arn:aws:s3:::jrdalino-calculator-frontend/*"
@@ -795,15 +796,14 @@ $ aws s3api put-bucket-policy \
 ### Step 5.5: Publish the Website Content to S3
 ```
 $ cd ~/environment/calculator-frontend
-$ aws s3 cp ~/index.html s3://jrdalino-calculator-frontend/index.html
-$ aws s3 cp ~/base.css s3://jrdalino-calculator-frontend/base.css
-$ aws s3 cp ~/querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
+$ aws s3 cp index.html s3://jrdalino-calculator-frontend/index.html
+$ aws s3 cp base.css s3://jrdalino-calculator-frontend/base.css
+$ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
 ### Step 5.6: Create the CloudFront Distribution input file
 ```
-$ cd ~/environment/calculator-frontend/aws-cli
-$ vi website-cloudfront-distribution.json
+$ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
 ```
 
 ```
@@ -820,7 +820,7 @@ $ vi website-cloudfront-distribution.json
         "Id": "Calculator",
         "DomainName": "jrdalino-calculator-frontend.s3.amazonaws.com",
         "S3OriginConfig": {
-          "OriginAccessIdentity": "origin-access-identity/cloudfront/E3EXTZMN7NG39E"
+          "OriginAccessIdentity": "origin-access-identity/cloudfront/EXZ8BOEUVCLQY"
         }
       }
     ]
@@ -870,13 +870,13 @@ $ aws cloudfront list-distributions
 
 ### Step 5.9: Test the Website
 ```
-$ curl http://d354gow5cgt2l.cloudfront.net
+$ curl d5ny4mdta1kxt.cloudfront.net
 ```
 
 ### (Optional) Clean up
 ```
-$ aws cloudfront delete-distribution
-$ aws cloudfront delete-cloud-front-origin-access-identity
+$ aws cloudfront delete-distribution --id E2KI3RD2QF7PXM
+$ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
 $ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
 ```
 
