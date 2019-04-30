@@ -1106,7 +1106,8 @@ $ cd ~/environment/calculator-frontend
 $ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-### Step 8.3 TODO Enable CORS
+### Step 8.3 (TODO) Enable CORS on S3 and CloudFront
+- https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 
 ### Step 8.4: Test functionality of Calculator Frontend + Backend
 
@@ -1529,7 +1530,7 @@ $ aws ecr set-repository-policy \
 # ************************************************************
 # ************************************************************
 
-## Module 10: (TODO) Setup CI/CD for Front End Service
+## Module 10: Setup CI/CD for Front End Service
 
 ### Step 10.1: Create an S3 Bucket for Pipeline Artifacts
 ```
