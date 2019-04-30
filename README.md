@@ -64,6 +64,7 @@ Frontend Project Layout will look like this:
 ```
 ~/environment/calculator-frontend
 ├── base.css
+├── default.conf
 ├── index.html
 ├── querycalc.js
 ├── Dockerfile
@@ -83,6 +84,7 @@ $ aws codecommit create-repository --repository-name calculator-backend
 
 ### Step 1.2: Clone the repository
 ```
+$ cd ~/environment
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend
 ```
 
@@ -485,7 +487,7 @@ $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-b
 
 ### Step 2.15: Validate Image has been pushed
 ```
-$ aws ecr describe-images --repository-name jrdalino/calculator-backend:latest
+$ aws ecr describe-images --repository-name jrdalino/calculator-backend
 ```
 
 ### (Optional) Clean up
@@ -506,6 +508,7 @@ $ aws codecommit create-repository --repository-name calculator-frontend
 
 ### Step 3.2: Clone the repository
 ```
+$ cd ~/environment
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-frontend
 ```
 
@@ -529,40 +532,15 @@ $ aws codecommit delete-repository --repository-name calculator-frontend
 ## Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
 
-### Step 4.1: Configure Calculator Front Git Repository
+### Step 4.1: Navigate to working directory
 ```
-$ aws codecommit create-repository \
---repository-name calculator-frontend
-```
-
-### Step 4.2: Clone the repository
-```
-$ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-backend
+$ cd ~/environment/calculator-frontend
 ```
 
-### Step 4.3: Test access to repo by adding README.md file and push to remote repository
+### Step 4.2: Create index.html file
 ```
-$ vi README.md
-$ git add .
-$ git commit -m "Adding README.md"
-$ git push origin master
+$ vi index.html
 ```
-
-### Step 4.4: Create and Navigate to Directory
-```
-$ mkdir calculator-frontend
-$ cd calculator-frontend
-$ mkdir css
-$ mkdir js
-$ touch index.html
-$ cd css
-$ touch base.css
-$ cd ..
-$ cd js
-$ touch querycalc.js
-```
-
-### Step 4.5: Create index.html file
 ```
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -589,15 +567,20 @@ $ touch querycalc.js
                     <input class= "func-btn" type="button" id="divide" value="Divide"/>
                 </div>
                 <div class="button-row">
+                    <input class= "func-btn" type="button" id="sqrt" value="SquareRoot"/>
+                    <input class= "func-btn" type="button" id="cbrt" value="CubeRoot"/>
+                </div>		
+                <div class="button-row">
                     <input class= "func-btn" type="button" id="exp" value="Exponent"/>
+                    <input class= "func-btn" type="button" id="factorial" value="Factorial"/>		    
                 </div>
             </div>
             </form>
         </div>
 
-        <link rel="stylesheet" type="text/css" href="./css/base.css">
+        <link rel="stylesheet" type="text/css" href="./base.css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script src="./js/querycalc.js"></script>
+        <script src="./querycalc.js"></script>
         <script type="text/javascript">
             // once the DOM is ready start the calculator listener function
             $( document ).ready( calcListener ); 
@@ -607,7 +590,10 @@ $ touch querycalc.js
 </html>
 ```
 
-### Step 4.6: Create base.css file
+### Step 4.3: Create base.css file
+```
+$ vi base.css
+```
 ```
 body {
     margin: 0;
@@ -647,7 +633,10 @@ body {
 }
 ```
 
-### Step 4.7: Create querycalc.js file
+### Step 4.4: Create querycalc.js file
+```
+$ vi querycalc.js
+```
 ```
 function calcListener ( jQuery ) {
     console.log( "READY!" );
@@ -680,12 +669,30 @@ function calcListener ( jQuery ) {
         e.preventDefault();
     });
     
+    $( "#sqrt" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        doMath (arg1, 1, 'sqrt');
+        e.preventDefault();
+    });
+    
+    $( "#cbrt" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        doMath (arg1, 1, 'cbrt');
+        e.preventDefault();
+    });       
+    
     $( "#exp" ).click( function ( e ) {
         var arg1 = $( "#argument1" ).val();
         var arg2 = $( "#argument2" ).val();
         doMath (arg1, arg2, 'exp');
         e.preventDefault();
-    })
+    });
+    
+    $( "#factorial" ).click( function ( e ) {
+        var arg1 = $( "#argument1" ).val();
+        doMath (arg1, 1, 'factorial');
+        e.preventDefault();
+    })    
     
     function doMath( arg1, arg2, resource ) {
         var textStatus, jqXHR, errorThrown = '';
@@ -696,6 +703,7 @@ function calcListener ( jQuery ) {
         try {
             arg1 = Number( arg1 );
             arg2 = Number( arg2 );
+	    
             //TODO handle non-numeric inputs
             if ( isNaN(arg1) || isNaN(arg2) ) throw "NaN";
 
@@ -707,7 +715,7 @@ function calcListener ( jQuery ) {
             // Makes an ajax call to url "resource" supplying arg1 and arg2
             $.ajax({
                 type: "POST",
-                url: "/api/"+ resource,
+                url: "http://localhost:5000/" + resource,
                 data: JSON.stringify({ argument1: arg1, argument2: arg2 }),
                 dataType: "json",
                 success: function ( data ) {
@@ -732,22 +740,21 @@ function calcListener ( jQuery ) {
             $( "#argument2" ).val( '' );
         }
     }
-    
 }
 ```
 
-### Step 4.8: Add default.conf file
+### Step 4.5: Add default.conf file
 ```
 $ vi default.conf
 ```
 ```
 server {
-    listen       80;
+    listen       8080;
     server_name  localhost;
 
     location / {
         root   /usr/share/nginx/html;
-        index  index.html index.htm;
+        index  index.html;
     }
     
     location /api {
@@ -768,10 +775,18 @@ server {
 }
 ```
 
-### Step 4.9: (TODO) Frontend Unit Tests
+### Step 4.6: (TODO) Frontend Unit Tests
 
-### Step 4.10: Create the Docker File
+### Step 4.7: Save changes to remote git repository
 ```
+$ git add .
+$ git commit -m "Initial"
+$ git push origin master
+```
+
+### Step 4.8: Create the Docker File
+```
+$ cd ~/environment/calculator-frontend
 $ vi Dockerfile
 ```
 ```
@@ -780,44 +795,43 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 COPY . /usr/share/nginx/html
 ```
 
-### Step 4.11: Build, Tag and Run the Docker Image Locally
+### Step 4.9: Build, Tag and Run the Docker Image Locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
 ```
 $ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
-$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
+$ docker run -d -p 8080:8080 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
-### Step 4.12: Test functionality
+
+### Step 4.10: Test functionality
 ```
 $ curl http://localhost:8080
 ```
 
-### Step 4.13: Create the ECR Repository
+### Step 4.11: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name jrdalino/calculator-frontend
 ```
 
-### Step 4.14: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 4.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 4.15 Push our Docker Image
+### Step 4.13 Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
 ```
 
-### Step 4.16 Validate Image has been pushed
+### Step 4.14 Validate Image has been pushed
 ```
-$ aws ecr describe-images --repository-name jrdalino/calculator-frontend:latest
+$ aws ecr describe-images --repository-name jrdalino/calculator-frontend
 ```
 
 ### (Optional) Clean up
 ```
 $ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --force
-
-$ aws codecommit delete-repository --repository-name calculator-frontend
 ```
 
 ### **************************************************************
