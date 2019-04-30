@@ -196,9 +196,11 @@ $ vi app.py
 ```
 #!/usr/bin/env python
 from flask import (Flask, jsonify, request, abort, render_template)
+from flask_cors import CORS
 from calculator import Calculator
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def index_page():
@@ -319,6 +321,7 @@ $ vi requirements.txt
 ```
 flask
 flask_restful
+flask_cors
 ```
 
 ### Step 2.5: Run Locally and Test
