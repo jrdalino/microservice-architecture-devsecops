@@ -44,7 +44,7 @@ Backend Project Layout will look like this:
 ├── app/
 │   └── buildspec.yml
 ├── aws-cli/
-│   └── artifacts-bucket-policy.json
+│   ├── artifacts-bucket-policy.json
 │   └── code-build-project.json
 ├── cfn/
 │   └── eks-calculator-codebuild-codepipeline-iam-role.yml
@@ -57,18 +57,24 @@ Backend Project Layout will look like this:
 ├── test_calculator.py
 ├── venv/
 ├── Dockerfile
+├── README.md
 └── .gitignore
 ```
 
 Frontend Project Layout will look like this:
 ```
 ~/environment/calculator-frontend
+├── aws-cli/
+│   ├── artifacts-bucket-policy.json
+│   ├── code-pipeline.json
+│   ├── website-bucket-policy.json
+│   └── website-cloudfront-distribution.json
 ├── base.css
-├── default.conf
+├── cfn/
+│   └── eks-calculator-codebuild-codepipeline-iam-role.yaml
 ├── index.html
 ├── querycalc.js
-├── Dockerfile
-└── .gitignore
+└── README.md
 ```
 
 ### **************************************************************
