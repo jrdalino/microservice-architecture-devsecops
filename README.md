@@ -60,19 +60,10 @@ Backend Project Layout will look like this:
 Frontend Project Layout will look like this:
 ```
 ~/environment/calculator-frontend
-├── flaskr/
-│   ├── templates/
-│   │   ├── base.html
-│   │   ├── auth/
-│   │   │   ├── login.html
-│   │   │   └── register.html
-│   │   └── blog/
-│   │       ├── index.html
-│   └── static/
-│       └── style.css
-│       └── js.css
-├── tests/
-└── MANIFEST.in
+├── index.html
+├── base.css
+├── querycalc.js
+└── .gitignore
 ```
 
 ## Module 1: Configure Calculator Backend Git Repository
