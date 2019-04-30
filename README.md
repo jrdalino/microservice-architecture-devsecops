@@ -1646,7 +1646,8 @@ $ vi ~/environment/calculator-frontend/aws-cli/code-pipeline.json
                 }
               ],
               "configuration": {
-                "FileName": "imagedefinitions.json"
+                  "Extract": "true", 
+                  "BucketName": "jrdalino-calculator-frontend"
               }
             }
           ]
