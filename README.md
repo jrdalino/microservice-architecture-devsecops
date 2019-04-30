@@ -59,7 +59,7 @@ Backend Project Layout will look like this:
 
 Frontend Project Layout will look like this:
 ```
-~/environment/calculator-backend
+~/environment/calculator-frontend
 ├── flaskr/
 │   ├── templates/
 │   │   ├── base.html
@@ -1834,6 +1834,7 @@ $ rm -rf ~/environment/cluster-autoscaler
 ```
 
 ## Module 15: Logging with Elasticache, Fluentd, and Kibana (EFK)
+- Daily/weekly/monthly report showing the operations that have been performed during that time period
 
 ### Step 15.1: Configure IAM Policy for Worker Nodes
 ```
@@ -1940,13 +1941,5 @@ $ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
 $ aws logs delete-log-group --log-group-name /eks/eksworkshop-eksctl/containers
 $ rm -rf ~/environment/iam_policy/
 ```
-
-## Module 16: Log REST operations performed to S3
-- Reference: https://github.com/aws-samples/aws-modern-application-workshop/tree/python/module-5 ?
-
-## Module 17: S3 and Athena Report
-- Daily/weekly/monthly report showing the operations that have been performed during that time period
-- Refences: https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
-
-## Module 18: Add additional feature
+## Module 16: Add additional feature
 - Additional killer feature of your choice
