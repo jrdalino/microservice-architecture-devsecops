@@ -743,95 +743,141 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Step 4.5: Add default.conf file
-```
-$ vi default.conf
-```
-```
-server {
-    listen       8080;
-    server_name  localhost;
-
-    location / {
-        root   /usr/share/nginx/html;
-        index  index.html;
-    }
-    
-    location /api {
-        proxy_pass_request_headers on;
-	proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-NginX-Proxy true;
-        proxy_ssl_session_reuse off;
-        proxy_set_header Host $http_host;
-        proxy_redirect off;
-        proxy_pass http://calculator-backend.service:5000
-    }
-
-    error_page   500 502 503 504  /50x.html;
-    location = /50x.html {
-        root   /usr/share/nginx/html;
-    }
-}
-```
-
-### Step 4.6: (TODO) Frontend Unit Tests
-
-### Step 4.7: Save changes to remote git repository
+### Step 4.5: Save changes to remote git repository
 ```
 $ git add .
 $ git commit -m "Initial"
 $ git push origin master
 ```
 
-### Step 4.8: Create the Docker File
+## Module 5: Deploy Static Site
+
+### Step 5.1: Create an S3 Bucket for Storing Content
+```
+$ aws s3 mb s3://jrdalino-calculator-frontend
+```
+
+### Step 5.2: Create a CloudFront Access Identity
+```
+$ aws cloudfront create-cloud-front-origin-access-identity \
+--cloud-front-origin-access-identity-config CallerReference=Calculator,Comment=Calculator
+```
+
+### Step 5.3: Create the S3 Bucket Policy Input File
+```
+$ cd ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+```
+```
+{
+    "Version": "2008-10-17",
+    "Id": "PolicyForCloudFrontPrivateContent",
+    "Statement": [
+        {
+            "Sid": "1",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity E3EXTZMN7NG39E"
+            },
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::jrdalino-calculator-frontend/*"
+        }
+    ]
+}
+```
+
+### Step 5.4: Add a public bucket policy to allow CloudFront
+```
+$ aws s3api put-bucket-policy \
+--bucket jrdalino-calculator-frontend \
+--policy file://~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+```
+
+### Step 5.5: Publish the Website Content to S3
 ```
 $ cd ~/environment/calculator-frontend
-$ vi Dockerfile
-```
-```
-FROM nginx:alpine
-COPY default.conf /etc/nginx/conf.d/default.conf
-COPY . /usr/share/nginx/html
+$ aws s3 cp ~/index.html s3://jrdalino-calculator-frontend/index.html
+$ aws s3 cp ~/base.css s3://jrdalino-calculator-frontend/base.css
+$ aws s3 cp ~/querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-### Step 4.9: Build, Tag and Run the Docker Image Locally
-Replace:
-- AccountId: 707538076348
-- Region: us-east-1
+### Step 5.6: Create the CloudFront Distribution input file
 ```
-$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
-$ docker run -d -p 8080:8080 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
+$ cd ~/environment/calculator-frontend/aws-cli
+$ vi website-cloudfront-distribution.json
 ```
 
-### Step 4.10: Test functionality
 ```
-$ curl http://localhost:8080
+{
+  "CallerReference": "Calculator",
+  "Aliases": {
+    "Quantity": 0
+  },
+  "DefaultRootObject": "index.html",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "Calculator",
+        "DomainName": "jrdalino-calculator-frontend.s3.amazonaws.com",
+        "S3OriginConfig": {
+          "OriginAccessIdentity": "origin-access-identity/cloudfront/E3EXTZMN7NG39E"
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "Calculator",
+    "ForwardedValues": {
+      "QueryString": true,
+      "Cookies": {
+        "Forward": "none"
+      }
+    },
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "ViewerProtocolPolicy": "allow-all",
+    "MinTTL": 0,
+    "MaxTTL": 0,
+    "DefaultTTL": 0
+  },
+  "CacheBehaviors": {
+    "Quantity": 0
+  },
+  "Comment": "",
+  "Logging": {
+    "Enabled": false,
+    "IncludeCookies": true,
+    "Bucket": "",
+    "Prefix": ""
+  },
+  "PriceClass": "PriceClass_All",
+  "Enabled": true
+}
 ```
 
-### Step 4.11: Create the ECR Repository
+### Step 5.7: Create CloudFront Distribution
 ```
-$ aws ecr create-repository --repository-name jrdalino/calculator-frontend
-```
-
-### Step 4.12: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
-```
-$ $(aws ecr get-login --no-include-email)
+$ aws cloudfront create-distribution \
+--distribution-config file://~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
 ```
 
-### Step 4.13 Push our Docker Image
+### Step 5.8: Check Status of CloudFront Distribution
 ```
-$ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-frontend:latest
+$ aws cloudfront list-distributions
 ```
 
-### Step 4.14 Validate Image has been pushed
+### Step 5.9: Test the Website
 ```
-$ aws ecr describe-images --repository-name jrdalino/calculator-frontend
+$ curl http://d354gow5cgt2l.cloudfront.net
 ```
 
 ### (Optional) Clean up
 ```
-$ aws ecr delete-repository --repository-name jrdalino/calculator-frontend --force
+$ aws cloudfront delete-distribution
+$ aws cloudfront delete-cloud-front-origin-access-identity
+$ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
 ```
 
 ### **************************************************************
