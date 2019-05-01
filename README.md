@@ -2099,6 +2099,7 @@ $ aws es describe-elasticsearch-domain --domain-name kubernetes-logs --query 'Do
 
 ### Step 17.3: Deploy Fluentd
 - Replace REGION and CLUSTER_NAME
+
 ```
 $ mkdir ~/environment/fluentd
 $ cd ~/environment/fluentd
@@ -2130,7 +2131,7 @@ $ aws iam attach-role-policy --role-name lambda_basic_execution --policy-arn arn
 ```
 
 - CloudWatch Logs Console
-- Select the log group /eks/eksworkshop-eksctl/containers. 
+- Select the log group /eks/calculator-eksctl/containers. 
 - Click on Actions and select Stream to Amazon ElasticSearch Service.
 - Select the ElasticSearch Cluster kubernetes-logs and IAM role lambda_basic_execution
 - Click Next
