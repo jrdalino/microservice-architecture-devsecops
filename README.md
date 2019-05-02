@@ -1178,11 +1178,12 @@ Resources:
             Resource: "*"
           - Effect: "Allow"
             Action:
-            - "ecr:InitiateLayerUpload"
-	    - "ecr:UploadLayerPart"
-	    - "ecr:CompleteLayerUpload"
-            - "ecr:BatchCheckLayerAvailability"
             - "ecr:GetAuthorizationToken"
+            - "ecr:InitiateLayerUpload"
+            - "ecr:UploadLayerPart"
+            - "ecr:CompleteLayerUpload"
+            - "ecr:BatchCheckLayerAvailability"
+            - "ecr:PutImage"
             Resource: "*"
 
   # An IAM role that allows the AWS CodePipeline service to perform it's
