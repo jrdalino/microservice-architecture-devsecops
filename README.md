@@ -1348,11 +1348,11 @@ phases:
       - echo Pushing the Docker image..
       # Push the image to ECR.
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest
-      - echo Completed pushing Docker image. Deploying Docker image to AWS EKS on `date`
+      - echo Completed pushing Docker image. Deploying Docker image to AWS Fargate on `date`
       # Create a artifacts file that contains the name and location of the image
       # pushed to ECR. This will be used by AWS CodePipeline to automate
-      # deployment of this specific container to Amazon EKS.
-      - printf '[{"name":"Calculator-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest > imagedefinitions.json
+      # deployment of this specific container to Amazon ECS.
+      - printf '[{"name":"jrdalino/calculator-backend","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest > imagedefinitions.json
 artifacts:
   # Indicate that the created imagedefinitions.json file created on the previous
   # line is to be referenceable as an artifact of the build execution job.
