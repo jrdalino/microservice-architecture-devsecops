@@ -1415,7 +1415,7 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 {
   "pipeline": {
-      "name": "CalculatorServiceCICDPipeline",
+      "name": "CalculatorBackendServiceCICDPipeline",
       "roleArn": "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole",
       "stages": [
         {
@@ -1434,7 +1434,7 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
               },
               "outputArtifacts": [
                 {
-                  "name": "CalculatorService-SourceArtifact"
+                  "name": "CalculatorBackendService-SourceArtifact"
                 }
               ],
               "configuration": {
@@ -1458,16 +1458,16 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
               },
               "outputArtifacts": [
                 {
-                  "name": "CalculatorService-BuildArtifact"
+                  "name": "CalculatorBackendService-BuildArtifact"
                 }
               ],
               "inputArtifacts": [
                 {
-                  "name": "CalculatorService-SourceArtifact"
+                  "name": "CalculatorBackendService-SourceArtifact"
                 }
               ],
               "configuration": {
-                "ProjectName": "CalculatorServiceCodeBuildProject"
+                "ProjectName": "CalculatorBackendServiceCodeBuildProject"
               },
               "runOrder": 1
             }
@@ -1476,7 +1476,7 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
       ],
       "artifactStore": {
         "type": "S3",
-        "location": "jrdalino-calculator-artifacts"
+        "location": "jrdalino-calculator-backend-artifacts"
       }
   }
 }
