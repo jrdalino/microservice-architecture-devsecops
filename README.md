@@ -1121,14 +1121,14 @@ $ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east
 
 ### Step 9.1: Create an S3 Bucket for Pipeline Artifacts
 ```
-$ aws s3 mb s3://jrdalino-calculator-artifacts
+$ aws s3 mb s3://jrdalino-calculator-backend-artifacts
 ```
 
 ### Step 9.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
 $ cd ~/environment/calculator-backend
 $ mkdir cfn
-$ vi eks-calculator-codebuild-codepipeline-iam-role.yaml
+$ vi ~/environment/calculator-backend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 ```
 ---
@@ -1243,7 +1243,7 @@ Resources:
 $ aws cloudformation create-stack \
 --stack-name eks-calculator-codebuild-codepipeline-iam-role \
 --capabilities CAPABILITY_NAMED_IAM \
---template-body file://~/environment/calculator-frontend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
+--template-body file://~/environment/calculator-backend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 
 ### Step 9.3: Modify S3 Bucket Policy
@@ -1276,8 +1276,8 @@ $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
           "s3:GetBucketVersioning"
         ],
         "Resource": [
-          "arn:aws:s3:::jrdalino-calculator-artifacts/*",
-          "arn:aws:s3:::jrdalino-calculator-artifacts"
+          "arn:aws:s3:::jrdalino-calculator-backend-artifacts/*",
+          "arn:aws:s3:::jrdalino-calculator-backend-artifacts"
         ]
       },
       {
@@ -1291,8 +1291,8 @@ $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
         },
         "Action": "s3:PutObject",
         "Resource": [
-          "arn:aws:s3:::jrdalino-calculator-artifacts/*",
-          "arn:aws:s3:::jrdalino-calculator-artifacts"
+          "arn:aws:s3:::jrdalino-calculator-backend-artifacts/*",
+          "arn:aws:s3:::jrdalino-calculator-backend-artifacts"
         ]
       }
     ]
@@ -1305,7 +1305,7 @@ Replace:
 
 ```
 $ aws s3api put-bucket-policy \
---bucket jrdalino-calculator-artifacts \
+--bucket jrdalino-calculator-backend-artifacts \
 --policy file://~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
@@ -1348,10 +1348,10 @@ phases:
       - echo Pushing the Docker image..
       # Push the image to ECR.
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest
-      - echo Completed pushing Docker image. Deploying Docker image to AWS Fargate on `date`
+      - echo Completed pushing Docker image. Deploying Docker image to AWS EKS on `date`
       # Create a artifacts file that contains the name and location of the image
       # pushed to ECR. This will be used by AWS CodePipeline to automate
-      # deployment of this specific container to Amazon ECS.
+      # deployment of this specific container to Amazon EKS.
       - printf '[{"name":"Calculator-Service","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/jrdalino/calculator-backend:latest > imagedefinitions.json
 artifacts:
   # Indicate that the created imagedefinitions.json file created on the previous
@@ -1370,7 +1370,7 @@ $ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
 
 ```
 {
-  "name": "CalculatorServiceCodeBuildProject",
+  "name": "CalculatorBackendServiceCodeBuildProject",
   "artifacts": {
     "type": "no_artifacts"
   },
