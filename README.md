@@ -41,14 +41,13 @@ $ cd ~/environment
 Backend Project Layout will look like this:
 ```
 ~/environment/calculator-backend
-├── app/
-│   └── buildspec.yml
 ├── aws-cli/
 │   ├── artifacts-bucket-policy.json
 │   └── code-build-project.json
 ├── cfn/
 │   └── eks-calculator-codebuild-codepipeline-iam-role.yml
 ├── app.py
+├── buildspec.yml
 ├── calculator.py
 ├── kubernetes/
 │   ├── deployment.yml
@@ -1312,8 +1311,7 @@ $ aws s3api put-bucket-policy \
 ### Step 9.5: View/Modify Buildspec file
 ```
 $ cd ~/environment/calculator-backend
-$ mkdir app
-$ vi ~/environment/calculator-backend/app/buildspec.yml
+$ vi ~/environment/calculator-backend/buildspec.yml
 ```
 
 ```
