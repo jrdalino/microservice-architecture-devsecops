@@ -1179,6 +1179,7 @@ Resources:
           - Effect: "Allow"
             Action:
             - "ecr:InitiateLayerUpload"
+	    - "ecr:UploadLayerPart"
             - "ecr:GetAuthorizationToken"
             Resource: "*"
 
