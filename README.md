@@ -1180,6 +1180,7 @@ Resources:
             Action:
             - "ecr:InitiateLayerUpload"
 	    - "ecr:UploadLayerPart"
+	    - "ecr:CompleteLayerUpload"	    
             - "ecr:GetAuthorizationToken"
             Resource: "*"
 
