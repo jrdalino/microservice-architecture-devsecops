@@ -1422,7 +1422,9 @@ $ kubectl get secrets
 ```
 
 ### Step 9.9: Then run the following command replacing secret name to update your token
-sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -d)#g" ./config
+```
+$ sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -d)#g" ./config
+```
 
 ### Step 9.10: Build, package and deploy the Lambda Kube Client Function
 ```
