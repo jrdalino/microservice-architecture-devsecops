@@ -395,10 +395,17 @@ $ cd ~/environment/calculator-backend
 $ vi Dockerfile
 ```
 ```
+# Set base image to python
 FROM python:2.7
+
+# Copy source file and python req's
 COPY . /app
 WORKDIR /app
+
+# Install requirements
 RUN pip install -r requirements.txt
+
+# Set image's main command and run the command within the container
 ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
@@ -1096,8 +1103,8 @@ $ aws cloudfront create-distribution \
 $ aws cloudfront list-distributions
 ```
 
-### Step 8.10 (TODO) Enable CORS on S3 and CloudFront
-- https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
+### Step 8.10 Enable CORS on S3 and CloudFront
+- Reference: https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 
 ### Step 8.11: Test functionality of Calculator Frontend + Backend
 ```
@@ -1362,10 +1369,6 @@ artifacts:
 ```
 
 ### Step 9.6: View/Modify CodeBuild Project Input File
-Replace:
-- REPLACE_ME_ACCOUNT_ID
-- REPLACE_ME_REGION
-- REPLACE_ME_CODEBUILD_ROLE_ARN
 ```
 $ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
@@ -1406,8 +1409,39 @@ $ aws codebuild create-project \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
 
-### Step 9.8: Modify CodePipeline Input File
-Replace:
+### Step 9.8 Setup Lambda for deployment
+```
+$ cd ~/environment/calculator-backend/
+$ sed -i -e "s#\$EKS_CA#$(aws eks describe-cluster --name k8s-workshop --query cluster.certificateAuthority.data --output text)#g" ./config
+$ sed -i -e "s#\$EKS_CLUSTER_HOST#$(aws eks describe-cluster --name k8s-workshop --query cluster.endpoint --output text)#g" ./config
+$ sed -i -e "s#\$EKS_CLUSTER_NAME#k8s-workshop#g" ./config
+$ sed -i -e "s#\$EKS_CLUSTER_USER_NAME#lambda#g" ./config
+$ kubectl get secrets
+```
+
+### Step 9.9: Then run the following command replacing secret name to update your token
+sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -d)#g" ./config
+
+### Step 9.10: Build,Package and deploy the Lambda Kube Client Function
+```
+$ npm install
+$ zip -r ../lambda-package_v1.zip .
+$ cd ..
+$ export LAMBDA_SERVICE_ROLE=$(aws cloudformation describe-stacks --stack-name $AWS_MASTER_STACK | jq -r '.Stacks[0].Outputs[]|select(.OutputKey=="LambdaExecutionRoleArn")|.OutputValue')
+$ aws lambda create-function --function-name LambdaKubeClient --runtime nodejs8.10 --role $LAMBDA_SERVICE_ROLE --handler index.handler  --zip-file fileb://lambda-package_v1.zip --timeout 10 --memory-size 128
+```
+
+### Step 9.11: Providing admin access for default service account
+```
+$ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
+```
+
+### Step 9.12: Test deployment success
+```
+$ kubectl get deployment eks-cicd-demo-repo -o wide
+```
+
+### Step 9.13: Modify CodePipeline Input File
 ```
 $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
@@ -1482,13 +1516,13 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 }
 ```
 
-### Step 9.9: Create a pipeline in CodePipeline
+### Step 9.14: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
-### Step 9.10: Modify ECR Policy
+### Step 9.15: Modify ECR Policy
 Replace: CodeBuild Role ARN
 
 ```
@@ -1520,14 +1554,14 @@ $ vi ~/environment/calculator-backend/aws-cli/ecr-policy.json
 }
 ```
 
-### Step 9.11: Enable automated Access to the ECR Image Repository
+### Step 9.16: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
 --repository-name jrdalino/calculator-backend \
 --policy-text file://~/environment/calculator-backend/aws-cli/ecr-policy.json
 ```
 
-### Step 9.12: Make a small code change, Push and Validate changes
+### Step 9.17: Make a small code change, Push and Validate changes
 
 # ************************************************************
 # ************************************************************
