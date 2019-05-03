@@ -1418,12 +1418,12 @@ $ sed -i -e "s#\$EKS_CA#$(aws eks describe-cluster --name calculator-eksctl --qu
 $ sed -i -e "s#\$EKS_CLUSTER_HOST#$(aws eks describe-cluster --name calculator-eksctl --query cluster.endpoint --output text)#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_NAME#calculator-eksctl#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_USER_NAME#lambda#g" ./config
-$ kubectl get secrets
 ```
 
 ### Step 9.9: Then run the following command replacing secret name to update your token
 ```
-$ sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -d)#g" ./config
+$ kubectl get secrets
+$ sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -D)#g" ./config
 ```
 
 ### Step 9.10: Build, package and deploy the Lambda Kube Client Function
