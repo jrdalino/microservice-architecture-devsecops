@@ -1409,7 +1409,7 @@ $ aws codebuild create-project \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
 
-### Step 9.8 Setup Lambda for deployment
+### Step 9.8: Setup Lambda for deployment
 ```
 $ cd ~/environment/
 $ git clone https://github.com/BranLiang/lambda-eks
@@ -1424,7 +1424,7 @@ $ kubectl get secrets
 ### Step 9.9: Then run the following command replacing secret name to update your token
 sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -d)#g" ./config
 
-### Step 9.10: Build,Package and deploy the Lambda Kube Client Function
+### Step 9.10: Build, package and deploy the Lambda Kube Client Function
 ```
 $ npm install
 $ zip -r ../lambda-package_v1.zip .
@@ -1433,7 +1433,7 @@ $ export LAMBDA_SERVICE_ROLE=$(aws cloudformation describe-stacks --stack-name $
 $ aws lambda create-function --function-name LambdaKubeClient --runtime nodejs8.10 --role $LAMBDA_SERVICE_ROLE --handler index.handler  --zip-file fileb://lambda-package_v1.zip --timeout 10 --memory-size 128
 ```
 
-### Step 9.11: Providing admin access for default service account
+### Step 9.11: Provide admin access to default service account
 ```
 $ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
 ```
