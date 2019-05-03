@@ -1414,9 +1414,9 @@ $ aws codebuild create-project \
 $ cd ~/environment/
 $ git clone https://github.com/BranLiang/lambda-eks
 $ cd lambda-eks
-$ sed -i -e "s#\$EKS_CA#$(aws eks describe-cluster --name k8s-workshop --query cluster.certificateAuthority.data --output text)#g" ./config
-$ sed -i -e "s#\$EKS_CLUSTER_HOST#$(aws eks describe-cluster --name k8s-workshop --query cluster.endpoint --output text)#g" ./config
-$ sed -i -e "s#\$EKS_CLUSTER_NAME#k8s-workshop#g" ./config
+$ sed -i -e "s#\$EKS_CA#$(aws eks describe-cluster --name calculator-eksctl --query cluster.certificateAuthority.data --output text)#g" ./config
+$ sed -i -e "s#\$EKS_CLUSTER_HOST#$(aws eks describe-cluster --name calculator-eksctl --query cluster.endpoint --output text)#g" ./config
+$ sed -i -e "s#\$EKS_CLUSTER_NAME#calculator-eksctl#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_USER_NAME#lambda#g" ./config
 $ kubectl get secrets
 ```
@@ -1438,7 +1438,7 @@ $ aws lambda create-function --function-name LambdaKubeClient --runtime nodejs8.
 $ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
 ```
 
-### Step 9.13: Modify CodePipeline Input File
+### Step 9.12: Modify CodePipeline Input File
 ```
 $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
@@ -1513,13 +1513,13 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 }
 ```
 
-### Step 9.14: Create a pipeline in CodePipeline
+### Step 9.13: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
-### Step 9.15: Modify ECR Policy
+### Step 9.14: Modify ECR Policy
 Replace: CodeBuild Role ARN
 
 ```
@@ -1551,14 +1551,14 @@ $ vi ~/environment/calculator-backend/aws-cli/ecr-policy.json
 }
 ```
 
-### Step 9.16: Enable automated Access to the ECR Image Repository
+### Step 9.15: Enable automated Access to the ECR Image Repository
 ```
 $ aws ecr set-repository-policy \
 --repository-name jrdalino/calculator-backend \
 --policy-text file://~/environment/calculator-backend/aws-cli/ecr-policy.json
 ```
 
-### Step 9.17: Make a small code change, Push and Validate changes
+### Step 9.16: Make a small code change, push and validate changes
 
 # ************************************************************
 # ************************************************************
