@@ -1166,14 +1166,10 @@ $ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east
 ## Module 9: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 
-### Step 9.1: Create an S3 Bucket for Pipeline Artifacts
+### Step 9.1: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
-$ aws s3 mb s3://jrdalino-calculator-backend-artifacts
-```
-
-### Step 9.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
-```
-$ cd ~/environment/calculator-backend/aws-cli
+$ cd ~/environment/calculator-backend
+$ mkdir aws-cli
 $ vi ~/environment/calculator-backend/aws-cli/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 ```
@@ -1283,12 +1279,12 @@ Resources:
             - ecs:*
             - eks:*
             - codebuild:*
-	    - codepipeline:*
-	    - codedeploy:*
-	    - iam:ListRoles	    
+            - codepipeline:*
+            - codedeploy:*
+            - iam:ListRoles	    
             - iam:PassRole
-	    - lambda:*
-	    - sns:*
+            - lambda:*
+            - sns:*
             Resource: "*"
             Effect: Allow
           Version: "2012-10-17"
@@ -1301,15 +1297,13 @@ $ aws cloudformation create-stack \
 --template-body file://~/environment/calculator-backend/aws-cli/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 
-### Step 9.3: Modify S3 Bucket Policy
-Replace:
-- REPLACE_ME_CODEBUILD_ROLE_ARN
-- REPLACE_ME_CODEPIPELINE_ROLE_ARN
-- ArtifactsBucketName
-
+### Step 9.2: Create an S3 Bucket for Pipeline Artifacts
 ```
-$ cd ~/environment/calculator-backend
-$ mkdir aws-cli
+$ aws s3 mb s3://jrdalino-calculator-backend-artifacts
+```
+
+### Step 9.3: Modify S3 Bucket Policy
+```
 $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
@@ -1355,9 +1349,6 @@ $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
 ### Step 9.4: Grant S3 Bucket access to your CI/CD Pipeline
-Replace:
-- ArtifactsBucketName
-
 ```
 $ aws s3api put-bucket-policy \
 --bucket jrdalino-calculator-backend-artifacts \
@@ -1416,6 +1407,10 @@ $ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
       {
         "name": "AWS_DEFAULT_REGION",
         "value": "us-east-1"
+      },      
+      {
+        "name": "IMAGE_REPO_NAME",
+        "value": "calculator-backend"
       }
     ],
     "type": "LINUX_CONTAINER"
