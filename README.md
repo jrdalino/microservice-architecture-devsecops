@@ -73,6 +73,31 @@ Frontend Project Layout will look like this:
 └── README.md
 ```
 
+## Table of Contents
+- Module 1: Configure Calculator Backend Git Repository
+- Module 2: Backend Python Flask Rest API for Calculator Local
+
+- Module 3: Configure Calculator Frontend Git Repository
+- Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
+
+- Module 5: Install Kubernetes Tools
+- Module 6: Launch EKS using EKCTL
+
+- Module 7: Deploy Backend MicroService to EKS
+- Module 8: Deploy Frontend
+
+- Module 9: Setup CI/CD for Back End Service
+- Module 10: Setup CI/CD for Front End Service
+
+- Module 11: Install Helm
+- Module 12: Deploy Prometheus for basic monitoring
+- Module 13: Deploy Grafana to create Dashboards
+- Module 14: Implement Liveness Probe Health Checks
+- Module 15: Implement Readiness Probe Health Checks
+- Module 16: Implementing Auto Scaling
+- Module 17: Logging with Elasticache, Fluentd, and Kibana (EFK)
+- Module 18: Add additional feature
+
 ### **************************************************************
 ### **************************************************************
 ### **************************************************************
@@ -141,6 +166,7 @@ POST        | http://[hostname]/factorial {"argument1":a }                | Get 
 $ cd ~/environment/calculator-backend
 $ virtualenv venv
 $ venv/bin/pip install flask
+$ venv/bin/pip install flask-cors
 ```
 
 ### Step 2.2 Create Calculator Class Calculator.py
@@ -413,8 +439,9 @@ Replace:
 - Region: us-east-1
 
 ```
-$ docker build . -t 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
-$ docker run -d -p 5000:5000 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
+$ docker build -t calculator-backend .
+$ docker tag calculator-backend:latest 707538076348.dkr.ecr.us-east-1.amazonaws.com/calculator-backend:latest
+$ docker run -d -p 5000:5000 calculator-backend:latest
 ```
 
 ### Step 2.11: Test Math Operations
@@ -484,7 +511,7 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http
 
 ### Step 2.12: Create the ECR Repository
 ```
-$ aws ecr create-repository --repository-name jrdalino/calculator-backend
+$ aws ecr create-repository --repository-name calculator-backend
 ```
 
 ### Step 2.13: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
@@ -494,17 +521,17 @@ $ $(aws ecr get-login --no-include-email)
 
 ### Step 2.14: Push our Docker Image
 ```
-$ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
+$ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/calculator-backend:latest
 ```
 
 ### Step 2.15: Validate Image has been pushed
 ```
-$ aws ecr describe-images --repository-name jrdalino/calculator-backend
+$ aws ecr describe-images --repository-name calculator-backend
 ```
 
 ### (Optional) Clean up
 ```
-$ aws ecr delete-repository --repository-name jrdalino/calculator-backend --force
+$ aws ecr delete-repository --repository-name calculator-backend --force
 ```
 
 ### **************************************************************
@@ -537,6 +564,7 @@ $ git push origin master
 ```
 $ aws codecommit delete-repository --repository-name calculator-frontend
 ```
+
 ### **************************************************************
 ### **************************************************************
 ### **************************************************************
