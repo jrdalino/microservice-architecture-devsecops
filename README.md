@@ -217,7 +217,7 @@ $ vi app.py
 ```
 ```
 #!/usr/bin/env python
-from flask import (Flask, jsonify, request, abort, render_template)
+from flask import (Flask, jsonify, request, abort, render_template, logging)
 from flask_cors import CORS
 from calculator import Calculator
 
@@ -226,7 +226,7 @@ CORS(app)
 
 @app.route('/')
 def index_page():
-    return "This is a RESTful Calculator App built with Python Flask!"
+    return "This is a RESTful Calculator App built with Python Flask! - testing my CI/CD Pipeline"
 
 @app.route('/add', methods=['POST'])
 def add_args():
@@ -237,6 +237,7 @@ def add_args():
         arg2 = request.json['argument2']
         calculator = Calculator()
         answer = calculator.add(arg1, arg2)
+        app.logger.info('{ "operation": "add", "arg1": "%s", "arg2": "%s", "answer": "%s" }', arg1, arg2, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -250,6 +251,7 @@ def subtract_args():
         arg2 = request.json['argument2']
         calculator = Calculator()
         answer = calculator.subtract(arg1, arg2)
+        app.logger.info('{ "operation": "subtract", "arg1": "%s", "arg2": "%s", "answer": "%s" }', arg1, arg2, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -263,6 +265,7 @@ def multiply_args():
         arg2 = request.json['argument2']
         calculator = Calculator()
         answer = calculator.multiply(arg1, arg2)
+        app.logger.info('{ "operation": "multiply", "arg1": "%s", "arg2": "%s", "answer": "%s" }', arg1, arg2, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -276,6 +279,7 @@ def divide_args():
         arg2 = request.json['argument2']
         calculator = Calculator()
         answer = calculator.divide(arg1, arg2)
+        app.logger.info('{ "operation": "divide", "arg1": "%s", "arg2": "%s", "answer": "%s" }', arg1, arg2, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -290,6 +294,7 @@ def sqrt_args():
         arg1 = request.json['argument1']
         calculator = Calculator()
         answer = calculator.sqrt(arg1)
+        app.logger.info('{ "operation": "sqrt", "arg1": "%s", "arg2": "none", "answer": "%s" }', arg1, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -302,6 +307,7 @@ def cbrt_args():
         arg1 = request.json['argument1']
         calculator = Calculator()        
         answer = calculator.cbrt(arg1)
+        app.logger.info('{ "operation": "cbrt", "arg1": "%s", "arg2": "none", "answer": "%s" }', arg1, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -315,6 +321,7 @@ def exponent_args():
         arg2 = request.json['argument2']
         calculator = Calculator()        
         answer = calculator.exp(arg1, arg2)
+        app.logger.info('{ "operation": "exp", "arg1": "%s", "arg2": "%s", "answer": "%s" }', arg1, arg2, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
@@ -327,6 +334,7 @@ def factorial_args():
         arg1 = request.json['argument1']
         calculator = Calculator()          
         answer = calculator.factorial(arg1)
+        app.logger.info('{ "operation": "factorial", "arg1": "%s", "arg2": "none", "answer": "%s" }', arg1, answer)
         return (jsonify({'answer':answer}), 200)
     except KeyError:
         abort(400)
