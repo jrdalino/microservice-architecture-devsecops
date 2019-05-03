@@ -1243,7 +1243,12 @@ Resources:
             - ecs:*
             - eks:*
             - codebuild:*
+	    - codepipeline:*
+	    - codedeploy:*
+	    - iam:ListRoles	    
             - iam:PassRole
+	    - lambda:*
+	    - sns:*
             Resource: "*"
             Effect: Allow
           Version: "2012-10-17"
