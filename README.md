@@ -1411,7 +1411,9 @@ $ aws codebuild create-project \
 
 ### Step 9.8 Setup Lambda for deployment
 ```
-$ cd ~/environment/calculator-backend/
+$ cd ~/environment/
+$ git clone https://github.com/BranLiang/lambda-eks
+$ cd lambda-eks
 $ sed -i -e "s#\$EKS_CA#$(aws eks describe-cluster --name k8s-workshop --query cluster.certificateAuthority.data --output text)#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_HOST#$(aws eks describe-cluster --name k8s-workshop --query cluster.endpoint --output text)#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_NAME#k8s-workshop#g" ./config
@@ -1434,11 +1436,6 @@ $ aws lambda create-function --function-name LambdaKubeClient --runtime nodejs8.
 ### Step 9.11: Providing admin access for default service account
 ```
 $ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
-```
-
-### Step 9.12: Test deployment success
-```
-$ kubectl get deployment eks-cicd-demo-repo -o wide
 ```
 
 ### Step 9.13: Modify CodePipeline Input File
