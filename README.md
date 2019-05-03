@@ -1431,8 +1431,14 @@ $ sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data[
 $ npm install
 $ zip -r ../lambda-package_v1.zip .
 $ cd ..
-$ export LAMBDA_SERVICE_ROLE=$(aws cloudformation describe-stacks --stack-name $AWS_MASTER_STACK | jq -r '.Stacks[0].Outputs[]|select(.OutputKey=="LambdaExecutionRoleArn")|.OutputValue')
-$ aws lambda create-function --function-name LambdaKubeClient --runtime nodejs8.10 --role $LAMBDA_SERVICE_ROLE --handler index.handler  --zip-file fileb://lambda-package_v1.zip --timeout 10 --memory-size 128
+$ aws lambda create-function \
+--function-name LambdaKubeClient \
+--runtime nodejs8.10 \
+--role arn:aws:iam::707538076348:role/lambda_admin_execution \
+--handler index.handler \
+--zip-file fileb://lambda-package_v1.zip \
+--timeout 10 \
+--memory-size 128
 ```
 
 ### Step 9.11: Provide admin access to default service account
