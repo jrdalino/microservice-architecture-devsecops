@@ -3,7 +3,7 @@
 ## Prerequisites
 Python
 ```
-$ Python3 --version
+$ Python --version
 ```
 Flask
 ```
@@ -21,7 +21,6 @@ $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
 $ git config --global credential.helper '!aws codecommit credential-helper $@'
 $ git config --global credential.UseHttpPath true
 ```
-
 AWS CLI
 ```
 $ aws --version
@@ -43,8 +42,7 @@ Backend Project Layout will look like this:
 ~/environment/calculator-backend
 ├── aws-cli/
 │   ├── artifacts-bucket-policy.json
-│   └── code-build-project.json
-├── cfn/
+│   ├── code-build-project.json
 │   └── eks-calculator-codebuild-codepipeline-iam-role.yml
 ├── app.py
 ├── buildspec.yml
@@ -66,11 +64,10 @@ Frontend Project Layout will look like this:
 ├── aws-cli/
 │   ├── artifacts-bucket-policy.json
 │   ├── code-pipeline.json
+│   ├── eks-calculator-codebuild-codepipeline-iam-role.yaml
 │   ├── website-bucket-policy.json
 │   └── website-cloudfront-distribution.json
 ├── base.css
-├── cfn/
-│   └── eks-calculator-codebuild-codepipeline-iam-role.yaml
 ├── index.html
 ├── querycalc.js
 └── README.md
@@ -1132,9 +1129,8 @@ $ aws s3 mb s3://jrdalino-calculator-backend-artifacts
 
 ### Step 9.2: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
-$ cd ~/environment/calculator-backend
-$ mkdir cfn
-$ vi ~/environment/calculator-backend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
+$ cd ~/environment/calculator-backend/aws-cli
+$ vi ~/environment/calculator-backend/aws-cli/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 ```
 ---
@@ -1258,7 +1254,7 @@ Resources:
 $ aws cloudformation create-stack \
 --stack-name eks-calculator-codebuild-codepipeline-iam-role \
 --capabilities CAPABILITY_NAMED_IAM \
---template-body file://~/environment/calculator-backend/cfn/eks-calculator-codebuild-codepipeline-iam-role.yaml
+--template-body file://~/environment/calculator-backend/aws-cli/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 
 ### Step 9.3: Modify S3 Bucket Policy
@@ -2198,7 +2194,7 @@ $ cd ~/environment
 $ kubectl delete -f ~/environment/fluentd/fluentd.yml
 $ rm -rf ~/environment/fluentd/
 $ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
-$ aws logs delete-log-group --log-group-name /eks/eksworkshop-eksctl/containers
+$ aws logs delete-log-group --log-group-name /eks/calculator-eksctl/containers
 $ rm -rf ~/environment/iam_policy/
 ```
 
