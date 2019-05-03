@@ -941,7 +941,7 @@ spec:
         app: calculator-backend
     spec:
       containers:
-      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/jrdalino/calculator-backend:latest
+      - image: 707538076348.dkr.ecr.us-east-1.amazonaws.com/calculator-backend:latest
         imagePullPolicy: Always
         name: calculator-backend
         ports:
@@ -969,7 +969,12 @@ spec:
       targetPort: 5000
 ```
 
-### Step 7.3: Deploy our Backend REST API and watch progress
+### Step 7.3: Ensure ELB service Role exists
+```
+$ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
+```
+
+### Step 7.4: Deploy our Backend REST API and watch progress
 ```
 $ cd ~/environment/calculator-backend/kubernetes
 $ kubectl apply -f deployment.yaml
@@ -977,16 +982,11 @@ $ kubectl apply -f service.yaml
 $ kubectl get deployment calculator-backend
 ```
 
-### Step 7.4: Scale the Backend Service
+### Step 7.5: Scale the Backend Service
 ```
 $ kubectl get deployments
 $ kubectl scale deployment calculator-backend --replicas=1
 $ kubectl get deployments
-```
-
-### Step 7.5: Ensure ELB service Role exists
-```
-$ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
 ```
 
 ### Step 7.6: Find the Service Address
@@ -1007,7 +1007,7 @@ $ kubectl delete -f deployment.yaml
 
 ## Module 8: Deploy Frontend
 
-### Step 8.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://ac6502b4b6b2811e9b3e702e272af59b-1788422217.us-east-1.elb.amazonaws.com/
+### Step 8.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://a529520be6d7811e98ef812788873e53-1902855455.us-east-1.elb.amazonaws.com/
 ```
 $ vi ~/environment/calculator-frontend/querycalc.js
 ```
@@ -1063,6 +1063,8 @@ $ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 
 ### Step 8.7: Create the CloudFront Distribution input file
 ```
+$ cd ~/environment/calculator-frontend
+$ mkdir aws-cli
 $ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
 ```
 
@@ -1129,7 +1131,21 @@ $ aws cloudfront list-distributions
 ```
 
 ### Step 8.10 Enable CORS on S3 and CloudFront
-- Reference: https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
+- Cloudfront: https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
+
+- S3: https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-cors-configuration.html
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+<CORSRule>
+    <AllowedOrigin>*</AllowedOrigin>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedMethod>HEAD</AllowedMethod>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+</CORSRule>
+</CORSConfiguration>
+```
 
 ### Step 8.11: Test functionality of Calculator Frontend + Backend
 ```
