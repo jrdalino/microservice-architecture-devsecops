@@ -1547,46 +1547,20 @@ $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
-### Step 9.14: Modify ECR Policy
-Replace: CodeBuild Role ARN
+### Step 9.14: Manually modify pipeline Codepipeline to add Deployment stage using created Lambda function.
+- Click Edit CodePipeline
+- Add a new stage after Build Stage
+- Enter stage name as Deploy and save.
+- Add an Action group within the stage.
+- Action name: LambdaClient
+- Action provider: AWS Lambda
+- Region: US East - (N. Virginia)
+- Input artifact: CalculatorBackendService-BuildArtifact
+- Function name: LambdaKubeClient
+- User parameter: calculator-backend
+- Click Save
 
-```
-$ vi ~/environment/calculator-backend/aws-cli/ecr-policy.json
-```
-
-```
-{
-  "Statement": [
-    {
-      "Sid": "AllowPushPull",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": [
-         "arn:aws:iam::707538076348:role/CalculatorServiceCodeBuildServiceRole"
-        ]
-      },
-      "Action": [
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:PutImage",
-        "ecr:InitiateLayerUpload",
-        "ecr:UploadLayerPart",
-        "ecr:CompleteLayerUpload"
-      ]
-    }
-  ]
-}
-```
-
-### Step 9.15: Enable automated Access to the ECR Image Repository
-```
-$ aws ecr set-repository-policy \
---repository-name jrdalino/calculator-backend \
---policy-text file://~/environment/calculator-backend/aws-cli/ecr-policy.json
-```
-
-### Step 9.16: Make a small code change, push and validate changes
+### Step 9.15: Make a small code change, push and validate changes
 
 # ************************************************************
 # ************************************************************
