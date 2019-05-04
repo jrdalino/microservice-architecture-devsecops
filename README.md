@@ -1996,6 +1996,7 @@ $ cd ~/environment/cluster-autoscaler
 $ vi ~/environment/cluster-autoscaler/cluster_autoscaler.yml
 ```
 
+- Change <AUTOSCALING GROUP NAME>, AWS_REGION and minimum nodes (2) and maximum nodes (8)
 ```
 apiVersion: v1
 kind: ServiceAccount
@@ -2148,10 +2149,6 @@ spec:
           hostPath:
             path: "/etc/ssl/certs/ca-bundle.crt"
 ```
-
-- Configure the ASG Min: 2 and Max: 8
-- Configure the Cluster Autoscaler
-- Open https://eksworkshop.com/scaling/deploy_ca.files/cluster_autoscaler.yml and change <AUTOSCALING GROUP NAME>, AWS_REGION and minimum nodes (2) and maximum nodes (8) and ASG Name
 
 - Create an IAM Policy
 ```
