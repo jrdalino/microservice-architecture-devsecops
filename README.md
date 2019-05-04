@@ -76,27 +76,21 @@ Frontend Project Layout will look like this:
 ## Table of Contents
 - Module 1: Configure Calculator Backend Git Repository
 - Module 2: Backend Python Flask Rest API for Calculator Local
-
 - Module 3: Configure Calculator Frontend Git Repository
 - Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
-
 - Module 5: Install Kubernetes Tools
 - Module 6: Launch EKS using EKCTL
-
 - Module 7: Deploy Backend MicroService to EKS
 - Module 8: Deploy Frontend
-
 - Module 9: Setup CI/CD for Back End Service
 - Module 10: Setup CI/CD for Front End Service
-
 - Module 11: Install Helm
 - Module 12: Deploy Prometheus for basic monitoring
 - Module 13: Deploy Grafana to create Dashboards
 - Module 14: Implement Liveness Probe Health Checks
 - Module 15: Implement Readiness Probe Health Checks
-- Module 16: Implementing Auto Scaling
+- Module 16: Implement Auto Scaling
 - Module 17: Logging with Elasticache, Fluentd, and Kibana (EFK)
-- Module 18: Add additional feature
 
 ### **************************************************************
 ### **************************************************************
@@ -2205,10 +2199,3 @@ $ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
 $ aws logs delete-log-group --log-group-name /eks/calculator-eksctl/containers
 $ rm -rf ~/environment/iam_policy/
 ```
-
-# ************************************************************
-# ************************************************************
-# ************************************************************
-
-## Module 18: Add additional feature
-- Additional killer feature of your choice
