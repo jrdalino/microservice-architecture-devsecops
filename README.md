@@ -2625,7 +2625,7 @@ $ rm -rf ~/environment/iam_policy/
 - AWS API Gateway
 - Swagger Documentation
 
-### TODO: Add Web Application Firewall in front of REST API
+### TODO: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 
