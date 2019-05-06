@@ -2597,7 +2597,11 @@ $ rm -rf ~/environment/iam_policy/
 - Enable Security Hub for Compliance Scanning
 
 ### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
-- Terraform / Cloudformation
+- Terraform
+- Locking and Isolating State Files on S3
+- Reusable Infrastructure w/ Terraform Modules
+- Testing using Terratest https://github.com/gruntwork-io/terratest
+- CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
 
 ### TODO: Add Testing - Commited secrets on Git Repository
 - https://github.com/awslabs/git-secrets
