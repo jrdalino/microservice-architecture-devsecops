@@ -2596,6 +2596,9 @@ $ rm -rf ~/environment/iam_policy/
 - Enable Guard Duty for Intelligent threat detection
 - Enable Security Hub for Compliance Scanning
 
+### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
+- Terraform / Cloudformation
+
 ### TODO: Add Testing - Commited secrets on Git Repository
 - https://github.com/awslabs/git-secrets
 - https://github.com/zricethezav/gitleaks
@@ -2621,16 +2624,13 @@ $ rm -rf ~/environment/iam_policy/
 - AWS Web Application Firewall
 - AWS Shield
 
-### TODO: Add API Gateway in front of CDN
+### TODO: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
 - Swagger Documentation
 
 ### TODO: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
-
-### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
-- Terraform / Cloudformation
 
 ### TODO: Add Register/Transfer Domain Namne using Route 53
 - Amazon Route53
