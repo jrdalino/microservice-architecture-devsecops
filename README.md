@@ -116,9 +116,7 @@ Frontend Project Layout will look like this:
 └── README.md
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 1: Configure Calculator Backend Git Repository
 
@@ -157,9 +155,7 @@ $ git push origin master
 $ aws codecommit delete-repository --repository-name calculator-backend
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 2: Backend Python Flask Rest API for Calculator Local
 - Basic calculations (add, subtract, multiply, divide)
@@ -560,9 +556,7 @@ $ aws ecr describe-images --repository-name calculator-backend
 $ aws ecr delete-repository --repository-name calculator-backend --force
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 3: Configure Calculator Frontend Git Repository
 
@@ -591,9 +585,7 @@ $ git push origin master
 $ aws codecommit delete-repository --repository-name calculator-frontend
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
 - Calculator triggered by end users through a web page
@@ -818,9 +810,7 @@ $ git commit -m "Initial"
 $ git push origin master
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 5: Install Kubernetes Tools
 
@@ -865,9 +855,7 @@ $ ssh-keygen
 $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file://~/.ssh/id_rsa.pub
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 6: Launch EKS using EKCTL
 
@@ -929,9 +917,7 @@ $ echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
 $ eksctl delete cluster --name=calculator-eksctl
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 7: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
@@ -1027,9 +1013,7 @@ $ kubectl delete -f service.yaml
 $ kubectl delete -f deployment.yaml
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 8: Deploy Frontend
 
@@ -1185,9 +1169,7 @@ $ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
 $ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
 ```
 
-### **************************************************************
-### **************************************************************
-### **************************************************************
+# ************************************************************
 
 ## Module 9: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
@@ -1585,8 +1567,6 @@ $ aws codepipeline create-pipeline \
 ### Step 9.15: Make a small code change, push and validate changes
 
 # ************************************************************
-# ************************************************************
-# ************************************************************
 
 ## Module 10: Setup CI/CD for Front End Service
 
@@ -1729,8 +1709,6 @@ $ aws codepipeline create-pipeline \
 ### Step 10.4: Make a small code change, Push and Validate changes
 
 # ************************************************************
-# ************************************************************
-# ************************************************************
 
 ## Module 11: Install Helm
 
@@ -1778,8 +1756,6 @@ $ helm init --service-account tiller
 ```
 
 # ************************************************************
-# ************************************************************
-# ************************************************************
 
 ## Module 12: Deploy Prometheus for basic monitoring
 
@@ -1809,8 +1785,6 @@ $ helm delete prometheus
 $ helm del --purge prometheus
 ```
 
-# ************************************************************
-# ************************************************************
 # ************************************************************
 
 ## Module 13: Deploy Grafana to create Dashboards
@@ -1864,8 +1838,6 @@ $ helm del --purge grafana
 ```
 
 # ************************************************************
-# ************************************************************
-# ************************************************************
 
 ## Module 14: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
@@ -1911,8 +1883,6 @@ $ kubectl logs liveness-app --previous
 $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 ```
 
-# ************************************************************
-# ************************************************************
 # ************************************************************
 
 ## Module 15: Implement Readiness Probe Health Checks
@@ -1978,8 +1948,6 @@ $ kubectl get pods -l app=readiness-deployment
 $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 ```
 
-# ************************************************************
-# ************************************************************
 # ************************************************************
 
 ## Module 16: Implementing Auto Scaling
@@ -2255,8 +2223,6 @@ $ kubectl delete deployment php-apache load-generator
 $ rm -rf ~/environment/cluster-autoscaler
 ```
 
-# ************************************************************
-# ************************************************************
 # ************************************************************
 
 ## Module 17: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
@@ -2608,8 +2574,6 @@ $ aws logs delete-log-group --log-group-name /eks/calculator-eksctl/containers
 $ rm -rf ~/environment/iam_policy/
 ```
 
-# ************************************************************
-# ************************************************************
 # ************************************************************
 
 ## Security/Management/Governance TODO's
