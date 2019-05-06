@@ -1,18 +1,43 @@
 # python-calculator-rest-api-docker-kubernetes
+This is a simple tutorial on how to create a Python Flask Backend Application + Javascript Frontend Application, Setup CI/CD with AWS Code% and AWS Elastic Kubernetes Service, High Availability, Autoscaling, Monitoring using Prometheus and Grafana and Logging with ElasticSearch, Fluentd and Kibana.
+
+- Step 1: Configure Calculator Backend Git Repository
+- Step 2: Backend Python Flask Rest API for Calculator Local
+- Step 3: Configure Calculator Frontend Git Repository
+- Step 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
+- Step 5: Install Kubernetes Tools
+- Step 6: Launch EKS using EKCTL
+- Step 7: Deploy Backend MicroService to EKS
+- Step 8: Deploy Frontend
+- Step 9: Setup CI/CD for Back End Service
+- Step 10: Setup CI/CD for Front End Service
+- Step 11: Install Helm
+- Step 12: Deploy Prometheus for basic monitoring
+- Step 13: Deploy Grafana to create Dashboards
+- Step 14: Implement Liveness Probe Health Checks
+- Step 15: Implement Readiness Probe Health Checks
+- Step 16: Implement Auto Scaling
+- Step 17: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 
 ## Prerequisites
-Python
+Working Directory
 ```
-$ Python --version
+$ cd ~
+$ mkdir environment
+$ cd ~/environment
 ```
-Flask
+
+Homebrew
 ```
-$ flask --version
+$ brew --version
 ```
-Docker
+
+AWS CLI
 ```
-$ docker -v
+$ aws --version
+$ aws configure
 ```
+
 Git
 ```
 $ git --version
@@ -21,23 +46,41 @@ $ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
 $ git config --global credential.helper '!aws codecommit credential-helper $@'
 $ git config --global credential.UseHttpPath true
 ```
-AWS CLI
+
+Python
 ```
-$ aws --version
-$ aws configure
-```
-Homebrew
-```
-$ brew --version
-```
-Working Directory
-```
-$ cd ~
-$ mkdir environment
-$ cd ~/environment
+$ python3 --version
+Python 3.7.3
 ```
 
-Backend Project Layout will look like this:
+Virtualenv
+```
+$ virtualenv --version
+16.4.3
+$ echo 'venv' > .gitignore
+$ python3 -m venv venv
+$ source venv/bin/activate
+(venv) $
+(venv) $ deactivate
+```
+
+Flask
+```
+(venv) $ pip install flask
+(venv) $ flask --version
+Flask 1.0.2
+Python 3.7.3 (default, Mar 27 2019, 09:23:15) 
+[Clang 10.0.1 (clang-1001.0.46.3)]
+```
+
+Docker
+```
+$ docker -v
+Docker version 18.09.2, build 6247962
+```
+
+I am following a microserivce Architecture with separate repositories and CI/CD pipelines for each microservice. The Backend Project Layout will look like this:
+
 ```
 ~/environment/calculator-backend
 ├── aws-cli/
@@ -72,25 +115,6 @@ Frontend Project Layout will look like this:
 ├── querycalc.js
 └── README.md
 ```
-
-## Table of Contents
-- Module 1: Configure Calculator Backend Git Repository
-- Module 2: Backend Python Flask Rest API for Calculator Local
-- Module 3: Configure Calculator Frontend Git Repository
-- Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
-- Module 5: Install Kubernetes Tools
-- Module 6: Launch EKS using EKCTL
-- Module 7: Deploy Backend MicroService to EKS
-- Module 8: Deploy Frontend
-- Module 9: Setup CI/CD for Back End Service
-- Module 10: Setup CI/CD for Front End Service
-- Module 11: Install Helm
-- Module 12: Deploy Prometheus for basic monitoring
-- Module 13: Deploy Grafana to create Dashboards
-- Module 14: Implement Liveness Probe Health Checks
-- Module 15: Implement Readiness Probe Health Checks
-- Module 16: Implement Auto Scaling
-- Module 17: Logging with Elasticache, Fluentd, and Kibana (EFK)
 
 ### **************************************************************
 ### **************************************************************
@@ -2235,7 +2259,7 @@ $ rm -rf ~/environment/cluster-autoscaler
 # ************************************************************
 # ************************************************************
 
-## Module 17: Logging with Elasticache, Fluentd, and Kibana (EFK)
+## Module 17: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 
 ### Step 17.1: Configure IAM Policy for Worker Nodes
