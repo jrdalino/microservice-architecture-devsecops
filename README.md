@@ -818,15 +818,6 @@ $ git commit -m "Initial"
 $ git push origin master
 ```
 
-### TODO
-- Add Frontend Static Application Testing: 
-(1) AuditJS, 
-(2) https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project - Web App Pentest Tool
-(3) https://www.owasp.org/index.php/OWASP_Dependency_Check
-
-- Add Frontend Dynamic Application Testing: 
-
-
 ### **************************************************************
 ### **************************************************************
 ### **************************************************************
@@ -2616,3 +2607,52 @@ $ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
 $ aws logs delete-log-group --log-group-name /eks/calculator-eksctl/containers
 $ rm -rf ~/environment/iam_policy/
 ```
+
+# ************************************************************
+# ************************************************************
+# ************************************************************
+
+## Nice to have TODO's
+
+### TODO: Add AWS Organizations and AWS Account Hardening via SCP, 
+- AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
+- Add Guard Duty for Intelligent threat detection
+- Add Security Hub for Compliance Scanning
+
+### TODO: Add Testing - commited secrets on Git Repository
+- https://github.com/awslabs/git-secrets
+- https://github.com/zricethezav/gitleaks
+
+### TODO: Add Testing - Backend Static Code Analyzer
+- SonarQube/Fortify/Checkmarx
+
+### TODO: Add Testing - Backend Containers Scanning
+- Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
+
+### TODO: Add Testing - Frontend Static Application
+- AuditJS and RetireJS > Checks npm packages and compares to CVE's
+- OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
+
+### TODO: Add Testing - Frontend Dynamic Application
+- OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
+
+### TODO: Add Secrets Management
+- Parameter Store/Secrets Manager/Vault)
+
+### TODO: Add Web Application Firewall + Shield in front of CloudFront CDN
+
+### TODO: Add API Gateway in front of REST API Endpoint
+
+### TODO: Add Web Application Firewall in front of REST API
+
+### TODO: Add Terraform Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
+
+### TODO: Add Register/Transfer Domain Namne using Route 53 
+
+### TODO: Add SSL/TLS using AWS Ceritificate Manager
+
+### TODO: Add Authentication
+- Amazon Cognito
+
+### TODO: Add Instrumentation
+- Amazon X-Ray
