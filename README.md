@@ -79,7 +79,7 @@ $ docker -v
 Docker version 18.09.2, build 6247962
 ```
 
-I am following a microserivce Architecture with separate repositories and CI/CD pipelines for each microservice. The Backend Project Layout will look like this:
+I am following a microservice Architecture with separate repositories and CI/CD pipelines for each microservice. The Backend Project Layout will look like this:
 
 ```
 ~/environment/calculator-backend
@@ -2612,9 +2612,9 @@ $ rm -rf ~/environment/iam_policy/
 # ************************************************************
 # ************************************************************
 
-## Nice to have TODO's
+## Security/Management/Governance TODO's
 
-### TODO: Add AWS Organizations and AWS Account Hardening via SCP, 
+### TODO: Add Governamnce - AWS Organizations and AWS Account Hardening via SCP, 
 - AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add Guard Duty for Intelligent threat detection
 - Add Security Hub for Compliance Scanning
@@ -2624,35 +2624,51 @@ $ rm -rf ~/environment/iam_policy/
 - https://github.com/zricethezav/gitleaks
 
 ### TODO: Add Testing - Backend Static Code Analyzer
-- SonarQube/Fortify/Checkmarx
+- Evaluate SonarQube/ Fortify / Checkmarx
 
 ### TODO: Add Testing - Backend Containers Scanning
-- Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
+- Evaluate Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
 ### TODO: Add Testing - Frontend Static Application
-- AuditJS and RetireJS > Checks npm packages and compares to CVE's
+- AuditJS and 
+- RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
 - OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
 
 ### TODO: Add Testing - Frontend Dynamic Application
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
 
-### TODO: Add Secrets Management
-- Parameter Store/Secrets Manager/Vault)
+### TODO: Add Security - AWS Secrets Management
+- AWS Parameter Store/ AWS Secrets Manager / Hashicorp Vault
 
-### TODO: Add Web Application Firewall + Shield in front of CloudFront CDN
+### TODO: Add Web Application Firewall in front of CloudFront CDN
+- AWS Web Application Firewall
+- AWS Shield
 
-### TODO: Add API Gateway in front of REST API Endpoint
+### TODO: Add API Gateway in front of CDN
+- AWS API Gateway
+- Swagger Documentation
 
 ### TODO: Add Web Application Firewall in front of REST API
+- AWS Web Application Firewall
+- AWS Shield
 
-### TODO: Add Terraform Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
+### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
+- Terraform / Cloudformation
 
-### TODO: Add Register/Transfer Domain Namne using Route 53 
+### TODO: Add Register/Transfer Domain Namne using Route 53
+- Amazon Route53
 
 ### TODO: Add SSL/TLS using AWS Ceritificate Manager
+- AWS Certificate Manager
 
 ### TODO: Add Authentication
 - Amazon Cognito
 
 ### TODO: Add Instrumentation
-- Amazon X-Ray
+- AWS X-Ray
+
+### TODO: Add Service Discovery
+- Hashicopr Consul / Netflix Eureka / AWS CloudMap
+
+### TODO: Add Service Mesh
+- Istio / AWS Appmesh
