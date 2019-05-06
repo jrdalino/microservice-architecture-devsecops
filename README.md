@@ -2614,12 +2614,25 @@ $ rm -rf ~/environment/iam_policy/
 
 ## Security/Management/Governance TODO's
 
-### TODO: Add Governamnce - AWS Organizations and AWS Account Hardening via SCP, 
-- AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
-- Add Guard Duty for Intelligent threat detection
-- Add Security Hub for Compliance Scanning
+### TODO: Add Governamnce - AWS Organizations and AWS Account Hardening
+- Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
+- Add SCP Policies
+- Create new AWS Account for product and environment
+- New Email alias, AWS Account, Contacts
+- Secure Root User, MFA
+- Delete Default VPC's
+- S3 Buckets for Logging
+- S3 Buckets for ELB Logging
+- S3 Buckets for Cloudfront Logs
+- Enable CloudTrail for auditing
+- Enable VPC Flow Logs
+- Enable ELB Logging
+- Enable Config for AWS resource config tracking
+- Enable SNS topics for alertning and notifications
+- Enable Guard Duty for Intelligent threat detection
+- Enable Security Hub for Compliance Scanning
 
-### TODO: Add Testing - commited secrets on Git Repository
+### TODO: Add Testing - Commited secrets on Git Repository
 - https://github.com/awslabs/git-secrets
 - https://github.com/zricethezav/gitleaks
 
