@@ -2576,7 +2576,7 @@ $ rm -rf ~/environment/iam_policy/
 
 # ************************************************************
 
-## Security/Management/Governance TODO's
+## Security / Management / Compliance / Governance TODO's
 
 ### TODO: Add Governamnce - AWS Organizations and AWS Account Hardening
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
@@ -2601,13 +2601,13 @@ $ rm -rf ~/environment/iam_policy/
 - https://github.com/zricethezav/gitleaks
 
 ### TODO: Add Testing - Backend Static Code Analyzer
-- Evaluate SonarQube/ Fortify / Checkmarx
+- Find OSS alternative for SonarQube / Fortify / Checkmarx
 
 ### TODO: Add Testing - Backend Containers Scanning
-- Evaluate Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
+- Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
 ### TODO: Add Testing - Frontend Static Application
-- AuditJS and 
+- AuditJS > https://www.npmjs.com/package/auditjs
 - RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
 - OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
 
@@ -2645,7 +2645,7 @@ $ rm -rf ~/environment/iam_policy/
 - AWS X-Ray
 
 ### TODO: Add Service Discovery
-- Hashicopr Consul / Netflix Eureka / AWS CloudMap
+- Hashicorp Consul / Netflix Eureka / AWS CloudMap
 
 ### TODO: Add Service Mesh
 - Istio / AWS Appmesh
