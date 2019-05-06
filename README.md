@@ -818,6 +818,15 @@ $ git commit -m "Initial"
 $ git push origin master
 ```
 
+### TODO
+- Add Frontend Static Application Testing: 
+(1) AuditJS, 
+(2) https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project - Web App Pentest Tool
+(3) https://www.owasp.org/index.php/OWASP_Dependency_Check
+
+- Add Frontend Dynamic Application Testing: 
+
+
 ### **************************************************************
 ### **************************************************************
 ### **************************************************************
