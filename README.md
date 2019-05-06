@@ -1,5 +1,5 @@
-# python-calculator-rest-api-docker-kubernetes
-This is a simple tutorial on how to create a Python Flask Backend Application + Javascript Frontend Application, Setup CI/CD with AWS Code% and AWS Elastic Kubernetes Service, High Availability, Autoscaling, Monitoring using Prometheus and Grafana and Logging with ElasticSearch, Fluentd and Kibana.
+# Python Flask Backend + JS Frontend Calculator on AWS EKS (Kubernetes) with CI/CD, Monitoring and Logging
+This is a simple tutorial on how to create a Python Flask Backend + Javascript Frontend Application, Setup CI/CD with AWS Code% and AWS Elastic Kubernetes Service, High Availability, Autoscaling, Monitoring using Prometheus and Grafana and Logging with ElasticSearch, Fluentd and Kibana.
 
 - Step 1: Configure Calculator Backend Git Repository
 - Step 2: Backend Python Flask Rest API for Calculator Local
