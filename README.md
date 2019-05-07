@@ -2598,7 +2598,7 @@ $ rm -rf ~/environment/iam_policy/
 
 ### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
 - Terraform
-- Locking and Isolating State Files on S3
+- Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Reusable Infrastructure w/ Terraform Modules
 - Testing using Terratest https://github.com/gruntwork-io/terratest
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
