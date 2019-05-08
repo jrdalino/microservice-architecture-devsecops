@@ -1596,6 +1596,9 @@ $ aws s3api delete-bucket-policy --bucket jrdalino-calculator-backend-artifacts
 $ rm ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 $ aws s3 rm s3://jrdalino-calculator-backend-artifacts --recursive
 $ aws s3 rb s3://jrdalino-calculator-backend-artifacts --force
+$ aws lambda delete-function --function-name LogsToElasticsearch_kubernetes-logs
+$ aws logs delete-log-group --log-group-name /aws/lambda/LambdaKubeClient
+$ aws logs delete-log-group --log-group-name /aws/codebuild/CalculatorBackendServiceCodeBuildProject
 ```
 
 # ************************************************************
@@ -2620,6 +2623,7 @@ $ kubectl delete -f ~/environment/fluentd/fluentd.yml
 $ rm -rf ~/environment/fluentd/
 $ aws es delete-elasticsearch-domain --domain-name kubernetes-logs
 $ aws logs delete-log-group --log-group-name /eks/calculator-eksctl/containers
+$ aws logs delete-log-group --log-group-name /aws/lambda/LogsToElasticsearch_kubernetes-logs
 $ rm -rf ~/environment/iam_policy/
 ```
 
