@@ -2630,6 +2630,9 @@ $ rm -rf ~/environment/iam_policy/
 
 ### TODO: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
+- Authentication: Resource Policies/ IAM / Lambda Authorizers (token based, request parameter based)/ Cognito User Pools
+- Authorization:
+- Enable CORS
 - Swagger Documentation
 
 ### TODO: Add Web Application Firewall in front of API Gateway
