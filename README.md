@@ -810,6 +810,15 @@ $ git commit -m "Initial"
 $ git push origin master
 ```
 
+### (Optional) Clean up
+```
+$ Delete SSH Key
+$ rm ~/environment/calculator-frontend/querycalc.js
+$ rm ~/environment/calculator-frontend/base.css
+$ rm ~/environment/calculator-frontend/index.html
+$ rm -rf ~/environment/calculator-frontend
+```
+
 # ************************************************************
 
 ## Module 5: Install Kubernetes Tools
@@ -853,6 +862,11 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
 ```
 $ ssh-keygen
 $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file://~/.ssh/id_rsa.pub
+```
+
+### (Optional) Clean up
+```
+$ Delete SSH Key
 ```
 
 # ************************************************************
@@ -1164,9 +1178,13 @@ $ curl d5ny4mdta1kxt.cloudfront.net
 
 ### (Optional) Clean up
 ```
-$ aws cloudfront delete-distribution --id E2KI3RD2QF7PXM
+$ aws s3 rm s3://jrdalino-calculator-frontend --recursive
+$ aws s3 rb s3://jrdalino-calculator-frontend --force
+$ rm ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
+$ disable cloudfront distribution
+$ delete cloudfront distribution
 $ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
-$ aws s3api delete-bucket --bucket jrdalino-calculator-frontend --region us-east-1
+$ rm ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
 ```
 
 # ************************************************************
@@ -1566,6 +1584,20 @@ $ aws codepipeline create-pipeline \
 
 ### Step 9.15: Make a small code change, push and validate changes
 
+### (Optional) Clean up
+```
+$ aws codepipeline delete-pipeline --name CalculatorBackendServiceCICDPipeline
+$ rm ~/environment/calculator-backend/aws-cli/code-pipeline.json
+$ aws lambda delete-function --function-name LambdaKubeClient
+$ rm ~/environment/lambda-package_v1.zip
+$ aws codebuild delete-project --name CalculatorBackendServiceCodeBuildProject
+$ Manually delete codebuild history
+$ aws s3api delete-bucket-policy --bucket jrdalino-calculator-backend-artifacts
+$ rm ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
+$ aws s3 rm s3://jrdalino-calculator-backend-artifacts --recursive
+$ aws s3 rb s3://jrdalino-calculator-backend-artifacts --force
+```
+
 # ************************************************************
 
 ## Module 10: Setup CI/CD for Front End Service
@@ -1708,6 +1740,16 @@ $ aws codepipeline create-pipeline \
 
 ### Step 10.4: Make a small code change, Push and Validate changes
 
+### (Optional) Clean up
+```
+$ aws codepipeline delete-pipeline --name CalculatorFrontendServiceCICDPipeline
+$ rm ~/environment/calculator-frontend/aws-cli/code-pipeline.json
+$ aws s3api delete-bucket-policy --bucket jrdalino-calculator-frontend-artifacts
+$ rm ~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
+$ aws s3 rm s3://jrdalino-calculator-frontend-artifacts --recursive
+$ aws s3 rb s3://jrdalino-calculator-frontend-artifacts --force
+```
+
 # ************************************************************
 
 ## Module 11: Install Helm
@@ -1753,6 +1795,13 @@ $ kubectl apply -f ~/environment/rbac.yaml
 ### Step 11.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
 ```
 $ helm init --service-account tiller
+```
+
+### (Optional) Clean up
+```
+$ kubectl delete -f ~/environment/rbac.yaml
+$ rm ~/environment/rbac.yaml
+$ rm ~/environment/get_helm.sh
 ```
 
 # ************************************************************
