@@ -873,7 +873,8 @@ $ rm -rf ~/environment/calculator-frontend
 # ************************************************************
 
 ## Module 3: Install Kubernetes Tools and Launch EKS using EKCTL
-- TODO: Launch HA Cluster using kops
+- Example on how to install single-node master Kubernetes cluster  https://github.com/jrdalino/single-master-kubernetes-cluster
+- Example on how to install a multi-node master Kubernetes cluster using kops https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
 ### Step 3.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
