@@ -2659,39 +2659,16 @@ $ rm -rf ~/environment/iam_policy/
 - Enable Security Hub for Compliance Scanning
 - Wait for https://aws.amazon.com/controltower/
 
-### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
+### TODO: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets)
 - Terraform
 - Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Reusable Infrastructure w/ Terraform Modules
 - Testing using Terratest https://github.com/gruntwork-io/terratest
 
-### TODO: CI/CD for Infrastructure as Code Templates
+### TODO: Add Testing for Infrastruture as Code
+
+### TODO: Setup CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
-
-### TODO: Add Testing - Commited secrets on Git Repository
-- https://github.com/awslabs/git-secrets
-- https://github.com/zricethezav/gitleaks
-
-### TODO: Add Testing - Backend Static Code Analyzer
-- Find OSS alternative for SonarQube / Fortify / Checkmarx
-
-### TODO: Add Testing - Backend Containers Scanning
-- Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
-
-### TODO: Add Testing - Frontend Static Application
-- AuditJS > https://www.npmjs.com/package/auditjs
-- RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
-- OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
-
-### TODO: Add Testing - Frontend Dynamic Application
-- OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
-
-### TODO: Add Security - AWS Secrets Management
-- AWS Secrets Manager / AWS Parameter Store / Hashicorp Vault
-
-### TODO: Add Web Application Firewall in front of CloudFront CDN
-- AWS Web Application Firewall and AWS Shield
-- https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
 ### TODO: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
@@ -2705,18 +2682,47 @@ $ rm -rf ~/environment/iam_policy/
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-### TODO: Add Register/Transfer Domain Namne using Route 53
-- Amazon Route53
+### TODO: Add Testing - Backend Static Code Analyzer
+- Find OSS alternative for SonarQube / Fortify / Checkmarx
+
+### TODO: Add Testing - Backend Containers Scanning
+- Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
+
+### TODO: Add Web Application Firewall in front of CloudFront CDN
+- AWS Web Application Firewall and AWS Shield
+- https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
+
+### TODO: Add Testing - Frontend Static Application
+- AuditJS > https://www.npmjs.com/package/auditjs
+- RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
+- OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
+
+### TODO: Add Testing - Frontend Dynamic Application
+- OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
+
+### TODO: Add Database - NoSQL (DynamoDB)
+
+### TODO: Add Caching - DynamoDB Accelerator (DAX)
+
+### TODO: Add Database - RDBMS (RDS Postgres)
+
+### TODO: Add Caching - ElastiCache (Redis)
+
+### TODO: Add Testing - Commited secrets on Git Repository
+- https://github.com/awslabs/git-secrets
+- https://github.com/zricethezav/gitleaks
+
+### TODO: Add Security - AWS Secrets Management
+- AWS Secrets Manager / AWS Parameter Store / Hashicorp Vault
 
 ### TODO: Add SSL/TLS using AWS Certificate Manager
-- AWS Certificate Manager
 
-### TODO: Add Authentication
-- Amazon Cognito
+### TODO: Add Register/Transfer Domain Name using Route 53
+
+### TODO: Add Authentication using Amazon Cognito
 
 ### TODO: Add Instrumentation
-- AWS X-Ray
-- Prometheus
+- AWS X-Ray / Prometheus
 
 ### TODO: Add Alerting
 - AlertManager
