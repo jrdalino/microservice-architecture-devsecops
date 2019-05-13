@@ -9,17 +9,17 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 - TODO: Add Testing for Infrastructure as Code
 - TODO: Setup CI/CD for Infrastructure as Code
 
-- Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
-- Step 4: Deploy Backend MicroService to EKS
-- Step 5: Setup CI/CD for Back End Service
+- **Step 3: Install Kubernetes Tools and Launch EKS using EKCTL**
+- **Step 4: Deploy Backend MicroService to EKS**
+- **Step 5: Setup CI/CD for Back End Service**
 
 - TODO: Add Security - API Gateway in front of EKS Endpoint
 - TODO: Add Security - Web Application Firewall in front of API Gateway
 - TODO: Add Testing - Backend Static Code Analysis
 - TODO: Add Testing - Backend Containers Scanning
 
-- Step 6: Deploy Frontend to S3, CloudFront
-- Step 7: Setup CI/CD for Front End Service
+- **Step 6: Deploy Frontend to S3, CloudFront**
+- **Step 7: Setup CI/CD for Front End Service**
 
 - TODO: Add Security - Web Application Firewall in front of CloudFront CDN
 - TODO: Add Testing - Frontend Static Testing
@@ -36,13 +36,13 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 - TODO: Add SSL/TLS using AWS Certificate Manager
 - TODO: Add Register/Transfer Domain Name using Route 53
 
-- Step 8: Install Helm
-- Step 9: Deploy Prometheus for basic monitoring
-- Step 10: Deploy Grafana to create Dashboards
-- Step 11: Implement Liveness Probe Health Checks
-- Step 12: Implement Readiness Probe Health Checks
-- Step 13: Implement Auto Scaling
-- Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+- **Step 8: Install Helm**
+- **Step 9: Deploy Prometheus for basic monitoring**
+- **Step 10: Deploy Grafana to create Dashboards**
+- **Step 11: Implement Liveness Probe Health Checks**
+- **Step 12: Implement Readiness Probe Health Checks**
+- **Step 13: Implement Auto Scaling**
+- **Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)**
 
 - TODO: Add Authentication
 - TODO: Add Instrumentation
