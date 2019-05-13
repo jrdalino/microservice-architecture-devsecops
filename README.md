@@ -3,11 +3,39 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 
 - Step 1: Create Backend using Python Flask Rest API
 - Step 2: Create Frontend using HTML, CSS, JS
+
+- TODO: Add Governance - AWS Organizations and AWS Account Hardening
+- TODO: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets)
+- TODO: Add Testing for Infrastructure as Code
+- TODO: Setup CI/CD for Infrastructure as Code
+
 - Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
 - Step 4: Deploy Backend MicroService to EKS
-- Step 5: Deploy Frontend to S3, CloudFront
-- Step 6: Setup CI/CD for Back End Service
+- Step 5: Setup CI/CD for Back End Service
+
+- TODO: Add Security - API Gateway in front of EKS Endpoint
+- TODO: Add Security - Web Application Firewall in front of API Gateway
+- TODO: Add Testing - Backend Static Code Analysis
+- TODO: Add Testing - Backend Containers Scanning
+
+- Step 6: Deploy Frontend to S3, CloudFront
 - Step 7: Setup CI/CD for Front End Service
+
+- TODO: Add Security - Web Application Firewall in front of CloudFront CDN
+- TODO: Add Testing - Frontend Static Testing
+- TODO: Add Testing - Frontend Dynamic Testing
+
+- TODO: Add Database - NoSQL (DynamoDB)
+- TODO: Add Caching - DynamoDB Accelerator (DAX)
+- TODO: Add Database - RDBMS (Postgres)
+- TODO: Add Caching - ElastiCache (Redis)
+
+- TODO: Add Testing - Committed Secrets on Git Repository
+- TODO: Add Security - AWS Secrets Management
+
+- TODO: Add SSL/TLS using AWS Certificate Manager
+- TODO: Add Register/Transfer Domain Name using Route 53
+
 - Step 8: Install Helm
 - Step 9: Deploy Prometheus for basic monitoring
 - Step 10: Deploy Grafana to create Dashboards
@@ -15,6 +43,12 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 - Step 12: Implement Readiness Probe Health Checks
 - Step 13: Implement Auto Scaling
 - Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+
+- TODO: Add Authentication
+- TODO: Add Instrumentation
+- TODO: Add Alerting
+- TODO: Add Service Discovery
+- TODO: Add Service Mesh
 
 ## Prerequisites
 Working Directory
@@ -2606,7 +2640,7 @@ $ rm -rf ~/environment/iam_policy/
 
 ## Security / Management / Compliance / Governance TODO's
 
-### TODO: Add Governamnce - AWS Organizations and AWS Account Hardening
+### TODO: Add Governance - AWS Organizations and AWS Account Hardening
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add SCP Policies
 - Create new AWS Account for product and environment
@@ -2623,12 +2657,15 @@ $ rm -rf ~/environment/iam_policy/
 - Enable SNS topics for alertning and notifications
 - Enable Guard Duty for Intelligent threat detection
 - Enable Security Hub for Compliance Scanning
+- Wait for https://aws.amazon.com/controltower/
 
 ### TODO: Add Infrastructure as Code Templates to create own VPC with Public and Private Subnets (+ Repo, Testing, CI/CD)
 - Terraform
 - Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Reusable Infrastructure w/ Terraform Modules
 - Testing using Terratest https://github.com/gruntwork-io/terratest
+
+### TODO: CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
 
 ### TODO: Add Testing - Commited secrets on Git Repository
