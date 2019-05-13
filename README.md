@@ -202,7 +202,8 @@ $ git push origin master
 ### Step 1.5: Navigate to working directory
 ```
 $ cd ~/environment/calculator-backend
-$ virtualenv venv
+$ python3 -m venv venv
+$ source venv/bin/activate
 $ venv/bin/pip install flask
 $ venv/bin/pip install flask-cors
 ```
@@ -465,7 +466,7 @@ $ vi Dockerfile
 ```
 ```
 # Set base image to python
-FROM python:2.7
+FROM python:3.7
 
 # Copy source file and python req's
 COPY . /app
@@ -843,7 +844,7 @@ $ rm -rf ~/environment/calculator-frontend
 ### TODO: Add Governance - AWS Organizations and AWS Account Hardening
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add SCP Policies
-- Create new AWS Account for product and environment
+- Create new AWS Account per product and per environment (production and staging)
 - New Email alias, AWS Account, Contacts
 - Secure Root User, MFA
 - Delete Default VPC's
@@ -861,11 +862,11 @@ $ rm -rf ~/environment/calculator-frontend
 
 ### TODO: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets)
 - Terraform
-- Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Reusable Infrastructure w/ Terraform Modules
-- Testing using Terratest https://github.com/gruntwork-io/terratest
+- Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 
 ### TODO: Add Testing for Infrastruture as Code
+- Testing using Terratest https://github.com/gruntwork-io/terratest
 
 ### TODO: Setup CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
@@ -929,7 +930,7 @@ $ eksctl create cluster \
 --name=calculator-eksctl \
 --nodes=2 \
 --node-ami=auto \
---node-type=t2.medium \ 
+--node-type=t2.small \ 
 --region=${AWS_REGION}
 $ kubectl get nodes
 ```
