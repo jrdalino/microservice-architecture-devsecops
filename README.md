@@ -1,14 +1,13 @@
 # Python Flask Backend + JS Frontend Calculator on AWS EKS (Kubernetes) with CI/CD, Monitoring and Logging
 This is a simple tutorial on how to create a Python Flask Backend + Javascript Frontend Application, Setup CI/CD with AWS Code% and AWS Elastic Kubernetes Service, High Availability, Autoscaling, Monitoring using Prometheus and Grafana and Logging with ElasticSearch, Fluentd and Kibana.
 
-- Step 1: Configure Calculator Backend Git Repository
-- Step 2: Backend Python Flask Rest API for Calculator Local
-- Step 3: Configure Calculator Frontend Git Repository
-- Step 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
-- Step 5: Install Kubernetes Tools
-- Step 6: Launch EKS using EKCTL
+- Step 1: Create Backend using Python Flask Rest API
+- Step 2: Create Frontend using HTML, CSS, JS
+- Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
+
 - Step 7: Deploy Backend MicroService to EKS
-- Step 8: Deploy Frontend
+- Step 8: Deploy Frontend to S3, CloudFront
+
 - Step 9: Setup CI/CD for Back End Service
 - Step 10: Setup CI/CD for Front End Service
 - Step 11: Install Helm
@@ -118,7 +117,23 @@ Frontend Project Layout will look like this:
 
 # ************************************************************
 
-## Module 1: Configure Calculator Backend Git Repository
+## Module 1: Create Backend using Python Flask REST API
+- Basic calculations (add, subtract, multiply, divide)
+- Advanced calculations (square root, cube root, power, factorial)
+- Calculator triggered by developers via a web api
+
+```
+HTTP METHOD | URI                                                         | Action
+-----------   -----------------------------------------------------------   --------------------------------------------------
+POST        | http://[hostname]/add {"argument1":a, "argument2":b }       | Adds two numbers (a + b)
+POST        | http://[hostname]/subtract {"argument1":a, "argument2":b }  | Subracts two numbers (a - b)
+POST        | http://[hostname]/multiply {"argument1":a, "argument2":b }  | Multiplies two numbers (a * b)
+POST        | http://[hostname]/divide {"argument1":a, "argument2":b }    | Divides two numbers (a / b)
+POST        | http://[hostname]/sqrt {"argument1":a }                     | Gets the square root of a number (a)
+POST        | http://[hostname]/cbrt {"argument1":a }                     | Gets the cube root of a number (a)
+POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
+POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
+```
 
 ### Step 1.1: Create a CodeCommit Repository
 ```
@@ -150,32 +165,7 @@ $ git commit -m "Adding README.md"
 $ git push origin master
 ```
 
-### (Optional) Clean up
-```
-$ aws codecommit delete-repository --repository-name calculator-backend
-```
-
-# ************************************************************
-
-## Module 2: Backend Python Flask Rest API for Calculator Local
-- Basic calculations (add, subtract, multiply, divide)
-- Advanced calculations (square root, cube root, power, factorial)
-- Calculator triggered by developers via a web api
-
-```
-HTTP METHOD | URI                                                         | Action
------------   -----------------------------------------------------------   --------------------------------------------------
-POST        | http://[hostname]/add {"argument1":a, "argument2":b }       | Adds two numbers (a + b)
-POST        | http://[hostname]/subtract {"argument1":a, "argument2":b }  | Subracts two numbers (a - b)
-POST        | http://[hostname]/multiply {"argument1":a, "argument2":b }  | Multiplies two numbers (a * b)
-POST        | http://[hostname]/divide {"argument1":a, "argument2":b }    | Divides two numbers (a / b)
-POST        | http://[hostname]/sqrt {"argument1":a }                     | Gets the square root of a number (a)
-POST        | http://[hostname]/cbrt {"argument1":a }                     | Gets the cube root of a number (a)
-POST        | http://[hostname]/exp {"argument1":a, "argument2":b }       | Gets the the exponent of a raised to b
-POST        | http://[hostname]/factorial {"argument1":a }                | Get the factorial of number 5! = 5 * 4 * 3 * 2 * 1 
-```
-
-### Step 2.1: Navigate to working directory
+### Step 1.5: Navigate to working directory
 ```
 $ cd ~/environment/calculator-backend
 $ virtualenv venv
@@ -183,7 +173,7 @@ $ venv/bin/pip install flask
 $ venv/bin/pip install flask-cors
 ```
 
-### Step 2.2 Create Calculator Class Calculator.py
+### Step 1.6 Create Calculator Class Calculator.py
 ```
 $ cd ~/environment/calculator-backend
 $ vi calculator.py
@@ -224,7 +214,7 @@ class Calculator:
           return float(arg1)*self.factorial(float(arg1)-1)
 ```
 
-### Step 2.3: Add app.py
+### Step 1.7: Add app.py
 ```
 $ cd ~/environment/calculator-backend
 $ vi app.py
@@ -357,7 +347,7 @@ if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
 ```
 
-### Step 2.4: Create the requirements.txt file
+### Step 1.8: Create the requirements.txt file
 ```
 $ cd ~/environment/calculator-backend
 $ vi requirements.txt
@@ -368,7 +358,7 @@ flask_restful
 flask_cors
 ```
 
-### Step 2.5: Run Locally and Test
+### Step 1.9: Run Locally and Test
 ```
 $ cd ~/environment/calculator-backend
 $ chmod a+x app.py
@@ -376,7 +366,7 @@ $ ./app.py
 $ curl http://localhost:5000
 ```
 
-### Step 2.6: Backend Unit Tests
+### Step 1.10: Backend Unit Tests
 ```
 $ cd ~/environment/calculator-backend
 $ vi test_calculator.py
@@ -421,20 +411,20 @@ if __name__ == "__main__":
     unittest.main()
 ```
 
-### Step 2.7: Run Unit Tests
+### Step 1.11: Run Unit Tests
 ```
 $ chmod a+x test_calculator.py
 $ ./test_calculator.py -v
 ```
 
-### Step 2.8 Save changes to remote git repository
+### Step 1.12 Save changes to remote git repository
 ```
 $ git add .
 $ git commit -m "Initial"
 $ git push origin master
 ```
 
-### Step 2.9: Create the Dockerfile
+### Step 1.13: Create the Dockerfile
 ```
 $ cd ~/environment/calculator-backend
 $ vi Dockerfile
@@ -455,7 +445,7 @@ ENTRYPOINT ["python"]
 CMD ["app.py"]
 ```
 
-### Step 2.10: Build, Tag and Run the Docker Image locally
+### Step 1.14: Build, Tag and Run the Docker Image locally
 Replace:
 - AccountId: 707538076348
 - Region: us-east-1
@@ -466,7 +456,7 @@ $ docker tag calculator-backend:latest 707538076348.dkr.ecr.us-east-1.amazonaws.
 $ docker run -d -p 5000:5000 calculator-backend:latest
 ```
 
-### Step 2.11: Test Math Operations
+### Step 1.15: Test Math Operations
 - Test Add
 ```
 $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":2, "argument2":1 }' http://localhost:5000/add
@@ -531,22 +521,22 @@ $ curl -i -H "Content-Type: application/json" -X POST -d '{"argument1":5 }' http
 }
 ```
 
-### Step 2.12: Create the ECR Repository
+### Step 1.16: Create the ECR Repository
 ```
 $ aws ecr create-repository --repository-name calculator-backend
 ```
 
-### Step 2.13: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
+### Step 1.17: Run login command to retrieve credentials for our Docker client and then automatically execute it (include the full command including the $ below).
 ```
 $ $(aws ecr get-login --no-include-email)
 ```
 
-### Step 2.14: Push our Docker Image
+### Step 1.18: Push our Docker Image
 ```
 $ docker push 707538076348.dkr.ecr.us-east-1.amazonaws.com/calculator-backend:latest
 ```
 
-### Step 2.15: Validate Image has been pushed
+### Step 1.19: Validate Image has been pushed
 ```
 $ aws ecr describe-images --repository-name calculator-backend
 ```
@@ -554,24 +544,28 @@ $ aws ecr describe-images --repository-name calculator-backend
 ### (Optional) Clean up
 ```
 $ aws ecr delete-repository --repository-name calculator-backend --force
+$ aws codecommit delete-repository --repository-name calculator-backend
+$ rm -rf ~/environment/calculator-backend
 ```
 
 # ************************************************************
 
-## Module 3: Configure Calculator Frontend Git Repository
+## Module 2: Create Frontend using HTML, CSS, JS
+- Calculator triggered by end users through a web page
+- TODO: Use Bootstrap for UI
 
-### Step 3.1: Create a CodeCommit Repository
+### Step 2.1: Create a CodeCommit Repository
 ```
 $ aws codecommit create-repository --repository-name calculator-frontend
 ```
 
-### Step 3.2: Clone the repository
+### Step 2.2: Clone the repository
 ```
 $ cd ~/environment
 $ git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/calculator-frontend
 ```
 
-### Step 3.3: Test access to repo by adding README.md file and push to remote repository
+### Step 2.3: Test access to repo by adding README.md file and push to remote repository
 ```
 $ cd ~/environment/calculator-frontend
 $ echo "calculator-frontend" >> README.md
@@ -580,22 +574,12 @@ $ git commit -m "Adding README.md"
 $ git push origin master
 ```
 
-### (Optional) Clean up
-```
-$ aws codecommit delete-repository --repository-name calculator-frontend
-```
-
-# ************************************************************
-
-## Module 4: Frontend HTML, CSS, JS and Bootstrap for Calculator Local
-- Calculator triggered by end users through a web page
-
-### Step 4.1: Navigate to working directory
+### Step 2.4: Navigate to working directory
 ```
 $ cd ~/environment/calculator-frontend
 ```
 
-### Step 4.2: Create index.html file
+### Step 2.5: Create index.html file
 ```
 $ vi index.html
 ```
@@ -648,7 +632,7 @@ $ vi index.html
 </html>
 ```
 
-### Step 4.3: Create base.css file
+### Step 2.6: Create base.css file
 ```
 $ vi base.css
 ```
@@ -691,7 +675,7 @@ body {
 }
 ```
 
-### Step 4.4: Create querycalc.js file
+### Step 2.7: Create querycalc.js file
 ```
 $ vi querycalc.js
 ```
@@ -801,9 +785,9 @@ function calcListener ( jQuery ) {
 }
 ```
 
-### Step 4.5: Test Locally
+### Step 2.8: Test Locally
 
-### Step 4.6: Save changes to remote git repository
+### Step 2.9: Save changes to remote git repository
 ```
 $ git add .
 $ git commit -m "Initial"
@@ -812,7 +796,8 @@ $ git push origin master
 
 ### (Optional) Clean up
 ```
-$ Delete SSH Key
+$ aws codecommit delete-repository --repository-name calculator-frontend
+$ Manually delete SSH Key
 $ rm ~/environment/calculator-frontend/querycalc.js
 $ rm ~/environment/calculator-frontend/base.css
 $ rm ~/environment/calculator-frontend/index.html
@@ -821,14 +806,14 @@ $ rm -rf ~/environment/calculator-frontend
 
 # ************************************************************
 
-## Module 5: Install Kubernetes Tools
+## Module 3: Install Kubernetes Tools and Launch EKS using EKCTL
 
-### Step 5.1: Create the default ~/.kube directory for storing kubectl configuration
+### Step 3.1: Create the default ~/.kube directory for storing kubectl configuration
 ```
 $ mkdir -p ~/.kube
 ```
 
-### Step 5.2: Install kubectl on MAC
+### Step 3.2: Install kubectl on MAC
 ```
 $ sudo curl -o kubectl "https://amazon-eks.s3-us-west-2.amazonaws.com/1.11.5/2018-12-06/bin/darwin/amd64/kubectl"
 $ sudo chmod +x ./kubectl
@@ -837,20 +822,20 @@ $ echo 'export PATH=$HOME/bin:$PATH' >> ~/.bash_profile
 $ kubectl version --short --client
 ```
 
-### Step 5.3: Install IAM Authenticator
+### Step 3.3: Install IAM Authenticator
 ```
 $ brew install aws-iam-authenticator
 $ aws-iam-authenticator help
 ```
 
-### Step 5.4: Install JQ and envsubst
+### Step 3.4: Install JQ and envsubst
 ```
 $ brew install jq
 $ brew install gettext
 $ brew link --force gettext
 ```
 
-### Step 5.5: Verify the binaries are in the path and executable
+### Step 3.5: Verify the binaries are in the path and executable
 ```
 $ for command in kubectl aws-iam-authenticator jq envsubst
   do
@@ -858,28 +843,19 @@ $ for command in kubectl aws-iam-authenticator jq envsubst
   done
 ```
 
-### Step 5.6: Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
+### Step 3.6: Generate an SSH Key for the Worker Nodes and upload the public key to your EC2 region
 ```
 $ ssh-keygen
 $ aws ec2 import-key-pair --key-name "eksworkernodes" --public-key-material file://~/.ssh/id_rsa.pub
 ```
 
-### (Optional) Clean up
-```
-$ Delete SSH Key
-```
-
-# ************************************************************
-
-## Module 6: Launch EKS using EKCTL
-
-### Step 6.1: Download the eksctl binaries
+### Step 3.7: Download the eksctl binaries
 ```
 $ brew install weaveworks/tap/eksctl
 $ eksctl version
 ```
 
-### Step 6.2: Create an EKS Cluster (This will take ~15 minutes) and test cluster
+### Step 3.8: Create an EKS Cluster (This will take ~15 minutes) and test cluster
 ```
 $ eksctl create cluster \
 --name=calculator-eksctl \
@@ -919,7 +895,7 @@ $ kubectl get nodes
 [✔]  EKS cluster "calculator-eksctl" in "us-east-1" region is ready
 ```
 
-### Step 6.3: Export Worker Role name
+### Step 3.9: Export Worker Role name
 ```
 $ INSTANCE_PROFILE_NAME=$(aws iam list-instance-profiles | jq -r '.InstanceProfiles[].InstanceProfileName' | grep nodegroup)
 $ ROLE_NAME=$(aws iam get-instance-profile --instance-profile-name $INSTANCE_PROFILE_NAME | jq -r '.InstanceProfile.Roles[] | .RoleName')
@@ -929,14 +905,15 @@ $ echo "export ROLE_NAME=${ROLE_NAME}" >> ~/.bash_profile
 ### (Optional) Clean up
 ```
 $ eksctl delete cluster --name=calculator-eksctl
+$ Manually delete Worker Nodes SSH Key
 ```
 
 # ************************************************************
 
-## Module 7: Deploy Backend MicroService to EKS
+## Module 4: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
 
-### Step 7.1: Create our deployment.yaml file
+### Step 4.1: Create our deployment.yaml file
 ```
 $ cd ~/environment/calculator-backend
 $ mkdir kubernetes
@@ -975,7 +952,7 @@ spec:
           protocol: TCP
 ```
 
-### Step 7.2: Create our service.yaml file
+### Step 4.2: Create our service.yaml file
 ```
 $ vi ~/environment/calculator-backend/kubernetes/service.yaml
 ```
@@ -995,12 +972,12 @@ spec:
       targetPort: 5000
 ```
 
-### Step 7.3: Ensure ELB service Role exists
+### Step 4.3: Ensure ELB service Role exists
 ```
 $ aws iam get-role --role-name "AWSServiceRoleForElasticLoadBalancing" || aws iam create-service-linked-role --aws-service-name "elasticloadbalancing.amazonaws.com"
 ```
 
-### Step 7.4: Deploy our Backend REST API and watch progress
+### Step 4.4: Deploy our Backend REST API and watch progress
 ```
 $ cd ~/environment/calculator-backend/kubernetes
 $ kubectl apply -f deployment.yaml
@@ -1008,14 +985,14 @@ $ kubectl apply -f service.yaml
 $ kubectl get deployment calculator-backend
 ```
 
-### Step 7.5: Scale the Backend Service
+### Step 4.5: Scale the Backend Service
 ```
 $ kubectl get deployments
 $ kubectl scale deployment calculator-backend --replicas=1
 $ kubectl get deployments
 ```
 
-### Step 7.6: Find the Service Address
+### Step 4.6: Find the Service Address
 ```
 $ kubectl get service calculator-backend -o wide
 ```
@@ -1029,25 +1006,25 @@ $ kubectl delete -f deployment.yaml
 
 # ************************************************************
 
-## Module 8: Deploy Frontend
+## Module 5: Deploy Frontend
 
-### Step 8.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://a529520be6d7811e98ef812788873e53-1902855455.us-east-1.elb.amazonaws.com/
+### Step 5.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://a529520be6d7811e98ef812788873e53-1902855455.us-east-1.elb.amazonaws.com/
 ```
 $ vi ~/environment/calculator-frontend/querycalc.js
 ```
 
-### Step 8.2: Create an S3 Bucket for Storing Content
+### Step 5.2: Create an S3 Bucket for Storing Content
 ```
 $ aws s3 mb s3://jrdalino-calculator-frontend
 ```
 
-### Step 8.3: Create a CloudFront Access Identity
+### Step 5.3: Create a CloudFront Access Identity
 ```
 $ aws cloudfront create-cloud-front-origin-access-identity \
 --cloud-front-origin-access-identity-config CallerReference=Calculator,Comment=Calculator
 ```
 
-### Step 8.4: Create the S3 Bucket Policy Input File
+### Step 5.4: Create the S3 Bucket Policy Input File
 ```
 $ mkdir aws-cli
 $ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
@@ -1070,14 +1047,14 @@ $ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
 }
 ```
 
-### Step 8.5: Add a public bucket policy to allow CloudFront
+### Step 5.5: Add a public bucket policy to allow CloudFront
 ```
 $ aws s3api put-bucket-policy \
 --bucket jrdalino-calculator-frontend \
 --policy file://~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
 ```
 
-### Step 8.6: Publish the Website Content to S3
+### Step 5.6: Publish the Website Content to S3
 ```
 $ cd ~/environment/calculator-frontend
 $ aws s3 cp index.html s3://jrdalino-calculator-frontend/index.html
@@ -1085,7 +1062,7 @@ $ aws s3 cp base.css s3://jrdalino-calculator-frontend/base.css
 $ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
 ```
 
-### Step 8.7: Create the CloudFront Distribution input file
+### Step 5.7: Create the CloudFront Distribution input file
 ```
 $ cd ~/environment/calculator-frontend
 $ mkdir aws-cli
@@ -1143,18 +1120,18 @@ $ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.j
 }
 ```
 
-### Step 8.8: Create CloudFront Distribution
+### Step 5.8: Create CloudFront Distribution
 ```
 $ aws cloudfront create-distribution \
 --distribution-config file://~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
 ```
 
-### Step 8.9: Check Status of CloudFront Distribution
+### Step 5.9: Check Status of CloudFront Distribution
 ```
 $ aws cloudfront list-distributions
 ```
 
-### Step 8.10 Enable CORS on S3 and CloudFront
+### Step 5.10 Enable CORS on S3 and CloudFront
 - Cloudfront: https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 
 - S3: https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-cors-configuration.html
@@ -1171,7 +1148,7 @@ $ aws cloudfront list-distributions
 </CORSConfiguration>
 ```
 
-### Step 8.11: Test functionality of Calculator Frontend + Backend
+### Step 5.11: Test functionality of Calculator Frontend + Backend
 ```
 $ curl d5ny4mdta1kxt.cloudfront.net
 ```
@@ -1189,10 +1166,10 @@ $ rm ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.j
 
 # ************************************************************
 
-## Module 9: Setup CI/CD for Back End Service
+## Module 6: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 
-### Step 9.1: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
+### Step 6.1: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
 ```
 $ cd ~/environment/calculator-backend
 $ mkdir aws-cli
@@ -1319,12 +1296,12 @@ $ aws cloudformation create-stack \
 --template-body file://~/environment/calculator-backend/aws-cli/eks-calculator-codebuild-codepipeline-iam-role.yaml
 ```
 
-### Step 9.2: Create an S3 Bucket for Pipeline Artifacts
+### Step 6.2: Create an S3 Bucket for Pipeline Artifacts
 ```
 $ aws s3 mb s3://jrdalino-calculator-backend-artifacts
 ```
 
-### Step 9.3: Modify S3 Bucket Policy
+### Step 6.3: Modify S3 Bucket Policy
 ```
 $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
@@ -1370,14 +1347,14 @@ $ vi ~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 }
 ```
 
-### Step 9.4: Grant S3 Bucket access to your CI/CD Pipeline
+### Step 6.4: Grant S3 Bucket access to your CI/CD Pipeline
 ```
 $ aws s3api put-bucket-policy \
 --bucket jrdalino-calculator-backend-artifacts \
 --policy file://~/environment/calculator-backend/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 9.5: View/Modify Buildspec file
+### Step 6.5: View/Modify Buildspec file
 ```
 $ cd ~/environment/calculator-backend
 $ vi ~/environment/calculator-backend/buildspec.yml
@@ -1406,7 +1383,7 @@ artifacts:
   files: imagedefinitions.json
 ```
 
-### Step 9.6: View/Modify CodeBuild Project Input File
+### Step 6.6: View/Modify CodeBuild Project Input File
 ```
 $ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
@@ -1445,13 +1422,13 @@ $ vi ~/environment/calculator-backend/aws-cli/code-build-project.json
 }
 ```
 
-### Step 9.7: Create the CodeBuild Project
+### Step 6.7: Create the CodeBuild Project
 ```
 $ aws codebuild create-project \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-build-project.json
 ```
 
-### Step 9.8: Setup Lambda for deployment
+### Step 6.8: Setup Lambda for deployment
 ```
 $ cd ~/environment/
 $ git clone https://github.com/BranLiang/lambda-eks
@@ -1462,13 +1439,13 @@ $ sed -i -e "s#\$EKS_CLUSTER_NAME#calculator-eksctl#g" ./config
 $ sed -i -e "s#\$EKS_CLUSTER_USER_NAME#lambda#g" ./config
 ```
 
-### Step 9.9: Then run the following command replacing secret name to update your token
+### Step 6.9: Then run the following command replacing secret name to update your token
 ```
 $ kubectl get secrets
 $ sed -i -e "s#\$TOKEN#$(kubectl get secret $SECRET_NAME -o json | jq -r '.data["token"]' | base64 -D)#g" ./config
 ```
 
-### Step 9.10: Build, package and deploy the Lambda Kube Client Function
+### Step 6.10: Build, package and deploy the Lambda Kube Client Function
 ```
 $ npm install
 $ zip -r ../lambda-package_v1.zip .
@@ -1483,12 +1460,12 @@ $ aws lambda create-function \
 --memory-size 128
 ```
 
-### Step 9.11: Provide admin access to default service account
+### Step 6.11: Provide admin access to default service account
 ```
 $ kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
 ```
 
-### Step 9.12: Modify CodePipeline Input File
+### Step 6.12: Modify CodePipeline Input File
 ```
 $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
@@ -1563,13 +1540,13 @@ $ vi ~/environment/calculator-backend/aws-cli/code-pipeline.json
 }
 ```
 
-### Step 9.13: Create a pipeline in CodePipeline
+### Step 6.13: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-backend/aws-cli/code-pipeline.json
 ```
 
-### Step 9.14: Manually modify pipeline Codepipeline to add Deployment stage using created Lambda function.
+### Step 6.14: Manually modify pipeline Codepipeline to add Deployment stage using created Lambda function.
 - Click Edit CodePipeline
 - Add a new stage after Build Stage
 - Enter stage name as Deploy and save.
@@ -1582,7 +1559,7 @@ $ aws codepipeline create-pipeline \
 - User parameter: calculator-backend
 - Click Save
 
-### Step 9.15: Make a small code change, push and validate changes
+### Step 6.15: Make a small code change, push and validate changes
 
 ### (Optional) Clean up
 ```
@@ -1603,16 +1580,16 @@ $ aws logs delete-log-group --log-group-name /aws/codebuild/CalculatorBackendSer
 
 # ************************************************************
 
-## Module 10: Setup CI/CD for Front End Service
+## Module 7: Setup CI/CD for Front End
 
-### Step 10.1: Create an S3 Bucket for Pipeline Artifacts
+### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
 ```
 $ aws s3 mb s3://jrdalino-calculator-frontend-artifacts
 ```
 
-### Step 10.2: Check Codepipeline Roles exists
+### Step 7.2: Check Codepipeline Roles exists
 
-### Step 10.3: Create S3 Bucket Policy File
+### Step 7.3: Create S3 Bucket Policy File
 ```
 $ cd ~/environment/calculator-frontend
 $ mkdir aws-cli
@@ -1658,14 +1635,14 @@ $ vi ~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
 }
 ```
 
-### Step 10.4: Grant S3 Bucket access to your CI/CD Pipeline
+### Step 7.4: Grant S3 Bucket access to your CI/CD Pipeline
 ```
 $ aws s3api put-bucket-policy \
 --bucket jrdalino-calculator-frontend-artifacts \
 --policy file://~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
 ```
 
-### Step 10.5: Create CodePipeline Input File
+### Step 7.5: Create CodePipeline Input File
 ```
 $ vi ~/environment/calculator-frontend/aws-cli/code-pipeline.json
 ```
@@ -1735,13 +1712,13 @@ $ vi ~/environment/calculator-frontend/aws-cli/code-pipeline.json
 }
 ```
 
-### Step 10.3: Create a pipeline in CodePipeline
+### Step 7.6: Create a pipeline in CodePipeline
 ```
 $ aws codepipeline create-pipeline \
 --cli-input-json file://~/environment/calculator-frontend/aws-cli/code-pipeline.json
 ```
 
-### Step 10.4: Make a small code change, Push and Validate changes
+### Step 7.7: Make a small code change, Push and Validate changes
 
 ### (Optional) Clean up
 ```
@@ -1755,9 +1732,9 @@ $ aws s3 rb s3://jrdalino-calculator-frontend-artifacts --force
 
 # ************************************************************
 
-## Module 11: Install Helm
+## Module 8: Install Helm
 
-### Step 11.1: Install Helm CLI
+### Step 8.1: Install Helm CLI
 ```
 $ cd ~/environment
 $ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
@@ -1765,7 +1742,7 @@ $ chmod +x get_helm.sh
 $ ./get_helm.sh
 ```
 
-### Step 11.2: Configure Helm access with RBAC
+### Step 8.2: Configure Helm access with RBAC
 ```
 cat <<EoF > ~/environment/rbac.yaml
 ---
@@ -1790,12 +1767,12 @@ subjects:
 EoF
 ```
 
-### Step 11.3: Apply the config
+### Step 8.3: Apply the config
 ```
 $ kubectl apply -f ~/environment/rbac.yaml
 ```
 
-### Step 11.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
+### Step 8.4: Install helm and tiller into the cluster which gives it access to manage resources in your cluster.
 ```
 $ helm init --service-account tiller
 ```
@@ -1809,9 +1786,9 @@ $ rm ~/environment/get_helm.sh
 
 # ************************************************************
 
-## Module 12: Deploy Prometheus for basic monitoring
+## Module 9: Deploy Prometheus for basic monitoring
 
-### Step 12.1: Install Prometheus
+### Step 9.1: Install Prometheus
 ```
 $ kubectl create namespace prometheus
 $ helm install stable/prometheus \
@@ -1821,12 +1798,12 @@ $ helm install stable/prometheus \
     --set server.persistentVolume.storageClass="gp2"
 ```
 
-### Step 12.2: Check if Prometheus components deployed as expected
+### Step 9.2: Check if Prometheus components deployed as expected
 ```
 $ kubectl get all -n prometheus
 ```
 
-### Step 12.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
+### Step 9.3: Access the Prometheus server URL w/ kubectl port-forward and access /targets Web UI
 ```
 $ kubectl port-forward -n prometheus deploy/prometheus-server 8080:9090
 ```
@@ -1839,9 +1816,9 @@ $ helm del --purge prometheus
 
 # ************************************************************
 
-## Module 13: Deploy Grafana to create Dashboards
+## Module 10: Deploy Grafana to create Dashboards
 
-### Step 13.1: Install Grafana
+### Step 10.1: Install Grafana
 ```
 $ kubectl create namespace grafana
 $ helm install stable/grafana \
@@ -1858,23 +1835,23 @@ $ helm install stable/grafana \
     --set service.type=LoadBalancer
 ```
 
-### Step 13.2: Check if Grafana is deployed
+### Step 10.2: Check if Grafana is deployed
 ```
 $ kubectl get all -n grafana
 ```
 
-### Step 13.3: Get Grafana ELB URL
+### Step 10.3: Get Grafana ELB URL
 ```
 $ export ELB=$(kubectl get svc -n grafana grafana -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 $ echo "http://$ELB"
 ```
 
-### Step 13.4: Login using admin and password
+### Step 10.4: Login using admin and password
 ```
 $ kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 ```
 
-### Step 13.5: Create Grafana Dashboards
+### Step 10.5: Create Grafana Dashboards
 - Login into Grafana dashboard using credentials supplied during configuration
 - You will notice that ‘Install Grafana’ & ‘create your first data source’ are already completed. We will import community created dashboard for this tutorial
 - Click ‘+’ button on left panel and select ‘Import’
@@ -1891,10 +1868,10 @@ $ helm del --purge grafana
 
 # ************************************************************
 
-## Module 14: Implement Liveness Probe Health Checks
+## Module 11: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 
-### Step 14.1: Configure the Probe
+### Step 11.1: Configure the Probe
 ```
 $ mkdir -p ~/environment/healthchecks
 $ cat <<EoF > ~/environment/healthchecks/liveness-app.yaml
@@ -1915,14 +1892,14 @@ spec:
 EoF
 ```
 
-### Step 14.2: Create the pod using the manifest
+### Step 11.2: Create the pod using the manifest
 ```
 $ kubectl apply -f ~/environment/healthchecks/liveness-app.yaml
 $ kubectl get pod liveness-app
 $ kubectl describe pod liveness-app
 ```
 
-### Step 14.3: Introduce a Failure to Test
+### Step 11.3: Introduce a Failure to Test
 ```
 $ kubectl exec -it liveness-app -- /bin/kill -s SIGUSR1 1
 $ kubectl get pod liveness-app
@@ -1937,10 +1914,10 @@ $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 
 # ************************************************************
 
-## Module 15: Implement Readiness Probe Health Checks
+## Module 12: Implement Readiness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 
-### Step 15.1: Configure the Probe
+### Step 12.1: Configure the Probe
 ```
 $ cat <<EoF > ~/environment/healthchecks/readiness-deployment.yaml
 apiVersion: apps/v1
@@ -1971,25 +1948,25 @@ spec:
 EoF
 ```
 
-### Step 15.2: Create a deployment to test readiness probe
+### Step 12.2: Create a deployment to test readiness probe
 ```
 $ kubectl apply -f ~/environment/healthchecks/readiness-deployment.yaml
 $ kubectl get pods -l app=readiness-deployment
 ```
 
-### Step 15.3: Confirm that all the replicas are available to serve traffic when a service is pointed to this deployment
+### Step 12.3: Confirm that all the replicas are available to serve traffic when a service is pointed to this deployment
 ```
 $ kubectl describe deployment readiness-deployment | grep Replicas:
 ```
 
-### Step 15.4: Introduce a Failure
+### Step 12.4: Introduce a Failure
 ```
 $ kubectl exec -it <YOUR-READINESS-POD-NAME> -- rm /tmp/healthy
 $ kubectl get pods -l app=readiness-deployment
 $ kubectl describe deployment readiness-deployment | grep Replicas:
 ```
 
-### Step 15.5: Restore pod to Ready Status
+### Step 12.5: Restore pod to Ready Status
 ```
 $ kubectl exec -it <YOUR-READINESS-POD-NAME> -- touch /tmp/healthy
 $ kubectl get pods -l app=readiness-deployment
@@ -2002,9 +1979,9 @@ $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 
 # ************************************************************
 
-## Module 16: Implementing Auto Scaling
+## Module 13: Implementing Auto Scaling
 
-### Step 16.1: Configure Horizontal Pod AutoScaler (HPA) - Deploy the Metrics Server
+### Step 13.1: Configure Horizontal Pod AutoScaler (HPA) - Deploy the Metrics Server
 ```
 $ helm install stable/metrics-server \
     --name metrics-server \
@@ -2013,7 +1990,7 @@ $ helm install stable/metrics-server \
 $ kubectl get apiservice v1beta1.metrics.k8s.io -o yaml
 ```
 
-### Step 16.2: Scale an Application with Horizontal Pod AutoScaler (HPA)
+### Step 13.2: Scale an Application with Horizontal Pod AutoScaler (HPA)
 - Deploy a Sample App
 ```
 kubectl run php-apache --image=k8s.gcr.io/hpa-example --requests=cpu=200m --expose --port=80
@@ -2032,7 +2009,7 @@ $ while true; do wget -q -O - http://php-apache; done
 $ kubectl get hpa -w
 ```
 
-### Step 16.3: Configure Cluster AutoScaler (CA)
+### Step 13.3: Configure Cluster AutoScaler (CA)
 - Configure the Cluster Autoscaler (CA)
 ```
 $ mkdir ~/environment/cluster-autoscaler
@@ -2228,7 +2205,7 @@ $ kubectl apply -f ~/environment/cluster-autoscaler/cluster_autoscaler.yml
 $ kubectl logs -f deployment/cluster-autoscaler -n kube-system
 ```
 
-### Step 16.4: Scale a Cluster with Cluster Auto Scaler
+### Step 13.4: Scale a Cluster with Cluster Auto Scaler
 - Deploy a Sample App
 ```
 cat <<EoF> ~/environment/cluster-autoscaler/nginx.yaml
@@ -2277,10 +2254,10 @@ $ rm -rf ~/environment/cluster-autoscaler
 
 # ************************************************************
 
-## Module 17: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+## Module 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 
-### Step 17.1: Configure IAM Policy for Worker Nodes
+### Step 14.1: Configure IAM Policy for Worker Nodes
 ```
 $ test -n "$ROLE_NAME" && echo ROLE_NAME is "$ROLE_NAME" || echo ROLE_NAME is not set
 ```
@@ -2313,7 +2290,7 @@ $ aws iam put-role-policy --role-name $ROLE_NAME --policy-name Logs-Policy-For-W
 $ aws iam get-role-policy --role-name $ROLE_NAME --policy-name Logs-Policy-For-Worker
 ```
 
-### Step 17.2: Provision an Elasticsearch Cluster
+### Step 14.2: Provision an Elasticsearch Cluster
 ```
 $ aws es create-elasticsearch-domain \
   --domain-name kubernetes-logs \
@@ -2328,7 +2305,7 @@ $ aws es create-elasticsearch-domain \
 $ aws es describe-elasticsearch-domain --domain-name kubernetes-logs --query 'DomainStatus.Processing'
 ```
 
-### Step 17.3: Deploy Fluentd
+### Step 14.3: Deploy Fluentd
 ```
 $ mkdir ~/environment/fluentd
 $ cd ~/environment/fluentd
@@ -2578,7 +2555,7 @@ $ kubectl apply -f ~/environment/fluentd/fluentd.yml
 $ kubectl get pods -w --namespace=kube-system
 ```
 
-### Step 17.4: Configure CloudWatch Logs
+### Step 14.4: Configure CloudWatch Logs
 ```
 $ cat <<EoF > ~/environment/iam_policy/lambda.json
 {
@@ -2641,7 +2618,7 @@ $ rm -rf ~/environment/iam_policy/
 - S3 Buckets for Logging
 - S3 Buckets for ELB Logging
 - S3 Buckets for Cloudfront Logs
-- Enable CloudTrail for auditing
+- Enable CloudTrail Logs (Auditing)
 - Enable VPC Flow Logs
 - Enable ELB Logging
 - Enable Config for AWS resource config tracking
@@ -2675,27 +2652,28 @@ $ rm -rf ~/environment/iam_policy/
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
 
 ### TODO: Add Security - AWS Secrets Management
-- AWS Parameter Store/ AWS Secrets Manager / Hashicorp Vault
+- AWS Secrets Manager / AWS Parameter Store / Hashicorp Vault
 
 ### TODO: Add Web Application Firewall in front of CloudFront CDN
-- AWS Web Application Firewall
-- AWS Shield
+- AWS Web Application Firewall and AWS Shield
+- https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
 ### TODO: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
 - Authentication: Resource Policies/ IAM / Lambda Authorizers (token based, request parameter based)/ Cognito User Pools
-- Authorization:
+- Authorization
 - Enable CORS
 - Swagger Documentation
 
 ### TODO: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
+- https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
 ### TODO: Add Register/Transfer Domain Namne using Route 53
 - Amazon Route53
 
-### TODO: Add SSL/TLS using AWS Ceritificate Manager
+### TODO: Add SSL/TLS using AWS Certificate Manager
 - AWS Certificate Manager
 
 ### TODO: Add Authentication
@@ -2703,12 +2681,15 @@ $ rm -rf ~/environment/iam_policy/
 
 ### TODO: Add Instrumentation
 - AWS X-Ray
+- Prometheus
+
+### TODO: Add Alerting
+- AlertManager
+- PagerDuty
+- Slack
 
 ### TODO: Add Service Discovery
 - Hashicorp Consul / Netflix Eureka / AWS CloudMap
 
 ### TODO: Add Service Mesh
 - Istio / AWS Appmesh
-
-### TODO: Add Alerting
-- PagerDuty
