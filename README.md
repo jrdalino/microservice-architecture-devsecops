@@ -1846,7 +1846,8 @@ $ aws s3 rb s3://jrdalino-calculator-frontend-artifacts --force
 - https://github.com/zricethezav/gitleaks
 
 ### TODO: Add Security - AWS Secrets Management
-- AWS Secrets Manager / AWS Parameter Store / Hashicorp Vault
+- AWS Secrets Manager: https://github.com/jrdalino/aws-secrets-manager
+- AWS Parameter Store / Hashicorp Vault
 
 ### TODO: Add SSL/TLS using AWS Certificate Manager
 
