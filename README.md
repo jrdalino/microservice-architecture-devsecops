@@ -4,19 +4,17 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 - Step 1: Create Backend using Python Flask Rest API
 - Step 2: Create Frontend using HTML, CSS, JS
 - Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
-
-- Step 7: Deploy Backend MicroService to EKS
-- Step 8: Deploy Frontend to S3, CloudFront
-
-- Step 9: Setup CI/CD for Back End Service
-- Step 10: Setup CI/CD for Front End Service
-- Step 11: Install Helm
-- Step 12: Deploy Prometheus for basic monitoring
-- Step 13: Deploy Grafana to create Dashboards
-- Step 14: Implement Liveness Probe Health Checks
-- Step 15: Implement Readiness Probe Health Checks
-- Step 16: Implement Auto Scaling
-- Step 17: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+- Step 4: Deploy Backend MicroService to EKS
+- Step 5: Deploy Frontend to S3, CloudFront
+- Step 6: Setup CI/CD for Back End Service
+- Step 7: Setup CI/CD for Front End Service
+- Step 8: Install Helm
+- Step 9: Deploy Prometheus for basic monitoring
+- Step 10: Deploy Grafana to create Dashboards
+- Step 11: Implement Liveness Probe Health Checks
+- Step 12: Implement Readiness Probe Health Checks
+- Step 13: Implement Auto Scaling
+- Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 
 ## Prerequisites
 Working Directory
