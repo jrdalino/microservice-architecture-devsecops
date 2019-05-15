@@ -157,13 +157,13 @@ Docker version 18.09.2, build 6247962
 ## Step 29: Deploy Grafana to create Dashboards
 - https://github.com/jrdalino/install-grafana-using-helm
 
-## Step 30: Implement Liveness Probe Health Checks
+## Step 30: Implement K8s Liveness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-liveness-probes
 
-## Step 31: Implement Readiness Probe Health Checks
+## Step 31: Implement K8s Readiness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-readiness-probes
 
-## Step 32: Implementing Auto Scaling
+## Step 32: Implementing K8s Auto Scaling
 - https://github.com/jrdalino/kubernetes-autoscaling
 
 ## Step 33: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
