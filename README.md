@@ -75,13 +75,13 @@ Docker version 18.09.2, build 6247962
 - Cloudformation: https://github.com/jrdalino/infra-as-code-aws-cloudformation
 
 ## (TODO) Step 5: Setup CI/CD for Infrastructure as Code Templates
-- Terraform: CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
+- Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
 ## Step 6: Install Kubernetes Tools and Launch EKS using EKCTL
 - https://github.com/jrdalino/aws-eks-eksctl
-- Example on how to install single-node master Kubernetes cluster  https://github.com/jrdalino/single-master-kubernetes-cluster
-- Example on how to install a multi-node master Kubernetes cluster using kops https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
+- Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
+- Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
 ## Step 7: Deploy Backend MicroService to EKS
 - https://github.com/jrdalino/backend-deploy-to-kubernetes
