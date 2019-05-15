@@ -119,7 +119,7 @@ Docker version 18.09.2, build 6247962
 ## Step 2: Create Frontend HTML CSS JS Calculator
 - https://github.com/jrdalino/frontend-html-css-js-calculator
 
-## TODO: Module Add Governance - AWS Organizations and AWS Account Hardening
+## TODO: Add Governance - AWS Organizations and AWS Account Hardening
 - Wait for https://aws.amazon.com/controltower/
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add SCP Policies
@@ -138,13 +138,13 @@ Docker version 18.09.2, build 6247962
 - Enable Guard Duty for Intelligent threat detection
 - Enable Security Hub for Compliance Scanning
 
-## TODO: Module Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+## TODO: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Terraform
 - Reusable Infrastructure w/ Terraform Modules
 - Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Testing using Terratest https://github.com/gruntwork-io/terratest
 
-## TODO: Module Setup CI/CD for Infrastructure as Code Templates
+## TODO: Setup CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
 
 ## Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
