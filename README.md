@@ -1,4 +1,4 @@
-# Python Flask Backend + JS Frontend Calculator on AWS EKS (Kubernetes) with CI/CD, Monitoring and Logging
+# Python Flask Backend + JS Frontend on AWS EKS (Kubernetes) with CI/CD, Monitoring and Logging
 This is a simple tutorial on how to create a Python Flask Backend + Javascript Frontend Application, Setup CI/CD with AWS Code% and AWS Elastic Kubernetes Service, High Availability, Autoscaling, Monitoring using Prometheus and Grafana and Logging with ElasticSearch, Fluentd and Kibana.
 
 - **Step 1: Create Backend using Python Flask Rest API**
