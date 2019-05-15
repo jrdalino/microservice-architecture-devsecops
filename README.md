@@ -71,13 +71,12 @@ Docker version 18.09.2, build 6247962
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
 ## (TODO) Step 4: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
-- Terraform
-- Reusable Infrastructure w/ Terraform Modules
-- Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
-- Testing using Terratest https://github.com/gruntwork-io/terratest
+- Terraform: https://github.com/jrdalino/infra-as-code-terraform
+- Cloudformation: https://github.com/jrdalino/infra-as-code-aws-cloudformation
 
 ## (TODO) Step 5: Setup CI/CD for Infrastructure as Code Templates
-- CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
+- Terraform: CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
+- Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
 ## Step 6: Install Kubernetes Tools and Launch EKS using EKCTL
 - https://github.com/jrdalino/aws-eks-eksctl
@@ -90,31 +89,31 @@ Docker version 18.09.2, build 6247962
 ## Step 8: Setup CI/CD for Back End Service
 - https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
 
-## (TODO) Step 9: Add API Gateway in front of EKS Endpoint
+## (TODO) Step 9: Add Authentication using Amazon Cognito
+
+## (TODO) Step 10: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
 - Authentication: Resource Policies/ IAM / Lambda Authorizers (token based, request parameter based)/ Cognito User Pools
 - Authorization
 - Enable CORS
 - Swagger Documentation
 
-## (TODO) Step 10: Add Web Application Firewall in front of API Gateway
+## (TODO) Step 11: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 11: Backend Static Testing (Static Code Analyzer)
+## (TODO) Step 12: Backend Static Testing (Static Code Analyzer)
 - Find OSS alternative for SonarQube / Fortify / Checkmarx
 
-## (TODO) Step 12: Backend Dynamic Testing (Containers Scanning)
+## (TODO) Step 13: Backend Dynamic Testing (Containers Scanning)
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
-## Step 13: Deploy Frontend
+## Step 14: Deploy Frontend
 - https://github.com/jrdalino/frontend-deploy-to-s3-cloudfront
 
-## Step 14: Setup CI/CD for Front End
+## Step 15: Setup CI/CD for Front End
 - https://github.com/jrdalino/frontend-cicd-codecommit-codepipeline
-
-## (TODO) Step 15: Add Authentication using Amazon Cognito
 
 ## (TODO) Step 16: Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
