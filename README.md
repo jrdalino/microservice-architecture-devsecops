@@ -113,10 +113,10 @@ Docker version 18.09.2, build 6247962
 
 # ************************************************************
 
-## Module 1: Create Backend Python Flask RestAPI Calculator
+## Step 1: Create Backend Python Flask RestAPI Calculator
 - https://github.com/jrdalino/backend-python-flask-restapi-calculator
 
-## Module 2: Create Frontend HTML CSS JS Calculator
+## Step 2: Create Frontend HTML CSS JS Calculator
 - https://github.com/jrdalino/frontend-html-css-js-calculator
 
 # ************************************************************
@@ -151,14 +151,14 @@ Docker version 18.09.2, build 6247962
 
 # ************************************************************
 
-## Module 3: Install Kubernetes Tools and Launch EKS using EKCTL
+## Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
 - https://github.com/jrdalino/aws-eks-eksctl
 - Example on how to install single-node master Kubernetes cluster  https://github.com/jrdalino/single-master-kubernetes-cluster
 - Example on how to install a multi-node master Kubernetes cluster using kops https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
 # ************************************************************
 
-## Module 4: Deploy Backend MicroService to EKS
+## Step 4: Deploy Backend MicroService to EKS
 - containerized with Docker and Kubernetes for the orchestration
 
 ### Step 4.1: Create our deployment.yaml file
@@ -254,7 +254,7 @@ $ kubectl delete -f deployment.yaml
 
 # ************************************************************
 
-## Module 5: Setup CI/CD for Back End Service
+## Step 5: Setup CI/CD for Back End Service
 - proper CI/CD processes to put in place
 
 ### Step 5.1: Create Codebuild and Codepipeline Role (eks-calculator-codebuild-codepipeline-iam-role)
@@ -688,7 +688,7 @@ $ aws logs delete-log-group --log-group-name /aws/codebuild/CalculatorBackendSer
 
 # ************************************************************
 
-## Module 6: Deploy Frontend
+## Step 6: Deploy Frontend
 
 ### Step 6.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://a529520be6d7811e98ef812788873e53-1902855455.us-east-1.elb.amazonaws.com/
 ```
@@ -848,7 +848,7 @@ $ rm ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.j
 
 # ************************************************************
 
-## Module 7: Setup CI/CD for Front End
+## Step 7: Setup CI/CD for Front End
 
 ### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
 ```
@@ -1036,7 +1036,7 @@ $ aws s3 rb s3://jrdalino-calculator-frontend-artifacts --force
 
 # ************************************************************
 
-## Module 8: Install Helm
+## Step 8: Install Helm
 
 ### Step 8.1: Install Helm CLI
 ```
@@ -1090,7 +1090,7 @@ $ rm ~/environment/get_helm.sh
 
 # ************************************************************
 
-## Module 9: Deploy Prometheus for basic monitoring
+## Step 9: Deploy Prometheus for basic monitoring
 
 ### Step 9.1: Install Prometheus
 ```
@@ -1120,7 +1120,7 @@ $ helm del --purge prometheus
 
 # ************************************************************
 
-## Module 10: Deploy Grafana to create Dashboards
+## Step 10: Deploy Grafana to create Dashboards
 
 ### Step 10.1: Install Grafana
 ```
@@ -1172,7 +1172,7 @@ $ helm del --purge grafana
 
 # ************************************************************
 
-## Module 11: Implement Liveness Probe Health Checks
+## Step 11: Implement Liveness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 
 ### Step 11.1: Configure the Probe
@@ -1218,7 +1218,7 @@ $ kubectl delete -f ~/environment/healthchecks/liveness-app.yaml
 
 # ************************************************************
 
-## Module 12: Implement Readiness Probe Health Checks
+## Step 12: Implement Readiness Probe Health Checks
 - The API being a crucial part of the application it needs to be highly available
 
 ### Step 12.1: Configure the Probe
@@ -1283,7 +1283,7 @@ $ kubectl delete -f ~/environment/healthchecks/readiness-deployment.yaml
 
 # ************************************************************
 
-## Module 13: Implementing Auto Scaling
+## Step 13: Implementing Auto Scaling
 
 ### Step 13.1: Configure Horizontal Pod AutoScaler (HPA) - Deploy the Metrics Server
 ```
@@ -1558,7 +1558,7 @@ $ rm -rf ~/environment/cluster-autoscaler
 
 # ************************************************************
 
-## Module 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+## Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - Daily/weekly/monthly report showing the operations that have been performed during that time period
 
 ### Step 14.1: Configure IAM Policy for Worker Nodes
@@ -1889,7 +1889,7 @@ $ aws iam attach-role-policy --role-name lambda_basic_execution --policy-arn arn
 - Select Common Log Format and click Next
 - Review the configuration. Click Next and then Start Streaming
 
-### Step 17.5 Configure Kibana
+### Step 14.5 Configure Kibana
 - In Amazon Elasticsearch console, select the kubernetes-logs under My domains
 - Open the Kibana dashboard from the link. After a few minutes, records will begin to be indexed by ElasticSearch. 
 - You’ll need to configure an index patterns in Kibana.
