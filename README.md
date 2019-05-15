@@ -46,7 +46,6 @@ This is a simple tutorial on how to create a Python Flask Backend + Javascript F
 - **Step 13: Implement Auto Scaling**
 - **Step 14: Logging with ElastiSearch, Fluentd, and Kibana (EFK)**
 
-
 - TODO: Add Instrumentation
 - TODO: Add Alerting
 - TODO: Add Service Discovery
@@ -775,8 +774,7 @@ function calcListener ( jQuery ) {
         var textStatus, jqXHR, errorThrown = '';
 
         console.log( "Calling " + resource + " on " + arg1 + " and " + arg2 );
-
-        
+    
         try {
             arg1 = Number( arg1 );
             arg2 = Number( arg2 );
@@ -841,7 +839,8 @@ $ rm -rf ~/environment/calculator-frontend
 
 # ************************************************************
 
-### TODO: Add Governance - AWS Organizations and AWS Account Hardening
+### TODO: Module Add Governance - AWS Organizations and AWS Account Hardening
+- Wait for https://aws.amazon.com/controltower/
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add SCP Policies
 - Create new AWS Account per product and per environment (production and staging)
@@ -855,20 +854,19 @@ $ rm -rf ~/environment/calculator-frontend
 - Enable VPC Flow Logs
 - Enable ELB Logging
 - Enable Config for AWS resource config tracking
-- Enable SNS topics for alertning and notifications
+- Enable SNS topics for alerting and notifications
 - Enable Guard Duty for Intelligent threat detection
 - Enable Security Hub for Compliance Scanning
-- Wait for https://aws.amazon.com/controltower/
 
-### TODO: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets)
+### TODO: Module Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets)
 - Terraform
 - Reusable Infrastructure w/ Terraform Modules
 - Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 
-### TODO: Add Testing for Infrastruture as Code
+### TODO: Module Add Testing for Infrastruture as Code
 - Testing using Terratest https://github.com/gruntwork-io/terratest
 
-### TODO: Setup CI/CD for Infrastructure as Code Templates
+### TODO: Module Setup CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
 
 # ************************************************************
