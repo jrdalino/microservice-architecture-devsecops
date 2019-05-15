@@ -86,7 +86,7 @@ Docker version 18.09.2, build 6247962
 
 ## Step 7: Deploy Backend MicroService to EKS
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
-- ECS:
+- ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
 ## Step 8: Setup CI/CD for Back End Service
 - EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
