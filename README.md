@@ -89,8 +89,8 @@ Docker version 18.09.2, build 6247962
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
 ## Step 8: Setup CI/CD for Back End Service
-- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
-- ECS: 
+- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
+- ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 
 ## (TODO) Step 9: Add Authentication using Amazon Cognito
 
