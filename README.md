@@ -119,9 +119,7 @@ Docker version 18.09.2, build 6247962
 ## Step 2: Create Frontend HTML CSS JS Calculator
 - https://github.com/jrdalino/frontend-html-css-js-calculator
 
-# ************************************************************
-
-### TODO: Module Add Governance - AWS Organizations and AWS Account Hardening
+## TODO: Module Add Governance - AWS Organizations and AWS Account Hardening
 - Wait for https://aws.amazon.com/controltower/
 - Enable AWS Organizations + Landing Zone (https://aws.amazon.com/solutions/aws-landing-zone/)
 - Add SCP Policies
@@ -140,399 +138,83 @@ Docker version 18.09.2, build 6247962
 - Enable Guard Duty for Intelligent threat detection
 - Enable Security Hub for Compliance Scanning
 
-### TODO: Module Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+## TODO: Module Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Terraform
 - Reusable Infrastructure w/ Terraform Modules
 - Locking and Isolating State Files on S3 using https://github.com/gruntwork-io/terragrunt
 - Testing using Terratest https://github.com/gruntwork-io/terratest
 
-### TODO: Module Setup CI/CD for Infrastructure as Code Templates
+## TODO: Module Setup CI/CD for Infrastructure as Code Templates
 - CI/CD Pipeline using S3, CodeBuild, CodePipeline, DynamoDB for State Locking
-
-# ************************************************************
 
 ## Step 3: Install Kubernetes Tools and Launch EKS using EKCTL
 - https://github.com/jrdalino/aws-eks-eksctl
 - Example on how to install single-node master Kubernetes cluster  https://github.com/jrdalino/single-master-kubernetes-cluster
 - Example on how to install a multi-node master Kubernetes cluster using kops https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
-# ************************************************************
-
 ## Step 4: Deploy Backend MicroService to EKS
 - https://github.com/jrdalino/backend-deploy-to-kubernetes
-
-# ************************************************************
 
 ## Step 5: Setup CI/CD for Back End Service
 - https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
 
-# ************************************************************
-
-### TODO: Add API Gateway in front of EKS Endpoint
+## TODO: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
 - Authentication: Resource Policies/ IAM / Lambda Authorizers (token based, request parameter based)/ Cognito User Pools
 - Authorization
 - Enable CORS
 - Swagger Documentation
 
-### TODO: Add Web Application Firewall in front of API Gateway
+## TODO: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-### TODO: Add Testing - Backend Static Code Analyzer
+## TODO: Add Testing - Backend Static Code Analyzer
 - Find OSS alternative for SonarQube / Fortify / Checkmarx
 
-### TODO: Add Testing - Backend Containers Scanning
+## TODO: Add Testing - Backend Containers Scanning
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
-# ************************************************************
-
 ## Step 6: Deploy Frontend
-
-### Step 6.1: Replace http://localhost:5000 url with ELB Endpoint Ex. http://a529520be6d7811e98ef812788873e53-1902855455.us-east-1.elb.amazonaws.com/
-```
-$ vi ~/environment/calculator-frontend/querycalc.js
-```
-
-### Step 6.2: Create an S3 Bucket for Storing Content
-```
-$ aws s3 mb s3://jrdalino-calculator-frontend
-```
-
-### Step 6.3: Create a CloudFront Access Identity
-```
-$ aws cloudfront create-cloud-front-origin-access-identity \
---cloud-front-origin-access-identity-config CallerReference=Calculator,Comment=Calculator
-```
-
-### Step 6.4: Create the S3 Bucket Policy Input File
-```
-$ mkdir aws-cli
-$ vi ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
-```
-```
-{
-    "Version": "2008-10-17",
-    "Id": "PolicyForCloudFrontPrivateContent",
-    "Statement": [
-        {
-            "Sid": "1",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity EXZ8BOEUVCLQY"
-            },
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::jrdalino-calculator-frontend/*"
-        }
-    ]
-}
-```
-
-### Step 6.5: Add a public bucket policy to allow CloudFront
-```
-$ aws s3api put-bucket-policy \
---bucket jrdalino-calculator-frontend \
---policy file://~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
-```
-
-### Step 6.6: Publish the Website Content to S3
-```
-$ cd ~/environment/calculator-frontend
-$ aws s3 cp index.html s3://jrdalino-calculator-frontend/index.html
-$ aws s3 cp base.css s3://jrdalino-calculator-frontend/base.css
-$ aws s3 cp querycalc.js s3://jrdalino-calculator-frontend/querycalc.js
-```
-
-### Step 6.7: Create the CloudFront Distribution input file
-```
-$ cd ~/environment/calculator-frontend
-$ mkdir aws-cli
-$ vi ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
-```
-
-```
-{
-  "CallerReference": "Calculator",
-  "Aliases": {
-    "Quantity": 0
-  },
-  "DefaultRootObject": "index.html",
-  "Origins": {
-    "Quantity": 1,
-    "Items": [
-      {
-        "Id": "Calculator",
-        "DomainName": "jrdalino-calculator-frontend.s3.amazonaws.com",
-        "S3OriginConfig": {
-          "OriginAccessIdentity": "origin-access-identity/cloudfront/EXZ8BOEUVCLQY"
-        }
-      }
-    ]
-  },
-  "DefaultCacheBehavior": {
-    "TargetOriginId": "Calculator",
-    "ForwardedValues": {
-      "QueryString": true,
-      "Cookies": {
-        "Forward": "none"
-      }
-    },
-    "TrustedSigners": {
-      "Enabled": false,
-      "Quantity": 0
-    },
-    "ViewerProtocolPolicy": "allow-all",
-    "MinTTL": 0,
-    "MaxTTL": 0,
-    "DefaultTTL": 0
-  },
-  "CacheBehaviors": {
-    "Quantity": 0
-  },
-  "Comment": "",
-  "Logging": {
-    "Enabled": false,
-    "IncludeCookies": true,
-    "Bucket": "",
-    "Prefix": ""
-  },
-  "PriceClass": "PriceClass_All",
-  "Enabled": true
-}
-```
-
-### Step 6.8: Create CloudFront Distribution
-```
-$ aws cloudfront create-distribution \
---distribution-config file://~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
-```
-
-### Step 6.9: Check Status of CloudFront Distribution
-```
-$ aws cloudfront list-distributions
-```
-
-### Step 6.10 Enable CORS on S3 and CloudFront
-- Cloudfront: https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
-
-- S3: https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-cors-configuration.html
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<CORSConfiguration xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
-<CORSRule>
-    <AllowedOrigin>*</AllowedOrigin>
-    <AllowedMethod>GET</AllowedMethod>
-    <AllowedMethod>HEAD</AllowedMethod>
-    <AllowedMethod>POST</AllowedMethod>
-    <AllowedHeader>*</AllowedHeader>
-</CORSRule>
-</CORSConfiguration>
-```
-
-### Step 6.11: Test functionality of Calculator Frontend + Backend
-```
-$ curl d5ny4mdta1kxt.cloudfront.net
-```
-
-### (Optional) Clean up
-```
-$ aws s3 rm s3://jrdalino-calculator-frontend --recursive
-$ aws s3 rb s3://jrdalino-calculator-frontend --force
-$ rm ~/environment/calculator-frontend/aws-cli/website-bucket-policy.json
-$ disable cloudfront distribution
-$ delete cloudfront distribution
-$ aws cloudfront delete-cloud-front-origin-access-identity --id EXZ8BOEUVCLQY
-$ rm ~/environment/calculator-frontend/aws-cli/website-cloudfront-distribution.json
-```
-
-# ************************************************************
+- https://github.com/jrdalino/frontend-deploy-to-s3-cloudfront
 
 ## Step 7: Setup CI/CD for Front End
+- https://github.com/jrdalino/frontend-cicd-codecommit-codepipeline
 
-### Step 7.1: Create an S3 Bucket for Pipeline Artifacts
-```
-$ aws s3 mb s3://jrdalino-calculator-frontend-artifacts
-```
+## TODO: Add Authentication using Amazon Cognito
 
-### Step 7.2: Check Codepipeline Roles exists
-
-### Step 7.3: Create S3 Bucket Policy File
-```
-$ cd ~/environment/calculator-frontend
-$ mkdir aws-cli
-$ vi ~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
-```
-
-```
-{
-    "Statement": [
-      {
-        "Sid": "WhitelistedGet",
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-            "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole"
-          ]
-        },
-        "Action": [
-          "s3:GetObject",
-          "s3:GetObjectVersion",
-          "s3:GetBucketVersioning"
-        ],
-        "Resource": [
-          "arn:aws:s3:::jrdalino-calculator-frontend-artifacts/*",
-          "arn:aws:s3:::jrdalino-calculator-frontend-artifacts"
-        ]
-      },
-      {
-        "Sid": "WhitelistedPut",
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-            "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole"
-          ]
-        },
-        "Action": "s3:PutObject",
-        "Resource": [
-          "arn:aws:s3:::jrdalino-calculator-frontend-artifacts/*",
-          "arn:aws:s3:::jrdalino-calculator-frontend-artifacts"
-        ]
-      }
-    ]
-}
-```
-
-### Step 7.4: Grant S3 Bucket access to your CI/CD Pipeline
-```
-$ aws s3api put-bucket-policy \
---bucket jrdalino-calculator-frontend-artifacts \
---policy file://~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
-```
-
-### Step 7.5: Create CodePipeline Input File
-```
-$ vi ~/environment/calculator-frontend/aws-cli/code-pipeline.json
-```
-
-```
-{
-  "pipeline": {
-      "name": "CalculatorFrontendServiceCICDPipeline",
-      "roleArn": "arn:aws:iam::707538076348:role/CalculatorServiceCodePipelineServiceRole",
-      "stages": [
-        {
-          "name": "Source",
-          "actions": [
-            {
-              "inputArtifacts": [
-    
-              ],
-              "name": "Source",
-              "actionTypeId": {
-                "category": "Source",
-                "owner": "AWS",
-                "version": "1",
-                "provider": "CodeCommit"
-              },
-              "outputArtifacts": [
-                {
-                  "name": "CalculatorFrontendService-SourceArtifact"
-                }
-              ],
-              "configuration": {
-                "BranchName": "master",
-                "RepositoryName": "calculator-frontend"
-              },
-              "runOrder": 1
-            }
-          ]
-        },
-        {
-          "name": "Deploy",
-          "actions": [
-            {
-              "name": "Deploy",
-              "actionTypeId": {
-                "category": "Deploy",
-                "owner": "AWS",
-                "version": "1",
-                "provider": "S3"
-              },
-              "inputArtifacts": [
-                {
-                  "name": "CalculatorFrontendService-SourceArtifact"
-                }
-              ],
-              "configuration": {
-                  "Extract": "true", 
-                  "BucketName": "jrdalino-calculator-frontend"
-              }
-            }
-          ]
-        }
-      ],
-      "artifactStore": {
-        "type": "S3",
-        "location": "jrdalino-calculator-frontend-artifacts"
-      }
-  }
-}
-```
-
-### Step 7.6: Create a pipeline in CodePipeline
-```
-$ aws codepipeline create-pipeline \
---cli-input-json file://~/environment/calculator-frontend/aws-cli/code-pipeline.json
-```
-
-### Step 7.7: Make a small code change, Push and Validate changes
-
-### (Optional) Clean up
-```
-$ aws codepipeline delete-pipeline --name CalculatorFrontendServiceCICDPipeline
-$ rm ~/environment/calculator-frontend/aws-cli/code-pipeline.json
-$ aws s3api delete-bucket-policy --bucket jrdalino-calculator-frontend-artifacts
-$ rm ~/environment/calculator-frontend/aws-cli/artifacts-bucket-policy.json
-$ aws s3 rm s3://jrdalino-calculator-frontend-artifacts --recursive
-$ aws s3 rb s3://jrdalino-calculator-frontend-artifacts --force
-```
-
-# ************************************************************
-
-### TODO: Add Authentication using Amazon Cognito
-
-### TODO: Add Security - Web Application Firewall in front of CloudFront CDN
+## TODO: Add Security - Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-### TODO: Add Testing - Frontend Static Application
+## TODO: Add Testing - Frontend Static Application
 - AuditJS > https://www.npmjs.com/package/auditjs
 - RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
 - OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
 
-### TODO: Add Testing - Frontend Dynamic Application
+## TODO: Add Testing - Frontend Dynamic Application
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project > 
 
-### TODO: Add Database - NoSQL (DynamoDB)
+## TODO: Add Database - NoSQL (DynamoDB)
 
-### TODO: Add Caching - DynamoDB Accelerator (DAX)
+## TODO: Add Caching - DynamoDB Accelerator (DAX)
 
-### TODO: Add Database - RDBMS (RDS Postgres)
+## TODO: Add Database - RDBMS (RDS Postgres)
 
-### TODO: Add Caching - ElastiCache (Redis)
+## TODO: Add Caching - ElastiCache (Redis)
 
-### TODO: Add Testing - Commited secrets on Git Repository
+## TODO: Add Testing - Commited secrets on Git Repository
 - https://github.com/awslabs/git-secrets
 - https://github.com/zricethezav/gitleaks
 
-### TODO: Add Security - AWS Secrets Management
+## TODO: Add Security - AWS Secrets Management
 - AWS Secrets Manager: https://github.com/jrdalino/aws-secrets-manager
 - AWS Parameter Store / Hashicorp Vault
 
-### TODO: Add SSL/TLS using AWS Certificate Manager
+## TODO: Add SSL/TLS using AWS Certificate Manager
 
-### TODO: Add Register/Transfer Domain Name using Route 53 for CloudFront CDN
+## TODO: Add Register/Transfer Domain Name using Route 53 for CloudFront CDN
 
 # ************************************************************
 
