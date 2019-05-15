@@ -79,15 +79,18 @@ Docker version 18.09.2, build 6247962
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
 ## Step 6: Install Kubernetes Tools and Launch EKS using EKCTL
-- https://github.com/jrdalino/aws-eks-eksctl
-- Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
-- Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
+- EKS: https://github.com/jrdalino/aws-eks-eksctl
+- K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
+- K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
+- ECS: https://github.com/jrdalino/aws-ecs
 
 ## Step 7: Deploy Backend MicroService to EKS
-- https://github.com/jrdalino/backend-deploy-to-kubernetes
+- EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
+- ECS:
 
 ## Step 8: Setup CI/CD for Back End Service
-- https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
+- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline
+- ECS: 
 
 ## (TODO) Step 9: Add Authentication using Amazon Cognito
 
