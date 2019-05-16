@@ -96,11 +96,7 @@ Docker version 18.09.2, build 6247962
 - https://github.com/jrdalino/amazon-cognito
 
 ## (TODO) Step 10: Add API Gateway in front of EKS Endpoint
-- AWS API Gateway
-- Authentication: Resource Policies/ IAM / Lambda Authorizers (token based, request parameter based)/ Cognito User Pools
-- Authorization
-- Enable CORS
-- Swagger Documentation
+- https://github.com/jrdalino/amazon-api-gateway
 
 ## (TODO) Step 11: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
