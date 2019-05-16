@@ -145,6 +145,7 @@ Docker version 18.09.2, build 6247962
 - AWS Parameter Store / Hashicorp Vault
 
 ## (TODO) Step 25: SSL/TLS using AWS Certificate Manager
+- https://github.com/jrdalino/aws-certificate-manager
 
 ## (TODO) Step 26: Register/Transfer Domain Name using Route 53 for CloudFront CDN
 
