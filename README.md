@@ -67,7 +67,7 @@ Docker version 18.09.2, build 6247962
 ## Step 2: Create Frontend HTML CSS JS Calculator
 - https://github.com/jrdalino/frontend-html-css-js-calculator
 
-## (TODO) Step 3: AWS Organizations and Multi-Account Hardening
+## Step 3: AWS Organizations and Multi-Account Hardening
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
 ## (TODO) Step 4: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
