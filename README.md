@@ -93,6 +93,7 @@ Docker version 18.09.2, build 6247962
 - ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 
 ## (TODO) Step 9: Add Authentication using Amazon Cognito
+- https://github.com/jrdalino/amazon-cognito
 
 ## (TODO) Step 10: Add API Gateway in front of EKS Endpoint
 - AWS API Gateway
@@ -131,6 +132,7 @@ Docker version 18.09.2, build 6247962
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
 ## (TODO) Step 19: Database - NoSQL (DynamoDB)
+- https://github.com/jrdalino/amazon-dynamodb
 
 ## (TODO) Step 20: Caching - DynamoDB Accelerator (DAX)
 
