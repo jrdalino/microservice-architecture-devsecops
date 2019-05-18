@@ -63,12 +63,12 @@ Docker version 18.09.2, build 6247962
 
 ## Step 1: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
-- https://github.com/jrdalino/myproject-consumer-restapi
-- https://github.com/jrdalino/myproject-provider-restapi
-- https://github.com/jrdalino/myproject-order-restapi
-- https://github.com/jrdalino/myproject-billing-restapi
-- https://github.com/jrdalino/myproject-payment-restapi
-- https://github.com/jrdalino/myproject-notification-restapi
+- (TODO) https://github.com/jrdalino/myproject-consumer-restapi
+- (TODO) https://github.com/jrdalino/myproject-provider-restapi
+- (TODO) https://github.com/jrdalino/myproject-order-restapi
+- (TODO) https://github.com/jrdalino/myproject-billing-restapi
+- (TODO) https://github.com/jrdalino/myproject-payment-restapi
+- (TODO) https://github.com/jrdalino/myproject-notification-restapi
 
 ## Step 2: Create Frontend HTML CSS JS 
 - https://github.com/jrdalino/myproject-consumer-web
