@@ -55,6 +55,11 @@ Python 3.7.3 (default, Mar 27 2019, 09:23:15)
 [Clang 10.0.1 (clang-1001.0.46.3)]
 ```
 
+- Boto3
+```
+(venv) $ pip install boto3
+```
+
 - Docker
 ```
 $ docker -v
