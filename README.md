@@ -61,11 +61,18 @@ $ docker -v
 Docker version 18.09.2, build 6247962
 ```
 
-## Step 1: Create Backend Python Flask RestAPI Calculator
-- https://github.com/jrdalino/backend-python-flask-restapi-calculator
+## Step 1: Create Backend Python Flask RestAPI
+- https://github.com/jrdalino/myproject-product-restapi
+- https://github.com/jrdalino/myproject-consumer-restapi
+- https://github.com/jrdalino/myproject-provider-restapi
+- https://github.com/jrdalino/myproject-order-restapi
+- https://github.com/jrdalino/myproject-billing-restapi
+- https://github.com/jrdalino/myproject-payment-restapi
+- https://github.com/jrdalino/myproject-notification-restapi
 
-## Step 2: Create Frontend HTML CSS JS Calculator
-- https://github.com/jrdalino/frontend-html-css-js-calculator
+## Step 2: Create Frontend HTML CSS JS 
+- https://github.com/jrdalino/myproject-consumer-web
+- https://github.com/jrdalino/myproject-provider-web
 
 ## Step 3: AWS Organizations and Multi-Account Hardening
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
