@@ -85,13 +85,13 @@ Docker version 18.09.2, build 6247962
 - Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
-## Step 6: Install Kubernetes Tools and Launch EKS using EKCTL
+## Step 6: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
 - EKS: https://github.com/jrdalino/aws-eks-eksctl
 - K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 - ECS: https://github.com/jrdalino/aws-ecs
 
-## Step 7: Deploy Backend MicroService to EKS
+## Step 7: Deploy Backend MicroService to EKS/ECS
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
@@ -111,7 +111,7 @@ Docker version 18.09.2, build 6247962
 ## (TODO) Step 13: Add Authentication using Amazon Cognito
 - https://github.com/jrdalino/amazon-cognito
 
-## (TODO) Step 14: Add API Gateway in front of EKS Endpoint
+## (TODO) Step 14: Add API Gateway in front of EKS/ECS Endpoint
 - https://github.com/jrdalino/amazon-api-gateway
 
 ## (TODO) Step 15: Add Web Application Firewall in front of API Gateway
