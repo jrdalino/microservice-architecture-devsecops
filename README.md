@@ -99,49 +99,49 @@ Docker version 18.09.2, build 6247962
 - EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
 - ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 
-## (TODO) Step 9: Add Authentication using Amazon Cognito
+## (TODO) Step 9: Database - NoSQL (DynamoDB)
+- https://github.com/jrdalino/amazon-dynamodb
+
+## (TODO) Step 10: Caching - DynamoDB Accelerator (DAX)
+
+## (TODO) Step 11: Database - RDBMS (RDS Postgres)
+
+## (TODO) Step 12: Caching - ElastiCache (Redis)
+
+## (TODO) Step 13: Add Authentication using Amazon Cognito
 - https://github.com/jrdalino/amazon-cognito
 
-## (TODO) Step 10: Add API Gateway in front of EKS Endpoint
+## (TODO) Step 14: Add API Gateway in front of EKS Endpoint
 - https://github.com/jrdalino/amazon-api-gateway
 
-## (TODO) Step 11: Add Web Application Firewall in front of API Gateway
+## (TODO) Step 15: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 12: Backend Static Testing (Static Code Analyzer)
+## (TODO) Step 16: Backend Static Testing (Static Code Analyzer)
 - Find OSS alternative for SonarQube / Fortify / Checkmarx
 
-## (TODO) Step 13: Backend Dynamic Testing (Containers Scanning)
+## (TODO) Step 17: Backend Dynamic Testing (Containers Scanning)
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
-## Step 14: Deploy Frontend
+## Step 18: Deploy Frontend
 - https://github.com/jrdalino/frontend-deploy-to-s3-cloudfront
 
-## Step 15: Setup CI/CD for Front End
+## Step 19: Setup CI/CD for Front End
 - https://github.com/jrdalino/frontend-cicd-codecommit-codepipeline
 
-## (TODO) Step 16: Web Application Firewall in front of CloudFront CDN
+## (TODO) Step 20: Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 17: Frontend Static Testing (Packages)
+## (TODO) Step 21: Frontend Static Testing (Packages)
 - AuditJS > https://www.npmjs.com/package/auditjs
 - RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
 - OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
 
-## (TODO) Step 18: Frontend Dynamic Testing (OWASP)
+## (TODO) Step 22: Frontend Dynamic Testing (OWASP)
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
-
-## (TODO) Step 19: Database - NoSQL (DynamoDB)
-- https://github.com/jrdalino/amazon-dynamodb
-
-## (TODO) Step 20: Caching - DynamoDB Accelerator (DAX)
-
-## (TODO) Step 21: Database - RDBMS (RDS Postgres)
-
-## (TODO) Step 22: Caching - ElastiCache (Redis)
 
 ## (TODO) Step 23: Check for Commited Secrets on Git Repository
 - https://github.com/awslabs/git-secrets
