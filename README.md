@@ -82,39 +82,39 @@ Docker version 18.09.2, build 6247962
 ## Step 3: AWS Organizations and Multi-Account Hardening
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
-## (TODO) Step 4: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+## (TODO) Step 4: Database - NoSQL (DynamoDB)
+- https://github.com/jrdalino/amazon-dynamodb
+
+## (TODO) Step 5: Caching - DynamoDB Accelerator (DAX)
+
+## (TODO) Step 6: Database - RDBMS (RDS Postgres)
+
+## (TODO) Step 7: Caching - ElastiCache (Redis)
+
+## (TODO) Step 8: Add Authentication using Amazon Cognito
+- https://github.com/jrdalino/amazon-cognito
+
+## (TODO) Step 9: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Terraform: https://github.com/jrdalino/infra-as-code-terraform
 - Cloudformation: https://github.com/jrdalino/infra-as-code-aws-cloudformation
 
-## (TODO) Step 5: Setup CI/CD for Infrastructure as Code Templates
+## (TODO) Step 10: Setup CI/CD for Infrastructure as Code Templates
 - Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
-## Step 6: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
+## Step 11: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
 - EKS: https://github.com/jrdalino/aws-eks-eksctl
 - K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 - ECS: https://github.com/jrdalino/aws-ecs
 
-## Step 7: Deploy Backend MicroService to EKS/ECS
+## Step 12: Deploy Backend MicroService to EKS/ECS
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
-## Step 8: Setup CI/CD for Back End Service
+## Step 13: Setup CI/CD for Back End Service
 - EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
 - ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
-
-## (TODO) Step 9: Database - NoSQL (DynamoDB)
-- https://github.com/jrdalino/amazon-dynamodb
-
-## (TODO) Step 10: Caching - DynamoDB Accelerator (DAX)
-
-## (TODO) Step 11: Database - RDBMS (RDS Postgres)
-
-## (TODO) Step 12: Caching - ElastiCache (Redis)
-
-## (TODO) Step 13: Add Authentication using Amazon Cognito
-- https://github.com/jrdalino/amazon-cognito
 
 ## (TODO) Step 14: Add API Gateway in front of EKS/ECS Endpoint
 - https://github.com/jrdalino/amazon-api-gateway
