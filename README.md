@@ -77,23 +77,23 @@ Docker version 18.09.2, build 6247962
 
 ## Step 2: Create Frontend VueJS Boostrap HTML CSS
 - https://github.com/jrdalino/myproject-consumer-web
-- https://github.com/jrdalino/myproject-provider-web
+- (TODO) https://github.com/jrdalino/myproject-provider-web
 
 ## Step 3: Improve Frontend UI using a Bootstrap 4 Theme
 - https://github.com/jrdalino/myproject-provider-boostrap-web
 
 ## (TODO) Step 4: Add Authentication using Amazon Cognito
 - https://github.com/jrdalino/myproject-consumer-amazon-cognito
-- https://github.com/jrdalino/myproject-provider-amazon-cognito
+- (TODO) https://github.com/jrdalino/myproject-provider-amazon-cognito
 
 ## (TODO) Step 5: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/myproject-product-amazon-dynamodb
-- https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
-- https://github.com/jrdalino/myproject-order-amazon-dynamodb
-- https://github.com/jrdalino/myproject-billing-amazon-dynamodb
-- https://github.com/jrdalino/myproject-payment-amazon-dynamodb
-- https://github.com/jrdalino/myproject-notification-amazon-dynamodb
-- https://github.com/jrdalino/myproject-provider-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-order-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-billing-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-payment-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-notification-amazon-dynamodb
+- (TODO) https://github.com/jrdalino/myproject-provider-amazon-dynamodb
 
 ## (TODO) Step 6: Caching - DynamoDB Accelerator (DAX)
 
