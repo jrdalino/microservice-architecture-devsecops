@@ -176,6 +176,8 @@ Docker version 18.09.2, build 6247962
 ## Step 31: Implement K8s Readiness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-readiness-probes
 
+## (TODO) Step 32: Implement Load Testing using JMeter
+
 ## Step 32: Implementing K8s Auto Scaling
 - https://github.com/jrdalino/kubernetes-autoscaling
 
