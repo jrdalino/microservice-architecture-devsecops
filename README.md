@@ -68,24 +68,32 @@ Docker version 18.09.2, build 6247962
 
 ## Step 1: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
-- (TODO) https://github.com/jrdalino/myproject-order-restapi
 - (TODO) https://github.com/jrdalino/myproject-consumer-restapi
-- (TODO) https://github.com/jrdalino/myproject-provider-restapi
+- (TODO) https://github.com/jrdalino/myproject-order-restapi
 - (TODO) https://github.com/jrdalino/myproject-billing-restapi
 - (TODO) https://github.com/jrdalino/myproject-payment-restapi
 - (TODO) https://github.com/jrdalino/myproject-notification-restapi
+- (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
-## Step 2: Create Frontend HTML CSS JS 
+## Step 2: Create Frontend HTML CSS JS Bootstrap
 - https://github.com/jrdalino/myproject-consumer-web
 - https://github.com/jrdalino/myproject-provider-web
 
-## Step 3: Improve Frontend UI using Bootstrap 4
+## Step 3: Improve Frontend UI using a Bootstrap 4 Theme
+- https://github.com/jrdalino/myproject-provider-boostrap-web
 
 ## (TODO) Step 4: Add Authentication using Amazon Cognito
-- https://github.com/jrdalino/amazon-cognito
+- https://github.com/jrdalino/myproject-consumer-amazon-cognito
+- https://github.com/jrdalino/myproject-provider-amazon-cognito
 
 ## (TODO) Step 5: Database - NoSQL (DynamoDB)
-- https://github.com/jrdalino/amazon-dynamodb
+- https://github.com/jrdalino/myproject-product-amazon-dynamodb
+- https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
+- https://github.com/jrdalino/myproject-order-amazon-dynamodb
+- https://github.com/jrdalino/myproject-billing-amazon-dynamodb
+- https://github.com/jrdalino/myproject-payment-amazon-dynamodb
+- https://github.com/jrdalino/myproject-notification-amazon-dynamodb
+- https://github.com/jrdalino/myproject-provider-amazon-dynamodb
 
 ## (TODO) Step 6: Caching - DynamoDB Accelerator (DAX)
 
@@ -104,7 +112,7 @@ Docker version 18.09.2, build 6247962
 - Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
-## Step 12: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
+## Step 12: Install (a) Kubernetes Tools and Launch EKS (EKCTL) or (b) ECS
 - EKS: https://github.com/jrdalino/aws-eks-eksctl
 - K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
