@@ -81,20 +81,20 @@ Docker version 18.09.2, build 6247962
 
 ## Step 3: Improve Frontend UI using Bootstrap 4
 
-## (TODO) Step 4: Database - NoSQL (DynamoDB)
+## (TODO) Step 4: Add Authentication using Amazon Cognito
+- https://github.com/jrdalino/amazon-cognito
+
+## (TODO) Step 5: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/amazon-dynamodb
 
-## (TODO) Step 5: Caching - DynamoDB Accelerator (DAX)
+## (TODO) Step 6: Caching - DynamoDB Accelerator (DAX)
 
-## Step 6: AWS Organizations and Multi-Account Hardening
+## Step 7: AWS Organizations and Multi-Account Hardening
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
-## (TODO) Step 7: Database - RDBMS (RDS Postgres)
+## (TODO) Step 8: Database - RDBMS (RDS Postgres)
 
-## (TODO) Step 8: Caching - ElastiCache (Redis)
-
-## (TODO) Step 9: Add Authentication using Amazon Cognito
-- https://github.com/jrdalino/amazon-cognito
+## (TODO) Step 9: Caching - ElastiCache (Redis)
 
 ## (TODO) Step 10: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Terraform: https://github.com/jrdalino/infra-as-code-terraform
