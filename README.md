@@ -79,123 +79,125 @@ Docker version 18.09.2, build 6247962
 - https://github.com/jrdalino/myproject-consumer-web
 - https://github.com/jrdalino/myproject-provider-web
 
-## (TODO) Step 3: Database - NoSQL (DynamoDB)
+## Step 3: Improve Frontend UI using Bootstrap 4
+
+## (TODO) Step 4: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/amazon-dynamodb
 
-## (TODO) Step 4: Caching - DynamoDB Accelerator (DAX)
+## (TODO) Step 5: Caching - DynamoDB Accelerator (DAX)
 
-## Step 5: AWS Organizations and Multi-Account Hardening
+## Step 6: AWS Organizations and Multi-Account Hardening
 - https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
-## (TODO) Step 6: Database - RDBMS (RDS Postgres)
+## (TODO) Step 7: Database - RDBMS (RDS Postgres)
 
-## (TODO) Step 7: Caching - ElastiCache (Redis)
+## (TODO) Step 8: Caching - ElastiCache (Redis)
 
-## (TODO) Step 8: Add Authentication using Amazon Cognito
+## (TODO) Step 9: Add Authentication using Amazon Cognito
 - https://github.com/jrdalino/amazon-cognito
 
-## (TODO) Step 9: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+## (TODO) Step 10: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Terraform: https://github.com/jrdalino/infra-as-code-terraform
 - Cloudformation: https://github.com/jrdalino/infra-as-code-aws-cloudformation
 
-## (TODO) Step 10: Setup CI/CD for Infrastructure as Code Templates
+## (TODO) Step 11: Setup CI/CD for Infrastructure as Code Templates
 - Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 - Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 
-## Step 11: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
+## Step 12: Install Kubernetes Tools and Launch EKS (EKCTL) or ECS
 - EKS: https://github.com/jrdalino/aws-eks-eksctl
 - K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 - ECS: https://github.com/jrdalino/aws-ecs
 
-## Step 12: Deploy Backend MicroService to EKS/ECS
+## Step 13: Deploy Backend MicroService to EKS/ECS
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
-## Step 13: Setup CI/CD for Back End Service
+## Step 14: Setup CI/CD for Back End Service
 - EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
 - ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 
-## (TODO) Step 14: Add API Gateway in front of EKS/ECS Endpoint
+## (TODO) Step 15: Add API Gateway in front of EKS/ECS Endpoint
 - https://github.com/jrdalino/amazon-api-gateway
 
-## (TODO) Step 15: Add Web Application Firewall in front of API Gateway
+## (TODO) Step 16: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 16: Backend Static Testing (Static Code Analyzer)
+## (TODO) Step 17: Backend Static Testing (Static Code Analyzer)
 - Find OSS alternative for SonarQube / Fortify / Checkmarx
 
-## (TODO) Step 17: Backend Dynamic Testing (Containers Scanning)
+## (TODO) Step 18: Backend Dynamic Testing (Containers Scanning)
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
-## Step 18: Deploy Frontend
+## Step 19: Deploy Frontend
 - https://github.com/jrdalino/frontend-deploy-to-s3-cloudfront
 
-## Step 19: Setup CI/CD for Front End
+## Step 20: Setup CI/CD for Front End
 - https://github.com/jrdalino/frontend-cicd-codecommit-codepipeline
 
-## (TODO) Step 20: Web Application Firewall in front of CloudFront CDN
+## (TODO) Step 21: Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 21: Frontend Static Testing (Packages)
+## (TODO) Step 22: Frontend Static Testing (Packages)
 - AuditJS > https://www.npmjs.com/package/auditjs
 - RetireJS > https://retirejs.github.io/retire.js > Checks npm packages and compares to CVE's
 - OWASP Dependency Check > https://www.owasp.org/index.php/OWASP_Dependency_Check
 
-## (TODO) Step 22: Frontend Dynamic Testing (OWASP)
+## (TODO) Step 23: Frontend Dynamic Testing (OWASP)
 - OWASP ZAP Web App Pentest Tool > https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project
 
-## (TODO) Step 23: Check for Commited Secrets on Git Repository
+## (TODO) Step 24: Check for Commited Secrets on Git Repository
 - https://github.com/awslabs/git-secrets
 - https://github.com/zricethezav/gitleaks
 
-## (TODO) Step 24: Security - AWS Secrets Management
+## (TODO) Step 25: Security - AWS Secrets Management
 - AWS Secrets Manager: https://github.com/jrdalino/aws-secrets-manager
 - AWS Parameter Store / Hashicorp Vault
 
-## (TODO) Step 25: SSL/TLS using AWS Certificate Manager
+## (TODO) Step 26: SSL/TLS using AWS Certificate Manager
 - https://github.com/jrdalino/aws-certificate-manager
 
-## (TODO) Step 26: Register/Transfer Domain Name using Route 53 for CloudFront CDN
+## (TODO) Step 27: Register/Transfer Domain Name using Route 53 for CloudFront CDN
 
-## Step 27: Install Helm
+## Step 28: Install Helm
 - https://github.com/jrdalino/install-helm
 
-## Step 28: Deploy Prometheus for basic monitoring
+## Step 29: Deploy Prometheus for basic monitoring
 - https://github.com/jrdalino/install-prometheus-using-helm
 
-## Step 29: Deploy Grafana to create Dashboards
+## Step 30: Deploy Grafana to create Dashboards
 - https://github.com/jrdalino/install-grafana-using-helm
 
-## Step 30: Implement K8s Liveness Probe Health Checks
+## Step 31: Implement K8s Liveness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-liveness-probes
 
-## Step 31: Implement K8s Readiness Probe Health Checks
+## Step 32: Implement K8s Readiness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-readiness-probes
 
-## (TODO) Step 32: Implement Load Testing using JMeter
+## (TODO) Step 33: Implement Load Testing using JMeter
 
-## Step 32: Implementing K8s Auto Scaling
+## Step 34: Implementing K8s Auto Scaling
 - https://github.com/jrdalino/kubernetes-autoscaling
 
-## Step 33: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
+## Step 35: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - https://github.com/jrdalino/elasticsearch-fluentd-kibana
 
-## Step 34: Predictive Autoscaling for Kubernetest using Prometheus + Amazon SageMaker
+## Step 36: Predictive Autoscaling for Kubernetest using Prometheus + Amazon SageMaker
 
-## (TODO) Step 35: Instrumentation using AWS X-Ray
+## (TODO) Step 37: Instrumentation using AWS X-Ray
 - AWS X-Ray / Prometheus
 
-## (TODO) Step 36: Alerting using AlertManager
+## (TODO) Step 38: Alerting using AlertManager
 - AlertManager
 - PagerDuty
 - Slack
 
-## (TODO) Step 37: Service Discovery using Consul
+## (TODO) Step 39: Service Discovery using Consul
 - Hashicorp Consul / Netflix Eureka / AWS CloudMap
 
-## (TODO) Step 38: Service Mesh using Istio
+## (TODO) Step 40: Service Mesh using Istio
 - Istio / AWS Appmesh
