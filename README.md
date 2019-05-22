@@ -182,16 +182,18 @@ Docker version 18.09.2, build 6247962
 ## Step 33: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - https://github.com/jrdalino/elasticsearch-fluentd-kibana
 
-## (TODO) Step 34: Instrumentation using AWS X-Ray
+## Step 34: Predictive Autoscaling for Kubernetest using Prometheus + Amazon SageMaker
+
+## (TODO) Step 35: Instrumentation using AWS X-Ray
 - AWS X-Ray / Prometheus
 
-## (TODO) Step 35: Alerting using AlertManager
+## (TODO) Step 36: Alerting using AlertManager
 - AlertManager
 - PagerDuty
 - Slack
 
-## (TODO) Step 36: Service Discovery using Consul
+## (TODO) Step 37: Service Discovery using Consul
 - Hashicorp Consul / Netflix Eureka / AWS CloudMap
 
-## (TODO) Step 37: Service Mesh using Istio
+## (TODO) Step 38: Service Mesh using Istio
 - Istio / AWS Appmesh
