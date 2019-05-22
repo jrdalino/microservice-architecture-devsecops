@@ -79,13 +79,13 @@ Docker version 18.09.2, build 6247962
 - https://github.com/jrdalino/myproject-consumer-web
 - https://github.com/jrdalino/myproject-provider-web
 
-## Step 3: AWS Organizations and Multi-Account Hardening
-- https://github.com/jrdalino/aws-organizations-multi-account-hardening
-
-## (TODO) Step 4: Database - NoSQL (DynamoDB)
+## (TODO) Step 3: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/amazon-dynamodb
 
-## (TODO) Step 5: Caching - DynamoDB Accelerator (DAX)
+## (TODO) Step 4: Caching - DynamoDB Accelerator (DAX)
+
+## Step 5: AWS Organizations and Multi-Account Hardening
+- https://github.com/jrdalino/aws-organizations-multi-account-hardening
 
 ## (TODO) Step 6: Database - RDBMS (RDS Postgres)
 
