@@ -75,7 +75,7 @@ Docker version 18.09.2, build 6247962
 - (TODO) https://github.com/jrdalino/myproject-notification-restapi
 - (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
-## Step 2: Create Frontend HTML CSS JS Bootstrap
+## Step 2: Create Frontend VueJS Boostrap HTML CSS
 - https://github.com/jrdalino/myproject-consumer-web
 - https://github.com/jrdalino/myproject-provider-web
 
