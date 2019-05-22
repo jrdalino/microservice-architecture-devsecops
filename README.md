@@ -194,7 +194,7 @@ Docker version 18.09.2, build 6247962
 ## Step 35: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
 - https://github.com/jrdalino/elasticsearch-fluentd-kibana
 
-## Step 36: Predictive Autoscaling for Kubernetest using Prometheus + Amazon SageMaker
+## Step 36: Predictive Autoscaling for Kubernetes using Prometheus + Amazon SageMaker
 
 ## (TODO) Step 37: Instrumentation using AWS X-Ray
 - AWS X-Ray / Prometheus
