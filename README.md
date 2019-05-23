@@ -118,7 +118,7 @@ Docker version 18.09.2, build 6247962
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 - ECS: https://github.com/jrdalino/aws-ecs
 
-## Step 13: Deploy Backend MicroService to EKS/ECS
+## Step 13: Deploy Backend MicroService to (a) EKS or (b) ECS
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
