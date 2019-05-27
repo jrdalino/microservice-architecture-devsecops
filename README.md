@@ -6,7 +6,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - HTML, VueJS, Bootstrap (CSS) for my Frontend deployed on S3 w/ CloudFront as CDN
 - Authentication using Amazon Cognito
 - NoSQL Database using DynamoDB
-- Rest API Interfaces using Amazon API Gateway
+- Rest API using Amazon API Gateway
 - Infrastucture as Code using CloudFormation or Terraform
 - Setup CI/CD using AWS CodeCommit, CodeBuild and CodePipeline for Infrastucture, Backend and Frontend
 - High Availability using Kubernetes Liveness and Readiness health Checks
