@@ -1,4 +1,5 @@
-# Python Flask Backend + JS Frontend on AWS EKS (Kubernetes) with CI/CD, Monitoring and Logging
+# Microservices Architecture with DevSecOps on AWS
+
 This is a landing page of a set of tutorials on how to build Microservices Architecture w/ DevSecOps on AWS. I will be using - Python Flask for my Backend and HTML CSS deployed on AWS Elastic Container Service (ECS) or AWS Elastic Kubernetes Service (EKS)
 - HTML, VueJS, Bootstrap (CSS) for my Frontend deployed on S3 w/ CloudFront as CDN
 - Authentication using Amazon Cognito
