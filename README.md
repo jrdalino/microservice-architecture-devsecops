@@ -1,15 +1,18 @@
 # Microservices Architecture with DevSecOps on AWS
 
 This is a landing page of a set of tutorials on how to build Microservices Architecture w/ DevSecOps on AWS. I will be using 
-- Python Flask for my Backend and HTML CSS deployed on AWS Elastic Container Service (ECS) or AWS Elastic Kubernetes Service (EKS)
+- Python Flask for my Backend deployed on AWS Elastic Container Service (ECS) or AWS Elastic Kubernetes Service (EKS)
 - HTML, VueJS, Bootstrap (CSS) for my Frontend deployed on S3 w/ CloudFront as CDN
 - Authentication using Amazon Cognito
 - NoSQL Database using DynamoDB
+- Rest API Interfaces using Amazon API Gateway
 - Infrastucture as Code using CloudFormation or Terraform
 - Setup CI/CD using AWS CodeCommit, CodeBuild and CodePipeline for Infrastucture, Backend and Frontend
-- High Availability, Autoscaling using Kubernetes Liveness and Readiness health Checks
+- High Availability using Kubernetes Liveness and Readiness health Checks
+- Autoscaling using Horizonal Pod Autoscaler (HPA) and Cluster Autoscaler (CA)
 - Monitoring using Prometheus and Grafana
 - Logging with ElasticSearch, Fluentd and Kibana
+- Instrumentation and Tracing with X-Ray
 
 ## Prerequisites
 - Working Directory
