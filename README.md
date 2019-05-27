@@ -16,69 +16,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - Instrumentation and Tracing with X-Ray
 
 ## Prerequisites
-- Working Directory
-```
-$ cd ~
-$ mkdir environment
-$ cd ~/environment
-```
-
-- Homebrew
-```
-$ brew --version
-```
-
-- AWS CLI
-```
-$ aws --version
-$ aws configure
-```
-
-- Git
-```
-$ git --version
-$ git config --global user.name "REPLACE_ME_WITH_YOUR_NAME"
-$ git config --global user.email REPLACE_ME_WITH_YOUR_EMAIL@example.com
-$ git config --global credential.helper '!aws codecommit credential-helper $@'
-$ git config --global credential.UseHttpPath true
-```
-
-- Python
-```
-$ python3 --version
-Python 3.7.3
-```
-
-- Virtualenv
-```
-$ virtualenv --version
-16.4.3
-$ echo 'venv' > .gitignore
-$ python3 -m venv venv
-$ source venv/bin/activate
-(venv) $
-(venv) $ deactivate
-```
-
-- Flask
-```
-(venv) $ pip install flask
-(venv) $ flask --version
-Flask 1.0.2
-Python 3.7.3 (default, Mar 27 2019, 09:23:15) 
-[Clang 10.0.1 (clang-1001.0.46.3)]
-```
-
-- Boto3
-```
-(venv) $ pip install boto3
-```
-
-- Docker
-```
-$ docker -v
-Docker version 18.09.2, build 6247962
-```
+- https://github.com/jrdalino/myproject-prerequisites
 
 ## Step 1: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
@@ -93,12 +31,12 @@ Docker version 18.09.2, build 6247962
 - https://github.com/jrdalino/myproject-consumer-web
 - (TODO) https://github.com/jrdalino/myproject-provider-web
 
-## (TODO) Step 3: Add Authentication using Amazon Cognito
-- https://github.com/jrdalino/myproject-consumer-amazon-cognito
+## Step 3: Add Authentication using Amazon Cognito
+- (INPROGRESS) https://github.com/jrdalino/myproject-consumer-amazon-cognito
 - (TODO) https://github.com/jrdalino/myproject-provider-amazon-cognito
 
-## (TODO) Step 4: Database - NoSQL (DynamoDB)
-- https://github.com/jrdalino/myproject-product-amazon-dynamodb
+## Step 4: Database - NoSQL (DynamoDB)
+- (INPROGRESS) https://github.com/jrdalino/myproject-product-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-order-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-billing-amazon-dynamodb
@@ -115,30 +53,30 @@ Docker version 18.09.2, build 6247962
 
 ## (TODO) Step 8: Caching - ElastiCache (Redis)
 
-## (TODO) Step 9: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
-- Cloudformation: https://github.com/jrdalino/my-project-core-cloudformation
+## Step 9: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+- (INPROGRESS) Cloudformation: https://github.com/jrdalino/my-project-core-cloudformation
 - (TODO) Terraform: https://github.com/jrdalino/my-project-core-terraform
 
-## (TODO) Step 10: Setup CI/CD for Infrastructure as Code Templates
-- Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
-- Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
+## Step 10: Setup CI/CD for Infrastructure as Code Templates
+- (INPROGRESS) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
+- (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
-## Step 11: Install (a) Kubernetes Tools and Launch EKS (EKCTL) or (b) ECS
+## Step 11: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
+- (INPROGRESS) ECS: https://github.com/jrdalino/aws-ecs
 - EKS: https://github.com/jrdalino/aws-eks-eksctl
 - K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
-- ECS: https://github.com/jrdalino/aws-ecs
 
-## Step 12: Deploy Backend MicroService to (a) EKS or (b) ECS
+## Step 12: Deploy Backend MicroService to (a) ECS or (b) EKS
+- (INPROGRESS) ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 - EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
-- ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 
 ## Step 13: Setup CI/CD for Back End Service
+- (INPROGRESS) ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 - EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
-- ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
 
-## (TODO) Step 14: Add API Gateway in front of EKS/ECS Endpoint
-- https://github.com/jrdalino/amazon-api-gateway
+## Step 14: Add API Gateway in front of EKS/ECS Endpoint
+- (INPROGRESS) https://github.com/jrdalino/amazon-api-gateway
 
 ## (TODO) Step 15: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
@@ -182,24 +120,24 @@ Docker version 18.09.2, build 6247962
 
 ## (TODO) Step 26: Register/Transfer Domain Name using Route 53 for CloudFront CDN
 
-## Step 27: Install Helm
+## Step 27: (**Kubernetes**) Install Helm
 - https://github.com/jrdalino/install-helm
 
-## Step 28: Deploy Prometheus for basic monitoring
+## Step 28: Deploy mmonitoring using Prometheus
 - https://github.com/jrdalino/install-prometheus-using-helm
 
 ## Step 29: Deploy Grafana to create Dashboards
 - https://github.com/jrdalino/install-grafana-using-helm
 
-## Step 30: Implement K8s Liveness Probe Health Checks
+## Step 30: (**Kubernetes**) Implement K8s Liveness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-liveness-probes
 
-## Step 31: Implement K8s Readiness Probe Health Checks
+## Step 31: (**Kubernetes**) Implement K8s Readiness Probe Health Checks
 - https://github.com/jrdalino/kubernetes-readiness-probes
 
 ## (TODO) Step 32: Implement Load Testing using JMeter
 
-## Step 33: Implementing K8s Auto Scaling
+## Step 33: (**Kubernetes**) Implementing K8s Auto Scaling
 - https://github.com/jrdalino/kubernetes-autoscaling
 
 ## Step 34: Logging with ElastiSearch, Fluentd, and Kibana (EFK)
