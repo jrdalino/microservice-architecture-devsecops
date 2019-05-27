@@ -1,6 +1,7 @@
 # Microservices Architecture with DevSecOps on AWS
 
-This is a landing page of a set of tutorials on how to build Microservices Architecture w/ DevSecOps on AWS. I will be using 
+This is the landing page for a set of tutorials on how to build a Microservices Architecture w/ DevSecOps on AWS using:
+
 - Python Flask for my Backend deployed on AWS Elastic Container Service (ECS) or AWS Elastic Kubernetes Service (EKS)
 - HTML, VueJS, Bootstrap (CSS) for my Frontend deployed on S3 w/ CloudFront as CDN
 - Authentication using Amazon Cognito
