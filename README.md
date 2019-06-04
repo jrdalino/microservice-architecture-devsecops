@@ -90,10 +90,10 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
 
 ## Step 18: Deploy Frontend
-- https://github.com/jrdalino/frontend-deploy-to-s3-cloudfront
+- https://github.com/jrdalino/myproject-frontend-deploy-to-s3-cloudfront
 
 ## Step 19: Setup CI/CD for Front End
-- https://github.com/jrdalino/frontend-cicd-codecommit-codepipeline
+- https://github.com/jrdalino/myproject-frontend-cicd-codecommit-codepipeline
 
 ## (TODO) Step 20: Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
