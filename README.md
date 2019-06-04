@@ -23,7 +23,6 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 
 ## Step 2: Create Frontend VueJS3 Boostrap4 HTML CSS
 - https://github.com/jrdalino/myproject-consumer-web
-- (TODO) https://github.com/jrdalino/myproject-provider-web
 
 ## Step 3: Deploy Static Website to S3 + CloudFront
 - https://github.com/jrdalino/myproject-frontend-deploy-to-s3-cloudfront
@@ -44,29 +43,29 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
 ## Step 7: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
-- (INPROGRESS) Cloudformation: https://github.com/jrdalino/myproject-core-cloudformation
+- Cloudformation: https://github.com/jrdalino/myproject-core-cloudformation
 - (TODO) Terraform: https://github.com/jrdalino/myproject-core-terraform
 
 ## Step 8: Setup CI/CD for Infrastructure as Code Templates
-- (INPROGRESS) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
+- Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 - (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
 ## Step 9: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
-- (INPROGRESS) ECS: https://github.com/jrdalino/aws-ecs
-- EKS: https://github.com/jrdalino/aws-eks-eksctl
-- K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
-- K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
+- ECS: https://github.com/jrdalino/aws-ecs
+- (TODO) EKS: https://github.com/jrdalino/aws-eks-eksctl
+- (TODO) K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
+- (TODO) K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
 ## Step 10: Deploy Backend MicroService to (a) ECS or (b) EKS
-- (INPROGRESS) ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
-- EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
+- ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
+- (TODO) EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 
 ## Step 11: Setup CI/CD for Back End Service
-- (INPROGRESS) ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
-- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
+- ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
+- (TODO) EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
 
 ## Step 12: Database - NoSQL (DynamoDB)
-- (INPROGRESS) https://github.com/jrdalino/myproject-product-amazon-dynamodb
+- https://github.com/jrdalino/myproject-product-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-order-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-billing-amazon-dynamodb
@@ -75,7 +74,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-provider-amazon-dynamodb
 
 ## Step 13: Add API Gateway in front of EKS/ECS Endpoint
-- (INPROGRESS) https://github.com/jrdalino/amazon-api-gateway
+- https://github.com/jrdalino/amazon-api-gateway
 
 ## ***
 ## ***
