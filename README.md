@@ -45,8 +45,8 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
 ## Step 7: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
-- (INPROGRESS) Cloudformation: https://github.com/jrdalino/my-project-core-cloudformation
-- (TODO) Terraform: https://github.com/jrdalino/my-project-core-terraform
+- (INPROGRESS) Cloudformation: https://github.com/jrdalino/myproject-core-cloudformation
+- (TODO) Terraform: https://github.com/jrdalino/myproject-core-terraform
 
 ## Step 8: Setup CI/CD for Infrastructure as Code Templates
 - (INPROGRESS) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
