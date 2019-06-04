@@ -29,11 +29,10 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - https://github.com/jrdalino/myproject-frontend-deploy-to-s3-cloudfront
 
 ## Step 4: Setup CI/CD for Front End
-- https://github.com/jrdalino/myproject-frontend-cicd-codecommit-codepipeline
+- https://github.com/jrdalino/myproject-consumer-web-codepipeline
 
 ## Step 5: Add Authentication using Amazon Cognito
-- (INPROGRESS) https://github.com/jrdalino/myproject-consumer-amazon-cognito
-- (TODO) https://github.com/jrdalino/myproject-provider-amazon-cognito
+- https://github.com/jrdalino/myproject-consumer-web-amazon-cognito
 
 ## Step 6: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
