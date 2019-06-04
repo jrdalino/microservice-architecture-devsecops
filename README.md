@@ -18,7 +18,24 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 ## Prerequisites
 - https://github.com/jrdalino/myproject-prerequisites
 
-## Step 1: Create Backend Python Flask RestAPI
+## Step 1: AWS Organizations and Multi-Account Hardening
+- https://github.com/jrdalino/aws-organizations-multi-account-hardening
+
+## Step 2: Create Frontend VueJS3 Boostrap4 HTML CSS
+- https://github.com/jrdalino/myproject-consumer-web
+- (TODO) https://github.com/jrdalino/myproject-provider-web
+
+## Step 3: Deploy Static Website to S3 + CloudFront
+- https://github.com/jrdalino/myproject-frontend-deploy-to-s3-cloudfront
+
+## Step 4: Setup CI/CD for Front End
+- https://github.com/jrdalino/myproject-frontend-cicd-codecommit-codepipeline
+
+## Step 5: Add Authentication using Amazon Cognito
+- (INPROGRESS) https://github.com/jrdalino/myproject-consumer-amazon-cognito
+- (TODO) https://github.com/jrdalino/myproject-provider-amazon-cognito
+
+## Step 6: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
 - (TODO) https://github.com/jrdalino/myproject-consumer-restapi
 - (TODO) https://github.com/jrdalino/myproject-order-restapi
@@ -27,15 +44,29 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-notification-restapi
 - (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
-## Step 2: Create Frontend VueJS Boostrap HTML CSS
-- https://github.com/jrdalino/myproject-consumer-web
-- (TODO) https://github.com/jrdalino/myproject-provider-web
+## Step 7: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+- (INPROGRESS) Cloudformation: https://github.com/jrdalino/my-project-core-cloudformation
+- (TODO) Terraform: https://github.com/jrdalino/my-project-core-terraform
 
-## Step 3: Add Authentication using Amazon Cognito
-- (INPROGRESS) https://github.com/jrdalino/myproject-consumer-amazon-cognito
-- (TODO) https://github.com/jrdalino/myproject-provider-amazon-cognito
+## Step 8: Setup CI/CD for Infrastructure as Code Templates
+- (INPROGRESS) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
+- (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
-## Step 4: Database - NoSQL (DynamoDB)
+## Step 9: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
+- (INPROGRESS) ECS: https://github.com/jrdalino/aws-ecs
+- EKS: https://github.com/jrdalino/aws-eks-eksctl
+- K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
+- K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
+
+## Step 10: Deploy Backend MicroService to (a) ECS or (b) EKS
+- (INPROGRESS) ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
+- EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
+
+## Step 11: Setup CI/CD for Back End Service
+- (INPROGRESS) ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
+- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
+
+## Step 12: Database - NoSQL (DynamoDB)
 - (INPROGRESS) https://github.com/jrdalino/myproject-product-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-order-amazon-dynamodb
@@ -44,56 +75,29 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-notification-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-provider-amazon-dynamodb
 
-## (TODO) Step 5: Caching - DynamoDB Accelerator (DAX)
-
-## Step 6: AWS Organizations and Multi-Account Hardening
-- https://github.com/jrdalino/aws-organizations-multi-account-hardening
-
-## (TODO) Step 7: Database - RDBMS (RDS Postgres)
-
-## (TODO) Step 8: Caching - ElastiCache (Redis)
-
-## Step 9: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
-- (INPROGRESS) Cloudformation: https://github.com/jrdalino/my-project-core-cloudformation
-- (TODO) Terraform: https://github.com/jrdalino/my-project-core-terraform
-
-## Step 10: Setup CI/CD for Infrastructure as Code Templates
-- (INPROGRESS) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
-- (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
-
-## Step 11: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
-- (INPROGRESS) ECS: https://github.com/jrdalino/aws-ecs
-- EKS: https://github.com/jrdalino/aws-eks-eksctl
-- K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
-- K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
-
-## Step 12: Deploy Backend MicroService to (a) ECS or (b) EKS
-- (INPROGRESS) ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
-- EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
-
-## Step 13: Setup CI/CD for Back End Service
-- (INPROGRESS) ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
-- EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
-
-## Step 14: Add API Gateway in front of EKS/ECS Endpoint
+## Step 13: Add API Gateway in front of EKS/ECS Endpoint
 - (INPROGRESS) https://github.com/jrdalino/amazon-api-gateway
 
-## (TODO) Step 15: Add Web Application Firewall in front of API Gateway
+## ***
+## ***
+## ***
+
+## (TODO) Step 14: Caching - DynamoDB Accelerator (DAX)
+
+## (TODO) Step 15: Database - RDBMS (RDS Postgres)
+
+## (TODO) Step 16: Caching - ElastiCache (Redis)
+
+## (TODO) Step 17: Add Web Application Firewall in front of API Gateway
 - AWS Web Application Firewall
 - AWS Shield
 - https://github.com/aws-samples/aws-waf-sample/blob/master/waf-owasp-top-10/owasp_10_base.yml
 
-## (TODO) Step 16: Backend Static Testing (Static Code Analyzer)
+## (TODO) Step 18: Backend Static Testing (Static Code Analyzer)
 - Find OSS alternative for SonarQube / Fortify / Checkmarx
 
-## (TODO) Step 17: Backend Dynamic Testing (Containers Scanning)
+## (TODO) Step 19: Backend Dynamic Testing (Containers Scanning)
 - Find OSS alternative for  Anchore Engine / Aqua Microscanner / Clair / Dagda / Twistlock
-
-## Step 18: Deploy Frontend
-- https://github.com/jrdalino/myproject-frontend-deploy-to-s3-cloudfront
-
-## Step 19: Setup CI/CD for Front End
-- https://github.com/jrdalino/myproject-frontend-cicd-codecommit-codepipeline
 
 ## (TODO) Step 20: Web Application Firewall in front of CloudFront CDN
 - AWS Web Application Firewall and AWS Shield
@@ -123,7 +127,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 ## Step 27: (**Kubernetes**) Install Helm
 - https://github.com/jrdalino/install-helm
 
-## Step 28: Deploy mmonitoring using Prometheus
+## Step 28: Deploy monitoring using Prometheus
 - https://github.com/jrdalino/install-prometheus-using-helm
 
 ## Step 29: Deploy Grafana to create Dashboards
