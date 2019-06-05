@@ -61,8 +61,8 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 
 ## Step 11: Setup CI/CD for Back End Service
-- ECS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-ecs
-- (TODO) EKS: https://github.com/jrdalino/backend-cicd-codecommit-codebuild-codepipeline-kubernetes
+- ECS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-ecs
+- (TODO) EKS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-kubernetes
 
 ## Step 12: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/myproject-product-amazon-dynamodb
