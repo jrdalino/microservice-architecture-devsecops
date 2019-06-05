@@ -47,7 +47,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) Terraform: https://github.com/jrdalino/myproject-core-terraform
 
 ## Step 8: Setup CI/CD for Infrastructure as Code Templates
-- Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
+- (TODO) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 - (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
 ## Step 9: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
