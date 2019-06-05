@@ -30,10 +30,7 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 ## Step 4: Setup CI/CD for Front End
 - https://github.com/jrdalino/myproject-consumer-web-codepipeline
 
-## Step 5: Add Authentication using Amazon Cognito
-- https://github.com/jrdalino/myproject-consumer-web-amazon-cognito
-
-## Step 6: Create Backend Python Flask RestAPI
+## Step 5: Create Backend Python Flask RestAPI
 - https://github.com/jrdalino/myproject-product-restapi
 - (TODO) https://github.com/jrdalino/myproject-consumer-restapi
 - (TODO) https://github.com/jrdalino/myproject-order-restapi
@@ -42,29 +39,29 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-notification-restapi
 - (TODO) https://github.com/jrdalino/myproject-provider-restapi
 
-## Step 7: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
+## Step 6: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - Cloudformation: https://github.com/jrdalino/myproject-core-cloudformation
 - (TODO) Terraform: https://github.com/jrdalino/myproject-core-terraform
 
-## Step 8: Setup CI/CD for Infrastructure as Code Templates
+## Step 7: Setup CI/CD for Infrastructure as Code Templates
 - (TODO) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 - (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
-## Step 9: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
+## Step 8: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
 - ECS: https://github.com/jrdalino/myproject-aws-ecs-fargate
 - EKS: https://github.com/jrdalino/myproject-aws-eks-eksctl
 - (TODO) K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - (TODO) K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
-## Step 10: Deploy Backend MicroService to (a) ECS or (b) EKS
+## Step 9: Deploy Backend MicroService to (a) ECS or (b) EKS
 - ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
 - (TODO) EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
 
-## Step 11: Setup CI/CD for Back End Service
+## Step 10: Setup CI/CD for Back End Service
 - ECS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-ecs
 - (TODO) EKS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-kubernetes
 
-## Step 12: Database - NoSQL (DynamoDB)
+## Step 11: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/myproject-product-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-consumer-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-order-amazon-dynamodb
@@ -73,12 +70,15 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) https://github.com/jrdalino/myproject-notification-amazon-dynamodb
 - (TODO) https://github.com/jrdalino/myproject-provider-amazon-dynamodb
 
+## Step 12: Add Authentication using Amazon Cognito
+- https://github.com/jrdalino/myproject-consumer-web-amazon-cognito
+
 ## Step 13: Add API Gateway in front of EKS/ECS Endpoint
 - https://github.com/jrdalino/amazon-api-gateway
 
-## ***
-## ***
-## ***
+### ********************************************************************
+### ********************************************************************
+### ********************************************************************
 
 ## (TODO) Step 14: Caching - DynamoDB Accelerator (DAX)
 
