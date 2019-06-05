@@ -51,8 +51,8 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
 ## Step 9: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
-- ECS: https://github.com/jrdalino/aws-ecs
-- (TODO) EKS: https://github.com/jrdalino/aws-eks-eksctl
+- ECS: https://github.com/jrdalino/myproject-aws-ecs-fargate
+- EKS: https://github.com/jrdalino/myproject-aws-eks-eksctl
 - (TODO) K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - (TODO) K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
