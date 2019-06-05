@@ -47,15 +47,15 @@ This is the landing page for a set of tutorials on how to build a Microservices 
 - (TODO) Cloudformation: https://github.com/aws-quickstart/quickstart-taskcat-ci
 - (TODO) Terraform: https://dzone.com/articles/immutable-infrastructure-cicd-using-hashicorp-terr
 
-## Step 8: Install (a) ECS or (b) Kubernetes Tools & Launch EKS (EKCTL)
+## Step 8: (a) Launch ECS or (b) Install Kubernetes Tools & Launch EKS (EKCTL)
 - ECS: https://github.com/jrdalino/myproject-aws-ecs-fargate
 - EKS: https://github.com/jrdalino/myproject-aws-eks-eksctl
 - (TODO) K8S: Example > install single-node master K8s cluster https://github.com/jrdalino/single-master-kubernetes-cluster
 - (TODO) K8S KOPS: Example > install a multi-node master K8s cluster https://github.com/jrdalino/multi-master-kubernetes-cluster-kops
 
 ## Step 9: Deploy Backend MicroService to (a) ECS or (b) EKS
-- ECS: https://github.com/jrdalino/backend-deploy-to-ecs-fargate
-- (TODO) EKS: https://github.com/jrdalino/backend-deploy-to-kubernetes
+- ECS: https://github.com/jrdalino/myproject-deploy-service-to-aws-ecs-fargate
+- (TODO) EKS: https://github.com/jrdalino/myproject-deploy-service-to-kubernetes
 
 ## Step 10: Setup CI/CD for Back End Service
 - ECS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-ecs
