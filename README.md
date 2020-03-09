@@ -26,7 +26,6 @@
 
 ## Step 7: Deploy Backend MicroService to (a) ECS or (b) EKS
 - ECS: https://github.com/jrdalino/myproject-deploy-service-to-aws-ecs-fargate
-- EKS: https://github.com/jrdalino/myproject-deploy-service-to-kubernetes
 
 ## Step 8: Setup CI/CD for Back End Service
 - ECS: https://github.com/jrdalino/myproject-product-restapi-codepipeline-ecs
