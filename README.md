@@ -10,13 +10,13 @@
 - https://github.com/jrdalino/myproject-consumer-web-codepipeline
 
 ## Step 4: Create Backend Python Flask RestAPI
-- https://github.com/jrdalino/myproject-product-restapi
-- (TODO) myproject-consumer-restapi
-- (TODO) myproject-order-restapi
-- (TODO) myproject-billing-restapi
-- (TODO) myproject-payment-restapi
-- (TODO) myproject-notification-restapi
-- (TODO) myproject-provider-restapi
+- https://github.com/jrdalino/myproject-product-service-python
+- (TODO) myproject-customer-service-python
+- (TODO) myproject-order-service-python
+- (TODO) myproject-billing-service-python
+- (TODO) myproject-payment-service-python
+- (TODO) myproject-notification-service-python
+- (TODO) myproject-supplier-service-python
 
 ## Step 5: Add Infrastructure as Code Templates (Custom VPC with Public and Private Subnets) w/ Testing
 - https://github.com/jrdalino/myproject-core-cloudformation
@@ -33,9 +33,9 @@
 
 ## Step 9: Database - NoSQL (DynamoDB)
 - https://github.com/jrdalino/myproject-product-amazon-dynamodb
-- (TODO) myproject-consumer-amazon-dynamodb
+- (TODO) myproject-customer-amazon-dynamodb
 - (TODO) myproject-order-amazon-dynamodb
 - (TODO) myproject-billing-amazon-dynamodb
 - (TODO) myproject-payment-amazon-dynamodb
 - (TODO) myproject-notification-amazon-dynamodb
-- (TODO) myproject-provider-amazon-dynamodb
+- (TODO) myproject-supplier-amazon-dynamodb
